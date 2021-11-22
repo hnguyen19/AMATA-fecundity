@@ -7,5 +7,5 @@ navbar:
       href: Abstract.html
 output:
   html_document:
-    theme: cosmos #jekyll-theme-simplex
+    theme: cayman #jekyll-theme-simplex
     css: 'styles.css'

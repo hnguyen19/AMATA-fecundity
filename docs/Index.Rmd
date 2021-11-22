@@ -1,8 +1,6 @@
 ---
-title: "Abstract"
-output: html_document
+title: Abstract
 ---
-
 Corn- and soybean-dominated cropping systems create and maintain a favorable environment for summer annual weeds whose emergence and growth phenology are similar to these annual summer crops. Cropping system diversification can be an effective approach for controlling noxious weeds without increasing reliance on chemical herbicides. Diversification may be especially important for managing waterhemp, a dioecious, summer annual weed that is becoming increasingly prevalent in the US Corn Belt due to its life history characteristics and herbicide resistance profile. 
 
 Compared to corn and soybean, alfalfa and oat emerge and establish earlier and are thus more competitive with warm-season weeds like waterhemp. Knowledge of vegetative and reproductive characteristics in a range of crop environments can be valuable for planning weed management strategies. However, most of the relevant characteristics for a population dynamics model were available in corn and soybean monocultures. We examined the relationship between waterhemp’s aboveground mass and fecundity under four crop species’ presence within three crop rotation systems: a 2-year sequence of corn and soybean; a 3-year sequence of corn, soybean, and oat intercropped with red clover; and a 4-year sequence of corn, soybean, oat intercropped with alfalfa, and alfalfa. All the rotation systems were treated with conventional or reduced rates of herbicides. We established eighteen linear equations to predict waterhemp’s fecundity from dried aboveground mass in each crop and associated crop management program since measuring the latter allows for quicker estimation of fecundity compared to counting seeds on each individual plant. 
