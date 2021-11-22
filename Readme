@@ -6,7 +6,7 @@ Data: raw and clean data sheets
 Doc: data management plan 
 Data wrangling: `.R` files with codes to clean the raw data  
 Analysis: `.Rmd` executable files to analyze the data and render report. Each `.Rmd` file is devoted to address one hypothesis
-Draft: to put everything together. `.bib` (the Zotero generated bibliography) `Introduction.Rmd`, `MandM.Rmd`, and `Discussion.Rmd` live here.   
+Draft: to put everything together. `.bib` (the Zotero generated bibliography) `Introduction.Rmd`, `MandM.Rmd`, and `Discussion.Rmd` live there.   
 
 General workflow:  
 1 - Each `.Rmd` file is devoted to address one hypothesis. 
