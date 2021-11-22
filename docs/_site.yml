@@ -4,7 +4,7 @@ navbar:
   title: ""
   left:
     - text: "Abstract"
-      href: abstract.html
+      href: Abstract.html
 output:
   html_document:
     theme: cosmos #jekyll-theme-simplex
