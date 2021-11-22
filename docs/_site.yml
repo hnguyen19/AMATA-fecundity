@@ -1,0 +1,11 @@
+name: ""
+output_dir: "docs"
+navbar:
+  title: ""
+  left:
+    - text: "Abstract"
+      href: abstract.html
+output:
+  html_document:
+    theme: cosmos #jekyll-theme-simplex
+    css: 'styles.css'
