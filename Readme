@@ -1,9 +1,9 @@
 I sincerely thank the R user community, `bookdown` authors, Zotero, and ISU Lunchinators for inspiration, coaching, and troubleshooting. 
 This current structure works best for me.
 
-Background: motivation to conduct the research and relevant .pdf of the literature   
+Background: relevant .pdf of the literature   
 Data: raw and clean data sheets  
-Doc: data management plan and logistical documents  
+Doc: data management plan 
 Data wrangling: `.R` files with codes to clean the raw data  
 Analysis: `.Rmd` executable files to analyze the data and render report. Each `.Rmd` file is devoted to address one hypothesis
 Draft: to put everything together. `.bib` (the Zotero generated bibliography) `Introduction.Rmd`, `MandM.Rmd`, and `Discussion.Rmd` live here.   
