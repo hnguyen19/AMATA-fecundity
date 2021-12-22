@@ -1,7 +1,7 @@
 ---
 output:
   bookdown::pdf_document2: 
-    keep_tex: true
+  #  keep_tex: true
     toc: false
  # bookdown::html_document2: default
  # keep_tex: yes

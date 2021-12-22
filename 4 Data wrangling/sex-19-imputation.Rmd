@@ -3,7 +3,7 @@ date: "`r format(Sys.time(), '%B %d, %Y')`"
 output:
   #bookdown::word_document2
   bookdown::pdf_document2: 
-    keep_tex: true
+#    keep_tex: true
     toc: false
     latex_engine: lualatex
     citation_package: natbib
