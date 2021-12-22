@@ -23,7 +23,7 @@ library(ggpmisc) # for function stat_poly_eq
 library(broom) # for function tidy
 library(nlme) #for function gls
 library(kableExtra)
-source("functions.R")
+#source("functions.R")
 library(fabricatr)  #for function split_quantile
 options(digits = 6)
 set.seed(505) #to make sure the prediction equation R2 come out the same when others run this file 

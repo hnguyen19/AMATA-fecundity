@@ -69,6 +69,6 @@ In all rotations, all the crop yields were comparable to those of Iowa and Boone
 ```
 
 # Acknowledgements {-}
-The authors thank Matt Woods, Mike Fiscus, and the Iowa State University’s Agronomy Research Farm crew for field management; Jessica Juarez-Morales, Elizabeth Oys, Ana Poznanski, Andrew Riehl, Angela Soto-Saenz, and Wyatt Westfall for field and laboratory assistance; Alan Gaul and Iowa State University’s Seed Laboratory student assistants and interns for seed cleaning laboratory space, guidance, and technical assistance; Philip Dixon and Dean Adams for data analysis assistance; Russ Lenth for attending to quickly resolve questions with the package `emmeans` and other Stackoverflow community members for coding assistance; and Lisa Schulte-Moore, Micheal Owen, and Mark Gleason for reviewing the manuscript.  
+The authors thank Matt Woods, Mike Fiscus, and the Iowa State University’s Agronomy Research Farm crew for field management; Jessica Juarez-Morales, Elizabeth Oys, Ana Poznanski, Andrew Riehl, Angela Soto-Saenz, and Wyatt Westfall for field and laboratory assistance; Alan Gaul and Iowa State University’s Seed Laboratory student assistants and interns for seed cleaning laboratory space, guidance, and technical assistance; Philip Dixon and Dean Adams for data analysis assistance; Russ Lenth and other Stackoverflow community members for answering HN's coding questions; and Lisa Schulte-Moore, Micheal Owen, and Mark Gleason for reviewing the manuscript.  
 
 # References {-}
