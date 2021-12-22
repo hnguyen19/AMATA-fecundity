@@ -1,5 +1,4 @@
 ---
-date: "`r format(Sys.time(), '%B %d, %Y')`"
 output:
   #bookdown::word_document2
   bookdown::pdf_document2: 
@@ -28,8 +27,8 @@ library(miceadds)
 library(data.table)
 library(grid); library(gridExtra)
 library(kableExtra)
-source(here("8 Analysis scripts/functions.R"))
-#set.seed(500)
+#source(here("5 Analysis/functions.R"))
+#set.seed(500) doesn't work at this writing https://github.com/amices/mice/issues/393
 #View(sexed19_mis)
 # some pooling stuff here https://bookdown.org/mwheymans/bookmi/rubins-rules.html
 RNGkind(sample.kind = "Rounding")
@@ -187,7 +186,7 @@ grid.arrange( xy_female, xy_male) #patchwork doesn't accommodate lattice
 ```
 
 
-```{r jt1-pool, echo=FALSE, message=F, warning=F}
+```{r jt1-pool, echo=FALSE, message=F, warning=FALSE}
 
 sexed19_imp1_eu <- sexed19_imp1_long%>%
   group_by(.imp, Block, Crop_ID, Corn_weed_management) %>%
@@ -216,7 +215,7 @@ n1 <- nrow(sexed19_imp1_full)/4
 
 ```
 
-```{r, include=F}
+```{r, include=FALSE}
 #for demo purpose
 #imp1_full <- sexed19_imp1_eu %>% filter(.imp == 6)
 
@@ -226,7 +225,7 @@ n1 <- nrow(sexed19_imp1_full)/4
 
 
 
-```{r m240, echo=FALSE , message=F, warning=F}
+```{r m240, echo=FALSE , message=FALSE, warning=FALSE}
 #trial 2, see if lambda and fmi are smaller, m = 240 = 4 cores x 60 imputations/core
 
 sexed19_imp2_wide <- parlmice(sexed19_resp1 , cluster.seed = 500, print = FALSE, n.core = 4, n.imp.core = 60) # to use for visual later, change meth?
@@ -244,7 +243,7 @@ sexed19_imp2 <- sexed19_imp2_long %>% #separate this to save energy
   pool()
 
 ```
-```{r m240-jt, echo=F, message=F, warning=F}
+```{r m240-jt, echo=FALSE, message=FALSE, warning=FALSE}
 ## check for number of full sets
 sexed19_imp2_eu <- sexed19_imp2_long%>%
   mutate(Year = "2019",
@@ -268,7 +267,7 @@ sexed19_imp2_full <- sexed19_imp2_jt_df %>%
 n2 <- nrow(sexed19_imp2_full)/4 #28
 ```
 
-```{r m2400, echo=FALSE, message=F, warning=F}
+```{r m2400, echo=FALSE, message=FALSE, warning=FALSE}
 #trial 2, see if lambda and fmi are smaller, m = 2400 = 4 cores x 600 imputations/core
 
 sexed19_imp3_wide <- parlmice(sexed19_resp1 , cluster.seed = 500, print = FALSE, n.core = 4, n.imp.core = 600) # to use for visual later, change meth?
@@ -287,7 +286,7 @@ sexed19_imp3 <- sexed19_imp3_long %>% #separate this to save energy
 
 ```
 
-```{r m2400-jt, echo=FALSE , message=F, warning=F}
+```{r m2400-jt, echo=FALSE , message=FALSE, warning=FALSE}
 
 ## check for number of full sets
 sexed19_imp3_eu <- sexed19_imp3_long%>%
@@ -317,7 +316,7 @@ n3 <- nrow(sexed19_imp3_full)/4 #344; 344 + 2056 = 2400
 
 ```
 
-```{r pool-diag, echo=F}
+```{r pool-diag, echo=FALSE}
 #combine all scenarios of m, column-wise  
 #<https://rdrr.io/cran/mice/man/cbind.mids.html>
 
