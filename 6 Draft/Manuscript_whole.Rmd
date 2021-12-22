@@ -1,0 +1,72 @@
+---
+title: "Impact of cropping system diversification on vegetative and reproductive characteristics of waterhemp (*Amaranthus tuberculatus*)"
+header-includes:
+   - \usepackage{lineno}
+   - \linenumbers
+output:
+  bookdown::pdf_document2: 
+    keep_tex: yes
+    toc: false
+    number_sections: false
+    extra_dependencies: ["float"]
+    latex_engine: lualatex
+    citation_package: natbib
+bibliography: fecund.bib
+natbiboptions: round
+biblatexoptions:
+  - sortcites = true
+  - sorting = nyt
+  - backend = biber
+  - maxcitenames = 2
+csl: apa-no-ampersand.csl
+---
+
+# Abstract {-}
+
+```{r, child = "Abstract.Rmd"}
+```
+
+# Introduction {-}
+
+```{r, child = "Introduction.Rmd"}
+```
+
+# Materials and Methods {-}
+
+```{r, child = "Proposal.Rmd"}
+```
+
+
+# Results {-}
+
+Using `ggResidpanel` version 0.3.0 for model diagnosis [@goodeGgResidpanelPanelsInteractive2019], no predictable pattern in the plots of residuals versus predicted values suggests that the analysis models fit the data well (Details are provided in the Data Repository).  
+In all rotations, all the crop yields were comparable to those of Iowa and Boone County (where the experiment is situated) [@nguyenWeedCommunityCompositioninpreparation].  
+
+
+```{r, child = "../5 Analysis/individual-population-sex-biom-dens.Rmd" }
+# might knit the text separately because some packages conflict
+```
+
+
+```{r, child = "../5 Analysis/Population-fecundity-model.Rmd"}
+```
+
+
+# Discussion {-}
+
+```{r, child = "Discussion.Rmd"}
+```
+
+# Appendix {-}
+
+```{r, child = "AppendixA.Rmd"}
+```
+
+
+```{r, child = "../4 Data wrangling/sex-19-imputation2.Rmd"}
+```
+
+# Acknowledgements {-}
+The authors thank Matt Woods, Mike Fiscus, and the Iowa State University’s Agronomy Research Farm crew for field management; Jessica Juarez-Morales, Elizabeth Oys, Ana Poznanski, Andrew Riehl, Angela Soto-Saenz, and Wyatt Westfall for field and laboratory assistance; Alan Gaul and Iowa State University’s Seed Laboratory student assistants and interns for seed cleaning laboratory space, guidance, and technical assistance; Philip Dixon and Dean Adams for data analysis assistance; Russ Lenth for attending to quickly resolve questions with the package `emmeans` and other Stackoverflow community members for coding assistance; and Lisa Schulte-Moore, Micheal Owen, and Mark Gleason for reviewing the manuscript.  
+
+# References {-}

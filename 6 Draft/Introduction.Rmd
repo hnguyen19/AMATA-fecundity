@@ -1,10 +1,38 @@
 ---
-output: 
-  bookdown::pdf_document2: 
-    keep_tex: yes
+output:
+  bookdown::pdf_document2:
+    keep_tex: true
     toc: false
-    number_sections: false
-    extra_dependencies: ["float"]
-bibliography: .bib
+    latex_engine: lualatex
+    citation_package: natbib
+bibliography: fecund.bib
+natbiboptions: round
+biblatexoptions:
+  - sortcites = true
+  - sorting = nyt
+  - backend = biber
+  - maxcitenames = 2
+csl: apa-no-ampersand.csl
 ---
+
+Cropping system diversification can contribute to the effective suppression of noxious weeds such as velvetleaf (*Abutilon theophrasti* Medik.) [@westermanAreManyLittle2005], giant foxtail (*Setaria faberi* Herrm.) [@liebmanFatesSetariaFaberi2014], giant ragweed (*Ambrosia trifida* L.) [@liebmanCroppingSystemRedesign2020], and other species while complementing the effects of herbicides and physical weed control practices [@davisIncreasingCroppingSystem2012; @weisbergerDoesDiversifyingCrop2019]. 
+Much of the effectiveness of diversified cropping systems for weed suppression can be attributed to differences among crop species in their phenologies and the management techniques applied to them. Differences in crop phenology and diverse management tactics can lead to a net loss in weed seed population density in the soil seed bank [@maclarenEcologicalFutureWeed2020; @liebmanManyLittleHammers1997] resulting from reductions in weed fecundity and increased consumption of weed seeds by granivores. The present study focuses on fecundity and other relevant individual- and population-level reproductive and vegetative characteristics of waterhemp (*Amaranthus tuberculatus* (Moq.) J. D. Sauer) in three rain-fed cropping systems differing in crop species richness and management practices.  
+
+
+Waterhemp is a dioecious, summer annual, dicotyledonous species that has been listed as one of the five most noxious weeds in row crops in the U.S. based on the number of times this species appears in the literature [@johnsonInfluenceGlyphosateresistantCropping2009] and by growers' concern across 22 states in the U.S. [@princeBenchmarkStudyIV2012]. At least 54 waterhemp populations are resistant to up to five herbicide modes of action as of 2021 [@heapHerbicideResistantTall2021].
+
+As a dioecious species, populations of waterhemp are expected to express a 1:1 male:female ratio [@grantCytogeneticStudiesAmaranthus1959; @costeaBiologyInvasiveAlien2005; @heneghanGrowthDevelopmentFive2017]. However, waterhemp has three characteristics that favor female-biasedness under conditions of no stress, according to a study of 243 dioecious species excluding waterhemp [@fieldComparativeAnalysesSexratio2013]: 1) the male sex is heterogametic [@montgomeryMaleSpecificChromosomal2021]; 2) the species has abiotic pollination and seed dispersal; and 3) the fruits are non-fleshy [@costeaBiologyInvasiveAlien2005]. A stressed waterhemp population tends to be female-biased, with up to ten females per male [@prattAmaranthusRudisTuberculatus2001], which is consistent with the general pattern of sexually differentiated stress tolerance in herbaceous plants [38 species, excluding waterhemp, @juvanySexrelatedDifferencesStress2015]. The sex ratio plasticity of waterhemp suggests that a stressed population, which is characterized by low-density, may allocate available resources to produce more female offspring as an effort to increase population density, as observed in its close relative, Palmer amaranth (*A. palmeri*) [@korresPalmerAmaranthAmaranthus2017; @mesgaranSexLabilityDimorphism2019]. Knowing how sex ratios may deviate from parity under different biotic and abiotic conditions could inform how a waterhemp population might progress from one generation to the next.
+
+Waterhemp management is agronomically challenging because of a suite of life history characteristics, including a persistent soil seedbank [@davisWeedSeedPools2008], an extended seedling emergence pattern [@buhlerEmergencePersistenceSeed2001], high relative growth rate, high fecundity [@heneghanGrowthDevelopmentFive2017], and rapid herbicide resistance development [@tranelHerbicideResistanceAmaranthus2021]. One year of prolific seed production can replenish a declining seedbank with more seeds than existed in the seedbank [@davisWeedSeedPools2008]. Failing to control waterhemp can cause up to 43% yield loss in soybean (*Glycine max* (L.) Merr.) [@hagerCommonWaterhempAmaranthus2002a] and 74% yield loss in corn (*Zea mays* L.) [@steckelCommonWaterhempAmaranthus2004]. 
+ 
+
+The accumulated mass and density of a weed population reflect the relative competitiveness against crops and the favorability of the environment, which in turn could signal the effectiveness of weed management throughout the season. From a planning perspective, population density at maturity and plant fecundity are useful for estimating the density of new seeds produced and potentially added to the soil seedbank, and for adjusting weed management regimes accordingly [@buhlerImplicationsWeedSeedbank1997]. Waterhemp's fecundity has been studied in corn and soybean crops [@menalledImpactCompostedSwine2004; @nordbyInfluenceCornCommon2004] but not in other crops' or in an extended crop rotation system.
+Alfalfa (*Medicago sativa* L.), red clover (*Trifolium pratense* L.), and oat (*Avena sativa* L.) are cool-season crops that can be grown in rotation sequences with corn and soybean, whereas waterhemp is a summer annual weed. Compared to corn and soybean, alfalfa, red clover, and oat seedlings emerge and establish earlier. Alfalfa, red clover, and oat also emerge and establish earlier than a number of summer annual weed species, including waterhemp [@buhlerRelativeEmergenceSequence2008; @horakGrowthAnalysisFour2000]. 
+
+In the present study, we examined the population aboveground mass, density and sex ratio, male-female size difference, and the relationship between waterhemp’s female size and fecundity when the weed grew in association with five crop species (corn, soybean, oat, red clover, and alfalfa) arranged in three rain-fed cropping systems. Assessing waterhemp characteristics in the presence of oat intercropped with red clover or alfalfa and alfalfa grown as a sole crop as well as corn and soybean could help to fill the gap of information concerning waterhemp performance in extended rotations. 
+
+We hypothesized that the sex ratio of a waterhemp population deviated from parity depending on the environment's favorability, but how much and to which direction the shift would occur would depend on how much the studied population was suppressed. In addition to informing management, individual- and population-level characteristics would provide useful contextual details for sex ratio comparison.
+
+Counting seeds for waterhemp fecundity assessment is time-consuming and laborious, so it would be convenient to extrapolate fecundity from plant mass. We hypothesized that regression relationships with which to predict fecundity from plant mass could be identified but that such relationships would differ among treatments, due to differences in crop phenology, crop-weed competition, and management practices.
+
 

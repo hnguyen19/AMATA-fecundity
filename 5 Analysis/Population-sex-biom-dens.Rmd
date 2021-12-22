@@ -1,0 +1,938 @@
+---
+output:  
+  bookdown::pdf_document2: 
+    keep_tex: yes
+    toc: false
+    number_sections: false
+    extra_dependencies: ["float"]
+---
+
+```{r, include=FALSE}
+library(emmeans)
+library(here)
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, 
+                      message = FALSE,  dev=c("png")) 
+                    #  fig.width = 16, 
+                    #  fig.height = 16)#,
+                      #full.fig.width = T, out.width="100%")
+library(tidyverse)
+library(nlme)
+library(kableExtra)
+library(gridExtra)
+library(magrittr)
+library(mice)
+source("functions.R")
+RNGkind(sample.kind = "Rounding")
+```
+
+## Population aboveground mass and stand density {-}
+
+In both years, population aboveground mass and stand density was strongly influenced by crop identity (Table \@ref(tab:pop-biom-dens-jt)). The rotation system in which a crop was grown also affected population aboveground mass and stand density, although not consistently between years (Table \@ref(tab:pbiom-dens-ct)).  
+
+In 2018, population aboveground mass in the same crop species was comparable across rotations except for corn grown in the 2-year (C2) versus 4-year rotation (C4) (p-value = 0.043). In 2019, population aboveground mass in the same crop was significantly different across rotations, except for corn in the 2-year (C2) versus 3-year rotation (C3) (p-value = 0.968) and soybean in the 3-year (S3) versus 4-year rotation (S4) (p-value = 1). Averaged across rotations, population aboveground mass was comparable in 2018 for corn versus alfalfa (p-value = 0.2509) and soybean versus oat (p-value = 0.504), but 10- to 2580-fold different in the other ten pairs (p-values < 0.01).   
+
+In 2018, population stand density in the same crop species was comparable across the rotations. In 2019, population stand density in the same crop species was comparable for soybean (p-values = 0.1256 and 1) and C2 versus C3 (p-value = 0.9284), but significantly different for the other corn comparisons and for oat in the 3-year (O3) versus 4-year rotation (O4). Averaged over rotations, population stand density was comparable in 2018 between soybean and alfalfa (p-value = 0.766), but 5- to 1330-fold different in the other eight pairs of comparison (p-values < 0.001).   
+
+In 2018, population aboveground mass was the highest in soybean and oat (Figure \@ref(fig:pop-biom-dens-all)A) because soybean weed management was ineffective and herbicide was intentionally not applied in oat. The legacy of an ineffective weed management program in 2018 soybean plots was observed in 2019 oat plots where population aboveground mass and stand density were the highest among all the crop identities ((Figure \@ref(fig:pop-biom-dens-all)B). High stand density in 2019 oat plots was also due to uneven oat establishment. The change in 2019 in weed management for soybean substantially reduced the waterhemp pressure on soybean (Figure \@ref(fig:pop-biom-dens-all)B and \@ref(fig:pop-biom-dens-all)D).
+  
+
+
+```{r, include=FALSE}
+prop_biom18 <- read_csv("../2 Data/Clean data/f_prop_biom18.csv",
+                    col_types = cols(Plot = col_factor(), 
+                                     Block = col_factor(), 
+                                     Crop = col_factor(),
+                                     Crop_ID = col_factor(),
+                                     Corn_weed_management = col_factor(),
+                                     Year = col_character()))
+
+
+prop_biom18$Crop_ID <- factor(prop_biom18$Crop_ID, levels = c("C2", "S2",
+                                                                "C3", "S3", "O3",
+                                                                "C4", "S4", "O4", "A4"))
+
+#prop_biom18[is.na(prop_biom18)] <- 0
+
+amata19 <- read_csv("../2 Data/Clean data/AMATA_19.csv",
+                    col_types = cols(Plot = col_factor(), 
+                                     Block = col_factor(), 
+                                     Crop = col_factor(),
+                                     Crop_ID = col_factor(),
+                                     Corn_weed_management = col_factor(),
+                                     Year = col_character()))
+
+amata19$Crop_ID <- factor(amata19$Crop_ID, levels = c("C2", "S2",
+                                                                "C3", "S3", "O3",
+                                                                "C4", "S4", "O4", "A4"))
+#min(prop_biom18$g_m_sq[prop_biom18$g_m_sq > 0])
+
+#min(prop_biom19$g_m_sq[prop_biom19$g_m_sq > 0])
+```
+
+
+```{r, include=F}
+
+pop_biom18_2 <- lm(log(g_m_sq + 0.00025) ~ as.factor(Block) + Crop_ID + Corn_weed_management + Crop_ID:Corn_weed_management, data = prop_biom18)
+#anova(pop_biom18_2)
+
+#resid_panel(pop_biom18_2) # best-looking
+biom_jt_18 <- joint_tests(emmeans(pop_biom18_2, c("Crop_ID", "Corn_weed_management")))
+
+
+biom_jt_18$`model term` <- gsub(":", " x ", biom_jt_18$`model term`)
+biom_jt_18$`model term` <- gsub("_", " ", biom_jt_18$`model term`)
+
+biom_jt_18_df <- print(biom_jt_18, export = T)
+
+pop_biom19_2 <- lm(log(g_m_sq + 0.002) ~ as.factor(Block) + Crop_ID + Corn_weed_management + Crop_ID:Corn_weed_management, data = amata19)
+
+biom_jt_19 <- joint_tests(emmeans(pop_biom19_2, c("Crop_ID", "Corn_weed_management")))
+
+
+biom_jt_19$`model term` <- gsub(":", " x ", biom_jt_19$`model term`)
+biom_jt_19$`model term` <- gsub("_", " ", biom_jt_19$`model term`)
+
+
+biom_jt_19_df <- print(biom_jt_19, export = T)
+
+#resid_panel(pop_biom19_2) 
+
+```
+
+
+```{r , include=FALSE}
+#biom_jt[,-6] %>%
+#`colnames<-`(c("Term", "df1", "df2", "F.value", "p.value", "df1", "df2", "F.value", "p.value")) 
+
+#prop_biom18$log_dens <- log(prop_biom18$plant_m_sq + min(prop_biom18$plant_m_sq[prop_biom18$plant_m_sq > 0]))
+
+pop_dens18_3 <- lm(log(plant_m_sq + 0.025) ~ as.factor(Block) + Crop_ID + Corn_weed_management + Crop_ID:Corn_weed_management, data = prop_biom18)
+
+#resid_panel(pop_dens18_3) #best looking
+
+dens_jt_18 <- joint_tests(emmeans(pop_dens18_3, c("Crop_ID", "Corn_weed_management")))
+
+
+dens_jt_18$`model term` <- gsub(":", " x ", dens_jt_18$`model term`)
+dens_jt_18$`model term` <- gsub("_", " ", dens_jt_18$`model term`)
+
+dens_jt_18_df <- print(dens_jt_18, export = T)
+
+#amata19$log_dens <- log(amata19$plant_m_sq + min(amata19$plant_m_sq[amata19$plant_m_sq > 0]))
+
+pop_dens19_3 <- lm(log(plant_m_sq + 0.025) ~ as.factor(Block) + Crop_ID + Corn_weed_management + Crop_ID:Corn_weed_management, data = amata19)
+
+# resid_panel(pop_dens19_3) #best looking
+
+
+dens_jt_19 <- joint_tests(emmeans(pop_dens19_3, c("Crop_ID", "Corn_weed_management")))
+#dens_jt_19$F.ratio <- round(dens_jt_19$F.ratio, 1)
+
+ 
+dens_jt_19$`model term` <- gsub(":", " x ", dens_jt_19$`model term`)
+dens_jt_19$`model term` <- gsub("_", " ", dens_jt_19$`model term`)
+
+dens_jt_19_df <- print(dens_jt_19, export = T)
+```
+
+
+```{r, include=FALSE}
+# Merge 2018 biomass (left) and density (right) ANOVA tables side by side
+biom_dens_18 <- cbind(biom_jt_18_df$summary, dens_jt_18_df$summary[,c(4,5)])
+
+biom_dens_18_df <- as.data.frame(biom_dens_18)
+
+#biom_dens_18_df[,2:4] <- sapply(biom_dens_18_df[,2:4], as.numeric)
+
+# Merge 2019 biomass (left) and density (right) ANOVA tables side by side
+biom_dens_19 <- cbind(biom_jt_19_df$summary, dens_jt_19_df$summary[,c(4,5)])
+
+biom_dens_19_df <- as.data.frame(biom_dens_19)
+#biom_dens_19_df[,2:4] <- sapply(biom_dens_19_df[,2:4], as.numeric)
+
+
+
+biom_dens <-  cbind(biom_dens_18_df, biom_dens_19_df) #left_joint will need unique column names
+rownames(biom_dens) <- NULL
+#dens_jt_rounded[,c(4,9)] <- round(dens_jt_df[,c(4,9)], 1)
+```
+
+```{r pop-biom-dens-jt, echo=FALSE}
+biom_dens[,-c(8:10)] %>%
+kbl(longtable = F, booktabs = T, digits = 2,
+    col.names = c("Source of variation", "df1", "df2", rep(c("F.value", "p.value"), 4)),
+    caption = "ANOVAs of crop identity and corn weed management effects on waterhemp population aboveground mass and stand density. Crop identity was the only influential factor on both population aboveground mass and stand density in 2018 and 2019.") %>% 
+  add_header_above(c(c(" " = 3, 
+                     "Population \n aboveground mass" = 2, 
+                     "Population \n stand density" = 2,
+                     "Population \n aboveground mass" = 2, 
+                     "Population \n stand density" = 2))) %>%
+    add_header_above(c(" " = 3, "2018" = 4, "2019" = 4)) %>% 
+  column_spec(7, border_left = F, border_right = T) %>%
+  landscape()
+```
+ 
+```{r, include=FALSE}
+
+biom_emm_18 <- emmeans(pop_biom18_2, "Crop_ID", type="response") #because  Herb not significant
+biom_emm_19 <- emmeans(pop_biom19_2, "Crop_ID", type = "response") 
+
+dens_emm_18 <- emmeans(pop_dens18_3, "Crop_ID", type = "response")
+dens_emm_19 <- emmeans(pop_dens19_3, "Crop_ID", type = "response")
+```
+
+
+```{r, include=FALSE}
+bp18 <- plot(biom_emm_18, comparisons = T) + 
+    theme_bw() + 
+    theme(text=element_text(size=10))+
+    coord_flip() +
+  xlab(expression(g/m^2)) +
+    ylab("Crop ID") + 
+    ggtitle("(A) 2018 population aboveground mass") 
+
+#bp18$layers[[3]]$aes_params$size = 1.5
+
+#bp18$layers[[4]]$aes_params$size = 1.5
+
+#bp18$layers[[2]]$aes_params$size = 12
+
+bp19 <- plot(biom_emm_19, comparisons = T) + 
+    theme_bw() + 
+    theme(text=element_text(size=10))+
+    coord_flip() +
+  xlab(expression(g/m^2)) +
+    ylab("Crop ID") + 
+    ggtitle("(B) 2019 population aboveground mass")  + xlim(-1,170)
+
+#bp19$layers[[3]]$aes_params$size = 1.5
+
+#bp19$layers[[4]]$aes_params$size = 1.5
+
+#bp19$layers[[2]]$aes_params$size = 12
+
+dp18 <- plot(dens_emm_18, comparisons = T) + 
+    theme_bw() + 
+    theme(text=element_text(size=10))+
+    coord_flip() +
+  xlab(expression(plant/m^2)) +
+    ylab("Crop ID") + 
+    ggtitle("(C) 2018 population stand density")   + xlim(-1,170)
+
+#dp18$layers[[3]]$aes_params$size = 1.5
+
+#dp18$layers[[4]]$aes_params$size = 1.5
+
+#dp18$layers[[2]]$aes_params$size = 12
+
+dp19 <- plot(dens_emm_19, comparisons = T) + 
+    theme_bw() + 
+   theme(text=element_text(size=10))+
+    coord_flip() +
+  xlab(expression(plant/m^2)) +
+    ylab("Crop ID") + 
+  ggtitle("(D) 2019 population stand density")  #+ xlim(-1,170) 
+
+#dp19$layers[[3]]$aes_params$size = 1.5
+
+#dp19$layers[[4]]$aes_params$size = 1.5
+
+#dp19$layers[[2]]$aes_params$size = 12
+
+#bp <-  (bp18 + bp19) / (dp18 + dp19)
+```
+
+
+```{r pop-biom-dens-all, fig.cap = "Waterhemp population aboveground mass and stand density averaged over corn weed managements. The black dots are estimated marginal means. The blue bars are 95% confidence intervals. The red arrows reflect the comparison among means. Overlapping arrows indicate non-significant differences.",  echo = F, fig.width=8, fig.height=8} 
+
+grid.arrange(bp18, bp19, dp18, dp19, nrow = 2)
+```  
+
+
+
+```{r, include=FALSE}
+#contrast(regrid(biom_emm_18))
+biom_18_grid <- ref_grid(pop_biom18_2)
+
+
+Rotation <- factor(c(rep("2-year", 2), rep("3-year", 3), rep("4-year", 4)),
+                     levels = c("2-year", "3-year", "4-year"))
+
+
+biom_emm_18_grid_rot <- add_grouping(biom_18_grid , "Rotation", "Crop_ID", Rotation)
+
+#averaged over herbicide because H is NS
+biom_emm_18_grid_rot_emm <- emmeans(biom_emm_18_grid_rot, "Rotation", type = "response")
+
+
+pop_biom_rot_ct <- contrast(regrid(biom_emm_18_grid_rot_emm),"pairwise", type = "response", infer = c(F,T))
+
+plot(regrid(biom_emm_18_grid_rot_emm), comparisons = T) + theme_bw() #NS
+
+#pwpp(biom_emm_18) # add rotation, then pwpp
+
+
+Crop <- factor(c("corn", "soybean", "corn", "soybean", "oat", "corn", "soybean", "oat", "alfalfa"),
+                     levels = c("oat", "soybean", "corn", "alfalfa"))
+
+
+biom_emm_18_grid_crop <- add_grouping(biom_18_grid , "Crop", "Crop_ID", Crop)
+```
+
+
+```{r, include=F}
+#across rotation
+pop_biom_rot_ct18 <- contrast(biom_emm_18_grid_rot_emm,"pairwise", type = "response", infer = c(F,T)) %>% print(export = T)
+
+## within rotation means  #herb effect was NS
+# crop contrast, slice by rotations, since 
+pop_biom_corn_18 <- emmeans(pop_biom18_2, ~ Crop_ID , infer = c(F,T),  type = "response", at = list(Crop_ID = c( "C2", "C3", "C4")))
+pop_biom_corn_ct18 <- contrast(pop_biom_corn_18, "pairwise", type = "response", infer = c(F,T)) %>% print(export = T)
+
+pop_biom_soy_18 <- emmeans(pop_biom18_2, ~ Crop_ID , infer = c(F,T),  type = "response", at = list(Crop_ID = c( "S2", "S3", "S4")))
+pop_biom_soy_ct18 <- contrast(pop_biom_soy_18, "pairwise", type = "response", infer = c(F,T)) %>% print(export = T) #since S3 not significantly diff from S4, can do S2 vs (s3+S4)/2
+
+pop_biom_oat_18 <- emmeans(pop_biom18_2, ~ Crop_ID , infer = c(F,T),  type = "response", at = list(Crop_ID = c( "O3", "O4")))
+pop_biom_oat_ct18 <- contrast(pop_biom_oat_18, "pairwise", type = "response", infer = c(F,T)) %>% print(export = T)
+
+# crop contrast, averaged over rotations
+pop_biom_crop18 <- emmeans(biom_emm_18_grid_crop, ~ Crop, infer = c(F,T),  type = "response") 
+
+#customized contrasts, averaged over rotations, crop A vs crop B 
+
+#plot(regrid(pop_biom_crop), comparison = T) + coord_flip()
+
+pop_biom_crop_ct18 <- contrast(pop_biom_crop18, "pairwise", type = "response", infer = c(F,T)) %>% print(export = T)
+
+
+pop_biom_ct18 <- rbind(pop_biom_corn_ct18$summary,
+                        pop_biom_soy_ct18$summary,
+                        pop_biom_oat_ct18$summary,
+                     pop_biom_crop_ct18$summary)
+
+
+pop_biom_ct18_df <- as.data.frame(pop_biom_ct18)
+
+#pop_biom_ct18_df <- pop_biom_ct18_df %>%
+  
+pop_biom_ct18_df[,2:6] <- sapply(pop_biom_ct18_df[,2:6],as.numeric)
+
+pop_biom_ct18_rounded <- pop_biom_ct18_df %>%    mutate(across(where(is.numeric), ~ as.numeric(sprintf('%.2f', .)))) #%>%mutate(across(where(is.numeric), as.character)) #%>%as_tibble 
+ 
+```
+
+
+```{r, include=FALSE}
+#contrast(regrid(biom_emm_18))
+biom_19_grid <- ref_grid(pop_biom19_2)
+biom_emm_19_grid_rot <- add_grouping(biom_19_grid , "Rotation", "Crop_ID", Rotation)
+
+#averaged over herbicide because H is NS
+biom_emm_19_grid_rot_emm <- emmeans(biom_emm_19_grid_rot, ~ Rotation, type = "response")
+pop_biom_rot_ct19 <- contrast(regrid(biom_emm_19_grid_rot_emm),"pairwise", type = "response", infer = c(F,T))
+
+plot(regrid(biom_emm_19_grid_rot_emm), comparisons = T) + theme_bw() #NS
+biom_emm_19_grid_crop <- add_grouping(biom_19_grid , "Crop", "Crop_ID", Crop)
+
+```
+
+```{r, include=F}
+#across rotation
+pop_biom_rot_ct19 <- contrast(biom_emm_19_grid_rot_emm,"pairwise", type = "response", infer = c(F,T)) %>% print(export = T)
+
+# crop contrast, averaged over rotations
+pop_biom_crop19 <- emmeans(biom_emm_19_grid_crop, ~ Crop, infer = c(F,T),  type = "response") 
+pop_biom_crop_ct19 <- contrast(pop_biom_crop19, "pairwise", type = "response", infer = c(F,T)) %>% print(export = T)
+
+
+#rotation legacy effects: same species, different rotation
+
+#o34_biom_ct19 <- contrast(biom_emm_19, list("O3 vs O4" = o3 - o4), infer = c(F,T)) %>% print(export = T) #matched pop_biom_oat_ct19
+
+# crop contrast, slice by rotations, since 
+pop_biom_corn_19 <- emmeans(pop_biom19_2, ~ Crop_ID , infer = c(F,T),  type = "response", at = list(Crop_ID = c( "C2", "C3", "C4")))
+pop_biom_corn_ct19 <- contrast(pop_biom_corn_19, "pairwise", type = "response", infer = c(F,T)) %>% print(export = T)
+
+pop_biom_soy_19 <- emmeans(pop_biom19_2, ~ Crop_ID , infer = c(F,T),  type = "response", at = list(Crop_ID = c( "S2", "S3", "S4")))
+pop_biom_soy_ct19 <- contrast(pop_biom_soy_19, "pairwise", type = "response", infer = c(F,T)) %>% print(export = T) #since S3 not significantly diff from S4, can do S2 vs (s3+S4)/2
+
+pop_biom_oat_19 <- emmeans(pop_biom19_2, ~ Crop_ID , infer = c(F,T),  type = "response", at = list(Crop_ID = c( "O3", "O4")))
+pop_biom_oat_ct19 <- contrast(pop_biom_oat_19, "pairwise", type = "response", infer = c(F,T)) %>% print(export = T)
+
+
+#o3row3_biom_ct19 <- contrast(biom_emm_19, list("O3 vs C3 & S3"  = o3 - row3/2), infer = c(F,T)) %>% print(export = T)
+```
+
+
+```{r pop-biom-19, include=FALSE}
+pop_biom_ct19 <- rbind( pop_biom_corn_ct19$summary,
+                        pop_biom_soy_ct19$summary,
+                        pop_biom_oat_ct19$summary,
+                     pop_biom_crop_ct19$summary)
+
+pop_biom_ct19_df <- as.data.frame(pop_biom_ct19)
+
+pop_biom_ct19_df[,2:6] <- sapply(pop_biom_ct19_df[,2:6],as.numeric)
+
+pop_biom_ct19_rounded <- pop_biom_ct19_df %>%
+  mutate(across(where(is.numeric), ~ as.numeric(sprintf('%.2f', .)))) #%>% mutate(across(where(is.numeric), as.character)) #%>% as_tibble 
+
+```
+
+```{r pbiom-ct, echo=FALSE}
+
+pop_biom_ct <- cbind(pop_biom_ct18_rounded, pop_biom_ct19_rounded)
+
+#pop_biom_ct2 <- merge.data.frame(pop_biom_ct18, pop_biom_ct19)
+
+rownames(pop_biom_ct) <- NULL 
+pop_biom_ct_df <-  pop_biom_ct[,-c(5,8,12)] #remove the duplicated row names and 2 null value cols
+
+```
+
+
+
+```{r, include=FALSE}
+#contrast(regrid(biom_emm_18))
+dens_18_grid <- ref_grid(pop_dens18_3)
+
+dens_emm_18_grid_rot <- add_grouping(dens_18_grid , "Rotation", "Crop_ID", Rotation)
+#averaged over herbicide because H is NS
+dens_emm_18_grid_rot_emm <- emmeans(dens_emm_18_grid_rot, ~ Rotation, type = "response")
+#across rotation
+pop_dens_rot_ct18 <- contrast(dens_emm_18_grid_rot_emm,"pairwise", type = "response", infer = c(F,T)) %>% print(export = T)
+
+#plot(regrid(biom_emm_18_grid_rot_emm), comparisons = T) + theme_bw() #NS
+
+dens_emm_18_grid_crop <- add_grouping(dens_18_grid , "Crop", "Crop_ID", Crop)
+```
+
+
+```{r, echo=F}
+## within rotation means  #herb effect was NS
+pop_dens_corn18 <-  emmeans(pop_dens18_3, ~ Crop_ID , infer = c(F,T),  type = "response", at = list(Crop_ID = c( "C2", "C3", "C4")))
+
+pop_dens_corn_ct18 <- contrast(pop_dens_corn18 , "pairwise", type = "response", infer = c(F,T)) %>% print(export = T)
+
+pop_dens_soy18 <- emmeans(pop_dens18_3, ~ Crop_ID, infer = c(F,T),  type = "response", at = list(Crop_ID = c("S2", "S3", "S4"))) 
+
+pop_dens_soy_ct18 <- contrast(pop_dens_soy18, "pairwise", type = "response", infer = c(F,T)) %>% print(export = T)
+
+pop_dens_oat18 <- emmeans(pop_dens18_3, ~ Crop_ID, infer = c(F,T),  type = "response", at = list(Crop_ID = c("O3", "O4")))
+
+pop_dens_oat_ct18 <- contrast(pop_dens_oat18, "pairwise", type = "response", infer = c(F,T))  %>% print(export = T)
+
+
+# crop crontrast, averaged over rotations
+pop_dens_crop18 <- emmeans(dens_emm_18_grid_crop, ~ Crop, infer = c(F,T),  type = "response") 
+
+pop_dens_crop_ct18 <- contrast(pop_dens_crop18, "pairwise", type = "response", infer = c(F,T)) %>% print(export = T)
+
+
+# customized means, Corn_weed_management NS  with dens_emm_18 
+
+
+pop_dens_ct18 <- rbind(pop_dens_corn_ct18$summary,
+  pop_dens_soy_ct18$summary,
+                       pop_dens_oat_ct18$summary,
+                     pop_dens_crop_ct18$summary)
+
+#rounding here
+
+pop_dens_ct18_df <- as.data.frame(pop_dens_ct18)
+
+pop_dens_ct18_df[,2:6] <- sapply(pop_dens_ct18_df[,2:6],as.numeric)
+
+pop_dens_ct18_rounded <- pop_dens_ct18_df %>%
+  mutate(across(where(is.numeric), ~ as.numeric(sprintf('%.2f', .)))) #%>%mutate(across(where(is.numeric), as.character)) # %>% as_tibble 
+```
+
+
+ 
+
+
+```{r, include=FALSE}
+dens_19_grid <- ref_grid(pop_dens19_3)
+
+dens_emm_19_grid_rot <- add_grouping(dens_19_grid , "Rotation", "Crop_ID", Rotation)
+
+#averaged over herbicide because H is NS
+dens_emm_19_grid_rot_emm <- emmeans(dens_emm_19_grid_rot, ~ Rotation, type = "response")
+#across rotation
+pop_dens_rot_ct19 <- contrast(dens_emm_19_grid_rot_emm,"pairwise", type = "response", infer = c(F,T)) %>% print(export = T)
+
+#plot(regrid(biom_emm_19_grid_rot_emm), comparisons = T) + theme_bw() #NS
+
+
+```
+
+```{r, echo=F}
+dens_emm_19_grid_crop <- add_grouping(dens_19_grid , "Crop", "Crop_ID", Crop)
+
+# crop contrasts, averaged over rotations
+pop_dens_crop19 <- emmeans(dens_emm_19_grid_crop, ~ Crop, infer = c(F,T),  type = "response")
+
+pop_dens_crop_ct19 <- contrast(pop_dens_crop19, "pairwise", type = "response", infer = c(F,T)) %>% print(export = T)
+
+
+## within rotation means  #herb effect was NS
+pop_dens_corn19 <-  emmeans(pop_dens19_3, ~ Crop_ID , infer = c(F,T),  type = "response", at = list(Crop_ID = c( "C2", "C3", "C4")))
+
+pop_dens_corn_ct19 <- contrast(pop_dens_corn19, "pairwise", type = "response", infer = c(F,T)) %>% print(export = T)
+
+pop_dens_soy19 <- emmeans(pop_dens19_3, ~ Crop_ID, infer = c(F,T),  type = "response", at = list(Crop_ID = c("S2", "S3", "S4"))) 
+
+pop_dens_soy_ct19 <- contrast(pop_dens_soy19, "pairwise", type = "response", infer = c(F,T)) %>% print(export = T)
+
+pop_dens_oat19 <- emmeans(pop_dens19_3, ~ Crop_ID, infer = c(F,T),  type = "response", at = list(Crop_ID = c("O3", "O4")))
+
+pop_dens_oat_ct19 <- contrast(pop_dens_oat19, "pairwise", type = "response", infer = c(F,T))  %>% print(export = T)
+
+
+
+pop_dens_ct19 <- rbind(pop_dens_corn_ct19$summary,
+  pop_dens_soy_ct19$summary,
+                       pop_dens_oat_ct19$summary,
+                     pop_dens_crop_ct19$summary)
+
+#rounding here
+
+pop_dens_ct19_df <- as.data.frame(pop_dens_ct19)
+
+pop_dens_ct19_df[,2:6] <- sapply(pop_dens_ct19_df[,2:6],as.numeric)
+
+pop_dens_ct19_rounded <- pop_dens_ct19_df %>%
+  mutate(across(where(is.numeric), ~ as.numeric(sprintf('%.2f', .)))) #%>% mutate(across(where(is.numeric), as.character)) # %>% as_tibble 
+  
+#mutate(across(where(is.numeric), as.character))
+
+#pop_dens_ct19_rounded
+```
+
+
+```{r pbiom-dens-ct, echo=FALSE} 
+## Merge 2018 population biomass and density contrasts
+
+pop_biom_dens_18 <- pop_biom_ct18_rounded[,-c(3:6)] %>% 
+  left_join(pop_dens_ct18_rounded[,-c(3:6)], by = "contrast")
+
+## Merge 2019 populaion biomass and density contrasts
+pop_biom_dens_19 <- pop_biom_ct19_rounded[,-c(3:6)] %>% 
+  left_join(pop_dens_ct19_rounded[,-c(3:6)], by = "contrast")
+
+
+## Merge density and biomass contrasts
+pop_biom_dens_ct <- pop_biom_dens_18 %>% 
+  left_join( pop_biom_dens_19 , by = "contrast")
+
+rownames(pop_biom_dens_ct) <- NULL  
+
+pop_biom_dens_ct$contrast <- gsub(" / ", " vs ", pop_biom_dens_ct$contrast)
+
+
+pop_biom_dens_ct%>%
+kbl(booktabs = T, linesep = "", longtable = F, digits = 2,
+    col.names = c("Contrast", rep(c("ratio", "p.value"),4)),
+    caption = "Rotation system and crop effects on population aboveground mass and stand density.") %>% 
+  add_header_above(c(" " = 1, 
+                     "Population \n aboveground mass" = 2, 
+                     "Population \n stand density" = 2,
+                     "Population \n aboveground mass" = 2, 
+                     "Population \n stand density" = 2)) %>%
+  add_header_above(c(" " = 1, "2018" = 4, "2019" = 4)) %>% 
+  pack_rows("(A) - Crop phase effects", 1,7) %>% 
+  pack_rows("(B) - Crop species effects", 8,13) %>% 
+    column_spec(5,border_left = F, border_right = T) %>%
+    footnote(general = "Some zero values are due to rounding.", threeparttable = T, footnote_as_chunk = TRUE)
+
+#  kable_styling(latex_options = c("scale_down"), font_size = 6) 
+```
+
+
+## Population sex ratio {-}
+
+Population stand density was included to improve the precision of estimates of population sex ratios (Table \@ref(tab:sexr18-covar-jt)C versus \@ref(tab:sexr18-covar-jt)A). The population sex ratio in 2018 differed significantly among treatments, at different population stand densities within each treatment (p-value = 0.0155, Table \@ref(tab:sexr18-covar-jt) and Figure \@ref(fig:sexr18-dens-arrow)). Therefore, sex ratios in the same treatment were evaluated at four population densities, i.e., 1, 5, 50, and 500 plants/m$^2$, to illustrate that three-way interaction (Figure \@ref(fig:sexr18-dens-arrow)). Female-biasedness was more likely if a waterhemp population was grown in oat and alfalfa. None of the waterhemp populations grown in corn and soybean expressed gender biasedness. It is unclear whether the corn weed management program had a significant effect on gender biasedness given the magnitude of the variance (Figure \@ref(fig:sexr18-dens-arrow)).  
+
+
+We defined a useful imputed data set to be a set that resulted in fully estimable marginal means for sex ratio comparison across all treatments, which was achievable with non-zeros in female and male categories in at least one replication among the four blocks for the missing observations in the 2019 original sex data. Unlike the 2018 data, the sex ratio in 2019 was analyzed without the covariates because none of the covariates improved the goodness of fit for the analysis model. With m = 24, five imputed data sets were useful (Appendix B). The significance and influence of treatment factors and their interaction in the imputed data sets for waterhemp sex ratio in 2019 were consistent with those of the 2018 data (Figure \@ref(fig:sexr19-arrow)). In 21 out of 24 sets, sex ratio in 2019 was affected by crop identity (Figure \@ref(fig:sexr19-arrow)B and \@ref(fig:sexr19-arrow)C). Female biasedness was observed in oat and alfalfa but not in corn and soybean (Figure \@ref(fig:sexr19-arrow)A).     
+
+```{r, include=FALSE, warning=FALSE, message=FALSE}
+sexed18 <- read_csv("../2 Data/Clean data/sexed18.csv", 
+                    col_types = cols(Male = col_integer(), 
+                                     Female = col_integer()))
+
+sexed18 <- sexed18  %<>%
+  mutate_at(c("Block","Crop_ID","Rotation","Corn_weed_management", "Plot", "Side", "Year"),funs(factor(.)))
+
+#sexed18[is.na(sexed18)] <- 0 #NA replaced with 0
+
+
+sexed18$Crop_ID <- factor(sexed18$Crop_ID, levels = c("C2", "S2",
+                                                                "C3", "S3", "O3",
+                                                                "C4", "S4", "O4", "A4"))
+
+sexed18.glm <- glm(cbind(Female, Male) ~ Block + Crop_ID + Corn_weed_management + Crop_ID:Corn_weed_management,
+  data=sexed18, family=quasibinomial(link = "logit"))
+#fig.cap="Diagnosis plot for a model of population sex ratio as a function of the experimental factors and population aboveground mass covariate. Deviance = 165.91."
+#anova(sexed18.glm, test="F")
+```
+
+
+```{r type3-18, echo=FALSE}
+#https://stackoverflow.com/questions/69784123/obtain-f-ratio-and-p-value-for-the-continuous-predictor?noredirect=1#comment123365815_69784123 
+
+sexed18.emm <- emmeans(sexed18.glm, c("Crop_ID", "Corn_weed_management"), type = "response")
+
+sexed18_jt <- joint_tests(sexed18.emm )
+sexed18_jt$`model term` <- gsub(":", " x ", sexed18_jt$`model term`)
+sexed18_jt$`model term` <- gsub("_", " ", sexed18_jt$`model term`)
+
+sexed18_jt_df <- print(sexed18_jt, export = T)
+  
+row.names(sexed18_jt_df) <- NULL
+
+#<https://pdixon.stat.iastate.edu/stat511/Rcode/trout.r>
+```
+
+
+```{r, include=FALSE}
+
+
+plot(sexed18.emm, by = "Corn_weed_management", comparisons = T) + coord_flip() + theme_bw()
+
+#check with raw means, matched with sexed18.emm. 
+sexed18 %>%
+  group_by(Crop_ID, Corn_weed_management) %>%
+  summarize(m_F = mean(Female/(Female + Male), na.rm = T))
+```
+
+
+```{r, include=F}
+## check with raw means by group. Numbers won't match exactly but if the ranges of 2 calculations are too different, there is something wrong
+#check with raw means biom_emm_18_grid_rot_emm, matched
+prop_biom18 %>%
+  group_by(Rotation)%>%
+  summarize(m_biom_ind = mean(log(g_m_sq +  0.00025)))
+
+#check with raw means biom_emm_18, matched.
+prop_biom18 %>%
+  group_by(Crop_ID)%>%
+  summarize(m_biom_ind = mean(g_m_sq))
+
+
+#check with raw means biom_emm_18, matched.
+prop_biom18 %>%
+  group_by(Crop)%>%
+  summarize(m_biom_ind = mean(log(g_m_sq +  0.00025)))
+
+```
+
+
+```{r, include=FALSE}
+# every models before arriving at this models are at 'sexr ANCOVA trials.Rmd'
+#min(prop_biom18$g_m_sq[prop_biom18$g_m_sq > 0])
+
+sexr18_biom_glm3 <- glm(cbind(Female, Male) ~ Block +  Crop_ID + Corn_weed_management + 
+                          log(g_m_sq + 0.00025) +
+                        Crop_ID:Corn_weed_management + 
+                        log(g_m_sq + 0.00025):Crop_ID +
+                        log(g_m_sq + 0.00025):Corn_weed_management +
+                        log(g_m_sq + 0.00025):Crop_ID:Corn_weed_management ,
+  data=prop_biom18, family=quasibinomial(link = "logit"))
+
+#min(prop_biom18$plant_m_sq[prop_biom18$plant_m_sq  > 0])
+
+sexr18_dens_glm3 <- glm(cbind(Female, Male) ~ Block  + Crop_ID + Corn_weed_management +
+                          + log(plant_m_sq + 0.025)  +
+                        Crop_ID:Corn_weed_management + 
+                        log(plant_m_sq + 0.025):Crop_ID +
+                        log(plant_m_sq + 0.025):Corn_weed_management +
+                        log(plant_m_sq + 0.025):Crop_ID:Corn_weed_management ,
+  data=prop_biom18, family=quasibinomial(link = "logit"))
+
+#<http://web.pdx.edu/~newsomj/cdaclass/ho_glm.pdf>
+```
+
+
+
+```{r sexr18-covar-jt, echo=FALSE}
+
+sexr18_biom_emm <- emmeans(sexr18_biom_glm3, 
+                           ~ Crop_ID * Corn_weed_management | g_m_sq, at = list(g_m_sq = c(-1.5, 3)))
+
+
+sexr18_biom_jt <- joint_tests(sexr18_biom_emm) 
+  
+
+sexr18_dens_emm <- emmeans(sexr18_dens_glm3, 
+                           ~ Crop_ID * Corn_weed_management | plant_m_sq, at = list(plant_m_sq = c(-0.5, 1.3)))
+
+sexr18_dens_jt <- joint_tests(sexr18_dens_emm ) 
+
+sexr18_covar_jt <- rbind(sexed18_jt,sexr18_biom_jt, sexr18_dens_jt)
+
+sexr18_covar_jt$`model term` <- gsub(":", " x ", sexr18_covar_jt$`model term`) 
+sexr18_covar_jt$`model term` <- gsub("g_m_sq", "Population aboveground mass", sexr18_covar_jt$`model term`) 
+
+sexr18_covar_jt$`model term` <- gsub("plant_m_sq", "Population stand density", sexr18_covar_jt$`model term`) 
+
+sexr18_covar_jt$`model term` <- gsub("_", " ", sexr18_covar_jt$`model term`) 
+
+rownames(sexr18_covar_jt) <- NULL
+
+
+sexr18_covar_df <- print(sexr18_covar_jt, export = T)
+
+sexr18_covar_df <- as.data.frame(sexr18_covar_df$summary)
+
+sexr18_covar_df$F.ratio <- as.numeric(sexr18_covar_df$F.ratio)
+
+sexr18_covar_rounded <- sexr18_covar_df %>%
+  mutate(across(where(is.numeric), ~ as.numeric(sprintf('%.1f', .)))) %>%
+#  mutate(across(where(is.numeric), as.character)) %>% #remove trailing zeros
+  as_tibble # prevent adding trailing zeros later
+
+kbl(sexr18_covar_rounded, longtable = F, booktabs = T, linesep = "",
+    col.names = c("Source of variation", "df1", "df2", "F.ratio", "p.value"), 
+     caption = "ANOVAs of crop identity, herbicide, and covariate effects on population sex ratio using 2018 data. With population aboveground mass covariate included (B), crop identity was the only influential factor on population sex ratio. With population stand density covariate included (C), sex ratio responded differently in each treatment and stand density combination.") %>%
+  pack_rows("(A) no covariate. Residual deviance = 165.9, dispersion = 3.32.", 1,3) %>% 
+  pack_rows("(B) with population aboveground mass covariate. Residual deviance = 104.3, dispersion = 3.24.", 4,10) %>% 
+  pack_rows("(C) with population stand density covariate. Residual deviance = 82.12, dispersion = 2.54.", 11,17) %>% 
+  kable_styling(latex_options = c("scale_down")) %>%
+  landscape()
+```
+ 
+
+
+```{r, include=FALSE}
+sexr18_dens_emm_1 <- emmeans(sexr18_dens_glm3, c("Crop_ID" , "Corn_weed_management" ), type = "response", infer = c(T,T), at=list(plant_m_sq=1))
+
+#https://stackoverflow.com/questions/70406886/edit-emmeans-arrow-plots-facet-text
+custom_labels <- as_labeller(function(x){
+     return(paste0("Corn weed management: ", c("conventional", "low")))
+})
+
+dens_1 <- plot(sexr18_dens_emm_1, comparisons = T, by = "Corn_weed_management") + 
+    theme_bw() + 
+    theme(text=element_text(size=10),
+          strip.text.x = element_text(size = 5))+
+    coord_flip() +
+  geom_vline(xintercept=0.5, size=0.5, linetype="dashed") + 
+  ggtitle(expression((A)~1~plant/m^2))  +
+  xlab("Female proportion") +
+    ylab("Crop ID") 
+
+### remove "_" in "corn_weed_management"
+dens1<- dens_1 + facet_wrap(~ Corn_weed_management, 
+                    labeller = custom_labels, strip.position = "right", ncol = 1)
+
+sexr18_dens_emm_5 <- emmeans(sexr18_dens_glm3, c("Crop_ID" , "Corn_weed_management" ), type = "response", infer = c(T,T), at=list(plant_m_sq=5))
+
+dens_5 <- plot(sexr18_dens_emm_5, comparisons = T, by = "Corn_weed_management") + 
+    theme_bw() + 
+    theme(text=element_text(size=10),
+          strip.text.x = element_text(size = 5)) + 
+    coord_flip() +
+  ggtitle(expression((B)~5~plants/m^2))  +
+  geom_vline(xintercept=0.5, size=0.5, linetype="dashed") + 
+  xlab("Female proportion") +
+    ylab("Crop ID") 
+dens5<- dens_5 + facet_wrap(~ Corn_weed_management, 
+                    labeller = custom_labels, strip.position = "right", ncol = 1)
+
+sexr18_dens_emm_50 <- emmeans(sexr18_dens_glm3, c("Crop_ID" , "Corn_weed_management" ), type = "response", infer = c(T,T),at=list(plant_m_sq=50))
+
+dens_50 <- plot(sexr18_dens_emm_50, comparisons = T, by = "Corn_weed_management") + 
+    theme_bw() + 
+    theme(text=element_text(size=10),
+          strip.text.x = element_text(size = 5)) +
+    coord_flip() +
+  ggtitle(expression((C)~50~plants/m^2))  +
+    geom_vline(xintercept=0.5, size=0.5, linetype="dashed") + 
+  xlab("Female proportion") +
+    ylab("Crop ID") 
+
+dens50<- dens_50 + facet_wrap(~ Corn_weed_management, 
+                    labeller = custom_labels, strip.position = "right", ncol = 1)
+
+
+sexr18_dens_emm_500 <- emmeans(sexr18_dens_glm3, c("Crop_ID" , "Corn_weed_management" ), type = "response", infer = c(T,T),at=list(plant_m_sq=500))
+
+dens_500 <- plot(sexr18_dens_emm_500, comparisons = T, by = "Corn_weed_management") + 
+    theme_bw() + 
+    theme(text=element_text(size=10),
+          strip.text.x = element_text(size = 5)) +
+  geom_vline(xintercept=0.5, size=0.5, linetype="dashed") + 
+    coord_flip() +
+  ggtitle(expression((C)~500~plants/m^2))  +
+  xlab("Female proportion") +
+    ylab("Crop ID") 
+
+dens500 <- dens_500 + facet_wrap(~ Corn_weed_management, 
+                    labeller = custom_labels, strip.position = "right", ncol = 1)
+```
+
+```{r sexr18-dens-arrow, fig.cap="Waterhemp population sex ratios under 54 combinations of experimental treatments and population stand densities. The dashed lines mark sex ratio parity. The black dots are estimated marginal means. The blue bars are 95% confidence intervals. The red arrows reflect the comparisons among means. Overlapping arrows indicate non-significant differences.", echo = F, fig.width=8, fig.height=10} 
+grid.arrange(dens1, dens5, dens50, dens500, nrow = 2) 
+```
+
+
+```{r, include=FALSE}
+sexed19_m24 <- read_csv("../2 Data/Clean data/sexed19_m24.csv",
+                   col_types = cols(Male = col_integer(), 
+                                    Female = col_integer()))
+
+sexed19_m24 <- sexed19_m24  %<>%
+  mutate_at(c("Block","Crop_ID","Corn_weed_management", ".imp"),funs(factor(.)))
+sexed19_m24$Crop_ID <- factor(sexed19_m24$Crop_ID, levels = c("C2", "S2",
+                                                                "C3", "S3", "O3",
+                                                                "C4", "S4", "O4", "A4")) 
+
+sexed19_m24 <- sexed19_m24 %>%
+  mutate(Rotation = ifelse(Crop_ID %in% c("S2", "C2"), "2-year",
+                           ifelse(Crop_ID %in% c("S3", "C3", "O3"), "3-year", "4-year")))
+
+##merge imputed with population density and mass 
+prop_biom19 <- amata19 %>% left_join(sexed19_m24)
+```
+
+ 
+
+```{r, echo=FALSE}
+sexed19_mis <- read_csv(here("2 Data/Clean data/sexed19_mis.csv"), 
+    col_types = cols(Plot = col_factor(), 
+        Quadrat = col_factor(), 
+        Cohort = col_factor(), 
+        Block = col_factor(), 
+        Crop = col_factor(),
+        Crop_ID = col_factor(),
+        Rotation = col_factor(),
+         Herbicide = col_factor(),
+        Corn_weed_management = col_factor(),
+        Number_begin = col_integer(), 
+        Total = col_integer(), 
+        Female = col_integer(),
+        Male = col_integer(), 
+        Unknown = col_integer(), 
+        Total_sexed = col_integer(), 
+        Year = col_character()))
+
+#summary(sexed19_mis)
+```
+
+```{r, echo=F} 
+## Categorical, independent variables are included, except quadrats. 
+
+sexed19_resp1 <- sexed19_mis %>% 
+  dplyr::select(Block, Crop_ID, Corn_weed_management, Female, Male, Total, Number_begin)
+
+#trial 1, see if lambda and fmi are small, m = 24 = 4 cores x 6 imputations/core
+#sexed19_resp1 because categorical variables with no missing cells are included 
+
+sexed19_imp1_wide <- parlmice(sexed19_resp1 , cluster.seed = 500, print = FALSE, n.core = 4, n.imp.core = 6) # to use for visual later, change meth?
+
+
+sexed19_imp1_long <- sexed19_imp1_wide %>%
+  mice::complete("long") 
+
+sexed19_imp1 <- sexed19_imp1_long %>% #separate this to save energy 
+  group_by(.imp) %>%
+  do(model = glm(formula = cbind(Female, Male) ~ Block + Crop_ID + Corn_weed_management +
+                   Crop_ID:Corn_weed_management,
+  data=., family=binomial)) %>%
+  as.list() %>%
+  .[[-1]] %>%
+  pool()
+
+sexed19_imp1_eu <- sexed19_imp1_long%>%
+  group_by(.imp, Block, Crop_ID, Corn_weed_management) %>%
+summarize(Female = sum(Female),
+            Male = sum(Male),
+            Total = sum(Total)) # 24 data sets, with 72 e.u each. 
+
+#write.csv(sexed19_imp1_eu, here("2 Data/Clean data/sexed19_m24.csv"),row.names = F)
+
+sexed19_imp1_jt <- sexed19_imp1_eu %>% split(.$.imp) %>% map(mod_jt) 
+
+sexed19_imp1_jt_df <- enframe(sexed19_imp1_jt) %>% #have imp kept
+  unnest(cols = c(value)) %>% # everything lines up in order (by imp == name)
+rename(.,imp = name) %>%# rename "name" with "imp" for consistency
+  mutate(Sig.code = ifelse(p.value < 0.05, "S", "NS")) 
+
+sexed19_imp1_jt_df$imp <- as.numeric(sexed19_imp1_jt_df$imp)
+```
+
+
+
+```{r, include=F}
+panel_names <- c(`Block` = "Block",
+                    `Crop_ID` = "Crop ID",
+                    `Corn_weed_management` = "Corn weed management",
+                    `Crop_ID:Corn_weed_management` = "Crop ID x \n Corn weed management")
+
+# stats: shape = 1 for open circles to match with Appendix's mice xyplots
+sexr19_imp_p <- ggplot(sexed19_imp1_jt_df, aes(x = imp, y = p.value)) + 
+  geom_point(aes(shape=factor(Sig.code), size = .5, alpha = .5)) +   #shape = 1) +
+  facet_wrap(~ `model term`, ncol = 2, labeller = as_labeller(panel_names))+
+  ggtitle("(B) p.values") + 
+  geom_hline(yintercept=0.05, size=0.5, linetype = "dashed") + 
+  theme_bw() + 
+  theme(text=element_text(size=12),
+        strip.text = element_text(size = 10))  +
+  xlab("Imputation") + 
+  ylab("") + 
+#  scale_color_brewer(palette = "Dark2") +
+#  scale_shape_manual(values=1)+
+  theme(legend.position = "none",
+        panel.spacing = unit(1, "lines"))  +
+  scale_size(guide=FALSE)
+
+sexr19_imp_F <- ggplot(sexed19_imp1_jt_df , aes(x = imp, y = F.ratio)) + 
+   geom_point(aes(shape=factor(Sig.code), size = .5, alpha = .5)) +   #shape = 1) +
+  facet_wrap(~ `model term`, ncol = 2, labeller = as_labeller(panel_names)) +
+  ggtitle("(C) F.ratios") + 
+  theme_bw() + 
+  theme(text=element_text(size=12),
+        strip.text = element_text(size = 10))  +
+  xlab("Imputation") + 
+  ylab("") + 
+#  scale_color_brewer(palette = "Dark2") +
+  theme(legend.position = "none",
+        panel.spacing = unit(1, "lines"))  +
+  scale_size(guide=FALSE)
+```
+
+```{r sexr19-arrow, echo=FALSE, fig.cap = "Waterhemp population sex ratios under nine crop idenitites averaged over two Corn weed management regimes using 2019's 24 imputed data sets (A). The dashed lines mark sex ratio parity in panel A and level of confidence in panel B, respectively. The blank spaces are nonestimable values. The triangulars and circles in panel A represent female-biased and even populations assessed at alpha = 0.05, respectively. F-ratios for sources of variation are shown in panel C.", fig.width=8, fig.height=10}
+
+sexed19_imp1_emm_h <- sexed19_m24 %>% split(.$.imp) %>% map(mod_emm_h) 
+
+
+sexed19_imp1_emm_long <- do.call(rbind, lapply(sexed19_imp1_emm_h , as.data.frame))  %>%
+  mutate(x = row.names(.))%>%
+  mutate(x_num = as.numeric(x),
+    imp = floor(x_num),
+    Sig.code = ifelse(p.value < 0.05, "S", "NS")) 
+
+## map a ggplot function then patchwork to add blank panels between rotations. <https://patchwork.data-imaginist.com/articles/guides/layout.html>  
+## add shades to match arrows' style of 2018  
+
+sexed19r <- ggplot(sexed19_imp1_emm_long, aes(x = imp, y = prob)) + 
+#  geom_point(aes(size = 1, col = Sig.code), shape = 1) +
+ geom_point(aes(shape=factor(Sig.code), size = .25, alpha = .5)) +   #shape = 1) +
+   facet_wrap(~ Crop_ID, ncol = 3)+
+  geom_hline(yintercept=0.5, size=0.5, linetype = "dashed") + 
+  theme_bw() + 
+  theme(text=element_text(size=12))  +
+  ggtitle("(A) 2019 sex ratio") +
+  xlab("Imputation") + 
+  ylab("Female proportion") + 
+ # scale_color_brewer(palette = "Dark2") +
+#   scale_shape_manual(values=1)+
+  theme(legend.position = "none",
+        panel.spacing = unit(1, "lines"))  +
+  scale_size(guide=FALSE)
+
+ sexed19r / (sexr19_imp_p | sexr19_imp_F) 
+```
+
+

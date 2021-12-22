@@ -1,0 +1,132 @@
+---
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+output:
+  bookdown::pdf_document2: 
+    keep_tex: true
+    toc: false
+---
+
+```{r, include=FALSE}
+library(emmeans)
+library(here)
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE, fig.width = 16, fig.height = 20, full.fig.width = T, out.width="100%",dev=c("png")) # , fig.pos = "H", table.placement = "H")
+library(magrittr)
+library(readr)
+library(tidyverse)
+library(fabricatr)
+library(ggpmisc)
+library(nlme)
+library(broom.mixed)
+source("functions.R")
+```
+
+## Appendix C: Fecundity prediction from aboveground mass {-}  
+
+
+```{r, include=FALSE}
+sexed18 <- read_csv("../2 Data/Clean data/sexed18.csv", 
+                    col_types = cols(Male = col_integer(), 
+                                     Female = col_integer()))
+
+sexed18 <- sexed18  %<>%
+  mutate_at(c("Block","Crop_ID","Rotation","Corn_weed_management", "Plot", "Side", "Year"),funs(factor(.)))
+
+sexed18[is.na(sexed18)] <- 0 #NA replaced with 0
+
+
+sexed18$Crop_ID <- factor(sexed18$Crop_ID, levels = c("C2", "S2",
+                                                                "C3", "S3", "O3",
+                                                                "C4", "S4", "O4", "A4"))
+
+
+sexed18.glm <- glm(cbind(Female, Male) ~ Block + Crop_ID + Corn_weed_management  + Crop_ID:Corn_weed_management ,
+  data=sexed18, family=quasibinomial(link = "logit"))
+
+# every models before arriving at this models are at 'sexr ANCOVA trials.Rmd'
+#min(prop_biom18$g_m_sq[prop_biom18$g_m_sq > 0])
+prop_biom18 <- read_csv("../2 Data/Clean data/f_prop_biom18.csv",
+                    col_types = cols(Plot = col_factor(), 
+                                     Block = col_factor(), 
+                                     Crop = col_factor(),
+                                     Crop_ID = col_factor(),
+                                     Corn_weed_management = col_factor(),
+                                     Year = col_character()))
+
+sexr18_biom_glm3 <- glm(cbind(Female, Male) ~ Block +  Crop_ID + Corn_weed_management + 
+                          log(g_m_sq + 0.00025) +
+                        Crop_ID:Corn_weed_management + 
+                        log(g_m_sq + 0.00025):Crop_ID +
+                        log(g_m_sq + 0.00025):Corn_weed_management +
+                        log(g_m_sq + 0.00025):Crop_ID:Corn_weed_management ,
+  data=prop_biom18, family=quasibinomial(link = "logit"))
+
+
+sexr18_dens_glm3 <- glm(cbind(Female, Male) ~ Block  + Crop_ID + Corn_weed_management +
+                          + log(plant_m_sq + 0.025)  +
+                        Crop_ID:Corn_weed_management + 
+                        log(plant_m_sq + 0.025):Crop_ID +
+                        log(plant_m_sq + 0.025):Corn_weed_management +
+                        log(plant_m_sq + 0.025):Crop_ID:Corn_weed_management ,
+  data=prop_biom18, family=quasibinomial(link = "logit"))
+
+#<http://web.pdx.edu/~newsomj/cdaclass/ho_glm.pdf>
+```
+
+```{r, include=FALSE}
+fecundity18 <- read_csv(here("2 Data/Clean data/fecundity_18.csv"), 
+    col_types = cols(Biomass = col_number(), 
+        Seed = col_number()), na = "empty")
+
+fecundity18$Crop_ID <- factor(fecundity18$Crop_ID, levels = c("C2", "S2",
+                                                                "C3", "S3", "O3",
+                                                                "C4", "S4", "O4", "A4"))
+
+fecundity18$label <- paste(as.character(fecundity18$Rotation), "year", sep="-")
+
+fecundity18  <- fecundity18   %<>%
+  mutate_at(c("Block","Crop_ID","Rotation","Corn_weed_management", "Plot", "Side", "bt"),funs(factor(.)))
+
+fecundity18_b <- fecundity18[complete.cases(fecundity18$Biomass), ]
+min(fecundity18_b$Biomass[fecundity18_b$Biomass > 0])
+
+biomass.gls <- gls(log(Biomass + 0.005) ~ Block + Crop_ID + Corn_weed_management + Crop_ID:Corn_weed_management,
+  correlation=corCompSymm(form= ~1 | bt), #identifies each treatment within block
+  data=fecundity18_b)
+biom_diag <- diag_biom(biomass.gls, tag = "A") 
+```
+
+
+
+```{r, include = FALSE}
+#fig.cap= "Diagnosis plots for the analyis model of individual fecundity (MSE = 1.91)."
+fecundity18_s <- fecundity18[complete.cases(fecundity18$Seed), ]
+#min(fecundity18_s$Seed[fecundity18_s$Seed > 0])
+
+seeds.gls <- gls(log(Seed + 1) ~ Block + Crop_ID + Corn_weed_management + Crop_ID:Corn_weed_management,
+  correlation=corCompSymm(form= ~1 | bt), #identifies each treatment within block
+  data=fecundity18_s)
+
+seeds_diag  <- diag_seed(seeds.gls, tag = "B")
+```
+
+
+```{r, include=F}
+# fig.cap = "Diagnosis plots for the full regression model with qualitative and quantitative variables. MSE = 1.07",
+
+fecundity18_sb <- fecundity18[complete.cases(fecundity18$Seed, fecundity18$Biomass), ]
+
+allcrops.aov <- gls(log(Seed+1) ~ Block + log(Biomass + 0.005) + Crop_ID + Corn_weed_management +
+                      Crop_ID:Corn_weed_management +
+                      Crop_ID:log(Biomass + 0.005) + Corn_weed_management:log(Biomass + 0.005) +
+                      Crop_ID:Corn_weed_management:log(Biomass + 0.005),
+  correlation=corCompSymm(form= ~1 | bt), #identifies each treatment within block
+  data=fecundity18_sb)
+
+
+biom_seeds_diag <-  diag_seed(allcrops.aov, tag = "C")
+```
+
+
+```{r diag-biom-seeds-anc, fig.cap= "Diagnosis plots of the analysis models for population biomass (A), stand density (B) and sex ratio with stand density covariate (C).", echo=FALSE}
+biom_diag | seeds_diag | biom_seeds_diag
+```
