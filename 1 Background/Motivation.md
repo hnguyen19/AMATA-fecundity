@@ -1,1 +1,1 @@
-To estimate waterhemp's fecundity with its aboveground dried weight.
+To estimate waterhemp's individual fecundity using aboveground dried weight.
