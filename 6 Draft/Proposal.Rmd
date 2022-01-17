@@ -27,7 +27,7 @@ In the present study, the experiment comprised of 72 experimental units each 9 m
 Alfalfa in this experiment was sown with oat. Oat was harvested for grain in 2018 and for hay in 2019 and alfalfa was retained over the winter and used as a hay crop the following year. Oat in our experiment was intended for grain harvest but was harvested for hay in 2019 due to high weed infestation and hailstorm damage at oat's critical stage. In the conventional weed management regime, herbicide was broadcast on the whole area that was planted to corn, whereas in the low herbicide regime, herbicide was applied in 38-cm bands over corn rows, and interrow areas were cultivated. Even though corn was the only crop that received the contrasting weed management regimes, all other crops were identified with the weed management applied to the corn phase (hereafter referred to as *corn weed management*), to which they followed. To improve weed control efficacy, herbicides used for soybean differed between 2018 and 2019. Details concerning crop genotypes and management practices are shown in Table \@ref(tab:crop-id).  
 
 ```{r crop-id, echo=FALSE}
-crops_id <- read.csv("../2 Data/Clean data/crop_mgt.csv", na = ".")
+crops_id <- read.csv("../2 Data/crop_mgt.csv", na = ".")
 
 rownames(crops_id) <- NULL
 
@@ -57,7 +57,7 @@ kable(crops_id_clean , booktabs = T,
 ```{r sequence, echo=FALSE}
 #knitr::include_graphics('./Map2018.png')
 
-seq <- read.csv("../2 Data/Clean data/sequence.csv", na = "")
+seq <- read.csv("../2 Data/sequence.csv", na = "")
 
 seq %>% 
   kbl( align = "lccccccccc",
@@ -79,7 +79,7 @@ The date of sample collection and total sampled area for population- and individ
 
 
 ```{r, sample-id, echo=FALSE}
-sample_id <- read.csv("../2 Data/Clean data/sampling.csv", na = ".")
+sample_id <- read.csv("../2 Data/sampling.csv", na = ".")
 
 colnames(sample_id) <- NULL
 

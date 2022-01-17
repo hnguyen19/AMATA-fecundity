@@ -47,9 +47,9 @@ prop_biom18 <- read_csv("../2 Data/Clean data/f_prop_biom18.csv",
                                      Year = col_character()))
 
 
-prop_biom18$Crop_ID <- factor(prop_biom18$Crop_ID, levels = c("C2", "S2",
-                                                                "C3", "S3", "O3",
-                                                                "C4", "S4", "O4", "A4"))
+#prop_biom18$Crop_ID <- factor(prop_biom18$Crop_ID, levels = c("C2", "S2",
+#                                                                "C3", "S3", "O3",
+#                                                                "C4", "S4", "O4", "A4"))
 
 #prop_biom18[is.na(prop_biom18)] <- 0
 
@@ -799,6 +799,7 @@ prop_biom19 <- amata19 %>% left_join(sexed19_m24)
  
 
 ```{r, echo=FALSE}
+# 2019 sexed data with missing information from all the soybean plots due to very high control efficacy
 sexed19_mis <- read_csv(here("2 Data/Clean data/sexed19_mis.csv"), 
     col_types = cols(Plot = col_factor(), 
         Quadrat = col_factor(), 
@@ -865,6 +866,7 @@ sexed19_imp1_jt_df$imp <- as.numeric(sexed19_imp1_jt_df$imp)
 
 
 ```{r, include=F}
+# to improve aesthetics of the ggplot2 and emmeans::plot products
 panel_names <- c(`Block` = "Block",
                     `Crop_ID` = "Crop ID",
                     `Corn_weed_management` = "Corn weed management",

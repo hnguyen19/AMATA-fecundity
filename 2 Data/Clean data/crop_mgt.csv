@@ -1,0 +1,17 @@
+Rotation,Crop,Hybrid or Cultivar,Planting date,Harvest date,Seed density,Seedling density,Interrow spacing,Cultivation,Herbicide (kg a.i./ha)
+,,,2018 crop season,,,,,,
+,,,,,seedsm$^{-2}$,plantsm$^{-2}$,cm,,
+all,corn,Epley 1420,May. 8 ,Oct. 30,8,8,76,low: Jun. 4; conv: none,"low: tembotrione (0.054); conv: PRE thiencarbazone methyl (0.037), isoxaflutole (0.093); POST: mesotrione (0.105), nicosulfuron (0.053)"
+all,soybean,Latham 2758 R2,Jun. 3,Oct. 29,35,18,76,none,"flumioxazin (0.096); POST: glyphosate as potassium salt (1.540), lactofen (0.140)"
+,,,,,kgm$^{-2}$,,cm,,
+3- and 4-year,oat,INO9201,Apr. 24,Jul. 20,0.009,225 (3-year) and 236 (4-year),20,none,none
+3-year,red clover,Mammoth Red,Apr. 24,,0.002,187,20,none,none
+4-year,alfalfa,55H94,"Apr. 12, 2017","Jun. 4, Jul. 9, and Sep. 10",0.002,154,20,none,none
+,,,2019 crop season,,,,,,
+,,,,,seedsm$^{-2}$,plantsm$^{-2}$,cm,,
+all,corn,Epley 1730,Jun. 3,Nov. 6,8,8,76,none,"low: tembotrione (0.0054); conv: PRE: thiencarbazone methyl (0.037), isoxaflutole (0.093); POST: mesotrione (0.105), nicosulfuron (0.053) "
+all,soybean,Latham 2758 R2,Jun. 10,Oct. 18,35,31,76,none,"PRE: flumioxazin (0.096); POST: glufosinate ammonium (0.594), clethodim (0.136)"
+,,,,,kgm$^{-2}$,,cm,none,none
+3- and 4-year,oat,INO9201,Apr. 16,Jul. 22 and 24,0.009,366 (3-year) and 330 (4-year),20,none,none
+3-year,red clover,Mammoth,Apr. 16,,0.002,219,20,none,none
+4-year,alfalfa,WS Leafguard,Apr. 24,"Jun. 7, Jul. 12, Aug. 26,",0.002,176,20,none,none

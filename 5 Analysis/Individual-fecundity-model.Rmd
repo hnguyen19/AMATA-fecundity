@@ -312,7 +312,7 @@ allcrops.biom.seed.gls_jt_df <- print(allcrops.biom.seed.gls_jt, export = T)
 
 biom_seed_jt <- rbind(biomass.gls_df$summary,seeds.gls_df$summary, allcrops.biom.seed.gls_jt_df$summary)
 
-rownames(biom_seed_anc_jt) <- NULL
+rownames(biom_seed_jt) <- NULL
 
 biom_seed_jt_df <- as.data.frame(biom_seed_jt)
 
@@ -420,17 +420,7 @@ allcrops_18_test <- anti_join(allcrops_18, allcrops_18_train)
 ```
 
 
-```{r all means test train, echo=FALSE}
-# Train
-fecund_train <- update(allcrops.biom.seed.gls, data = allcrops_18_train)
 
-# Predict
-allcrops_18_test$log_Seed_pred <- predict(fecund_train_aov, allcrops_18_test) 
-
-#error 
-error.allcrops.biom.seed.gls = allcrops_18_test$log_Seed_pred - allcrops_18_test$log_Seed
-
-```
 
 
 ```{r, full-p, echo=FALSE, warning = FALSE, fig.width = 8, fig.height = 10, fig.cap = "The black and red dots are values from training and testing sets, respectively. Each regression line was plotted for one crop identity by herbicide treatment using the training set. Biomass index = ln(gram biomass + 0.005) and Fecundity index = ln(seeds + 1)"}
