@@ -44,12 +44,12 @@ Using `ggResidpanel` version 0.3.0 for model diagnosis [@goodeGgResidpanelPanels
 In all rotations, all the crop yields were comparable to those of Iowa and Boone County (where the experiment is situated) [@nguyenWeedCommunityCompositioninpreparation].  
 
 
-```{r, child = "../5 Analysis/individual-population-sex-biom-dens.Rmd" }
+```{r, child = "../5 Analysis/Individual-fecundity-model.Rmd" }
 # might knit the text separately because some packages conflict
 ```
 
 
-```{r, child = "../5 Analysis/Population-fecundity-model.Rmd"}
+```{r, child = "../5 Analysis/Population-sex-biom-dens.Rmd"}
 ```
 
 
