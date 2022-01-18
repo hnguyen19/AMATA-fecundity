@@ -3,13 +3,13 @@ The clean and raw data and code are available in this repository. The clean data
 Variable explaination in each data sheet is provided below:  
 
 #### General variables (column names) that exist in all the data sheets
-Plot: Two-digit plot identification at the experiment with the first digit represents the block number (1, 2, 3, 4) and the second the plot number (1, 2, ..., 9).   
-Block: Block number (1, 2, 3, 4).  
-Side: E(ast) or W(est), to double check if the Corn_weed_management designation is correctly recorded according to the experiment map.   
-Crop: Crop species name.  
-Crop_ID: Alpha-numeric code for the combination of crop species (first letter in species name) and the rotation (2-, 3-, or 4-year rotation) to which they belonged
-Corn_weed_management: `conv` or `low` - the weed management applied to the corn phase.
-Year: The year that the data was collected, 2018 or 2019.  
++ Plot: Two-digit plot identification at the experiment with the first digit represents the block number (1, 2, 3, 4) and the second the plot number (1, 2, ..., 9).   
++ Block: Block number (1, 2, 3, 4).  
++ Side: E(ast) or W(est), to double check if the Corn_weed_management designation is correctly recorded according to the experiment map.   
++ Crop: Crop species name.  
++ Crop_ID: Alpha-numeric code for the combination of crop species (first letter in species name) and the rotation (2-, 3-, or 4-year rotation) to which they belonged
++ Corn_weed_management: `conv` or `low` - the weed management applied to the corn phase.
++ Year: The year that the data was collected, 2018 or 2019.  
 
 #### AMATA_18.csv and AMATA_19.csv   
 AMATA is the Bayer code for Amaranthus tuberculatus
