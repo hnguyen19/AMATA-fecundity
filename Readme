@@ -1,17 +1,18 @@
-I sincerely thank the R user community, `bookdown` authors, Zotero, and ISU Lunchinators for inspiration, coaching, and troubleshooting. 
-This current structure works best for me.
+I sincerely thank the R user community, `bookdown` authors, Overleaf, Zotero, Stackoverflow, and ISU Lunchinators for inspiration, coaching, and troubleshooting. 
+This current structure works best for me, though mysterious package conflicts sometimes generate raw LaTeX codes in the middle of a neat .pdf. Sometimes I can solve this, sometimes I cannot. I would appreciate any suggestions you may have if you come across my work.
 
 Background: relevant .pdf of the literature   
 Data: raw and clean data sheets  
 Doc: data management plan 
 Data wrangling: `.R` files with codes to clean the raw data  
-Analysis: `.Rmd` executable files to analyze the data and render report. Each `.Rmd` file is devoted to address one hypothesis
-Draft: to put everything together. `.bib` (the Zotero generated bibliography) `Introduction.Rmd`, `MandM.Rmd`, and `Discussion.Rmd` live there.   
+Analysis: `.Rmd` executable files to analyze the data and render reports. Each `.Rmd` file is devoted to address one set of hypothesis. `functions.R`, that contains customized functions from existing functions, is also stored here.
+Draft: to put everything together. `.bib` (the Zotero generated bibliography) `Introduction.Rmd`, `Material_and_Method.Rmd`, and `Discussion.Rmd` live there.   
+Extra: diagnosis scripts in `.Rmd` format and rendered outputs that are not included in the manuscrtipt. 
 
 General workflow:  
-1 - Each `.Rmd` file is devoted to address one hypothesis. 
+1 - Each `.Rmd` file is devoted to address one set of hypothesis. 
 2 - All the pieces are put together under `Draft.Rmd`. The execution of `Draft.Rmd` will generate: 
-  i) a latex-figure folder with all the figures from the `.Rmd` files.
+  i) a latex-figure folder contains all the figures from the `.Rmd` files. This folder is automatically generated from knitting a `.pdf` file from `.Rmd`
   ii) a `.tex` file and a `.pdf` file.  
 3 - The `.tex` file is uploaded to Overleaf for final polishing that are very inconvenient or impossible to do in R. 
 
