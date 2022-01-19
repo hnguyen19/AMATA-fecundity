@@ -20,7 +20,7 @@ biblatexoptions:
   - maxcitenames = 2
 csl: apa-no-ampersand.csl
 ---
-*This script demonstrates how the sections were put together before final processing with Overleaf. Some typos may present.*
+*This script demonstrates how the sections were put together before final processing with Overleaf. Some typos and raw LaTeX codes may present.*
 
 # Abstract {-}
 
@@ -66,6 +66,7 @@ In all rotations, all the crop yields were comparable to those of Iowa and Boone
 
 
 ```{r, child = "../4 Data wrangling/sex-19-imputation.Rmd"}
+# This is Appendix B
 ```
 
 # Acknowledgements {-}

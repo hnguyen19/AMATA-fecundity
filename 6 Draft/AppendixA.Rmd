@@ -1,0 +1,42 @@
+---
+output:
+  bookdown::pdf_document2: 
+    keep_tex: true
+    toc: false
+bibliography: fecund.bib
+---
+
+## Appendix A    
+_Seed cleaning and counting procedure_   
+    
+The following protocol was used to separate seeds from stems and to clean seeds.  
+
+Step 1 - A whole sample was run through a brushing machine (LA-H, Westrup, Slageise, Denmark) to break the fruits from the stem. Large samples were chopped before running through the machine.  
+
+Step 2 - Chaff-covered seeds were run through a stack of two sieves (U.S. Standard Sieve Series), one that was 710 micron on top and one that was 297 micron at the bottom in a shaker (Dayton, Seedburo Equipment Company). The sieve stack was securely closed with a top and a bottom lid. The 297-micron sieve was used to separate small stems, while the 710-micron sieve separated the dust from the seeds. Seeds at this step were still chaffy and partially enclosed in the fruits. Seeds that were still enclosed at this step did not pass the top sieve and were rubbed with rubber bands (Step 4). Small pieces of stems and dust were discarded. The material in between the two sieves was retained.  
+
+Step 3 - The material between the two sieves from step 2 was run through a custom-made dual-slope separator (Iowa State University Seed Laboratory) to separate clean seeds and chaffed seeds.  
+
+Step 4 - The pericarps from step 3 were rubbed in between rubber bands to remove capsules.  
+
+Step 5 - Seeds from steps 3 and 4 were run separately through a blower (CB-1, Agriculex Inc, Guelph, Canada) to remove the remaining capsules. The blower was started at the lowest wind speed and adjusted throughout the blowing process so that as much of the chaff and foreign materials were removed as possible while seeds were retained.  
+
+Step 6 - Steps 3 to 5 were repeated depending on the cleanliness of the material.  
+
+Step 7 - Cleaned seeds were enumerated with either an Old Mill Counter (850-3, International Marketing and Design Corp) or a Ball Coleman optical counter (Gen3, Ball Horticultural Company, Illinois, USA). The Ball Coleman optical counter was with a precision of 0.16% difference between samples several times per sample. With Old Mill Counter, seeds were counted once. With the Old Mill Counter or by hand, each sample were counted once. With the Ball Coleman optical counter, each samples were counted several times and three counts that were the least different from one another were averaged and used as the sample’s seed count. 
+
+
+_Seed sample preparation and machine calibration_  
+
+Seeds to be counted were threshed by hand or machine, depending on plant size, and then cleaned of chaff. 
+Samples of hundreds of seeds were counted by hand, larger samples with either an Old Mill Counter or a Ball Coleman optical Counter. Before counting, each sample bag was weighed, i.e., bag, tag, and plant material, then the bag and tag. 
+Plant weight was obtained by subtracting the bag and tag weight from the sample bag weight. 
+Seeds must be fairly clean in order to be counted with machines. 
+Obtaining clean seed samples without chaff and foreign materials was extremely time-consuming, so we trained an optical counter to eliminate particles whose sizes were noticeably different from the mean seed size of roughly 1 mm diameter [@bellTimeRequirementPollination2010]. 
+The Ball Coleman optical counter was calibrated to count waterhemp seeds by running a "known sample" of 1200 seeds (a sample that was counted by hand) to establish a learning function to eliminate particles that were very much smaller and larger than the mean seed size from the final count. 
+The "known sample" was run through the optical counter at 2300 seeds/second, uncalibrated, to obtain a distribution of all the counted particles. 
+The counting rate of 2300 seeds/second was automated by the counter after running a small batch of seeds in such a way that a steady, single-file seed flow was maintained during the counting process. 
+Two tails of the distribution of particle sizes, i.e., too large and too small, were trimmed in such a way that the new counts were closest to the hand-counted number. 
+In our case, any counted particles whose surface area was larger than 0.1963 mm$^2$ were removed from the total count in the learning function. 
+Once the learning function was established, seeds were counted with reference to the saved settings.
+The known sample was recounted with the calibrated counter to confirm the result.    

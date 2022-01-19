@@ -13,18 +13,25 @@ Variable explaination in each data sheet is provided below:
 
 #### AMATA_18.csv and AMATA_19.csv   
 + AMATA is the Bayer code for Amaranthus tuberculatus
-+ AMATA_number: Total number of waterhemp plants found in an experimental unit (eu).
-+ AMATA_gram: Total aboveground mass of AMATA_number in each eu.
++ AMATA_number: Total number of waterhemp plants found in eight quadrats within an experimental unit (eu).
++ AMATA_gram: Total aboveground mass of AMATA_number in eight quadrats within each eu.
 + sample_area_m_sq: Total sampled area per eu in meter squared.
 + g_m_sq: Total aboveground mass of AMATA per eu in gram per meter squared .
 + plant_m_sq: Total AMATA density in each eu in plant per meter squared.
 
+#### AMATA_18.csv only 
++ Rotation: cropping system: 2-year, 3-year, or 4-year  
++ Total: Number of sexed waterhemp plants in the whole eu (Total > AMATA_number because the whole eu was scouted until 100 plants were sexed or as many as possible)
++ Female: Number of female waterhemp plants in the whole eu.  
++ Male: Number of male waterhemp plants in the whole eu.  
++ F_prop; Female/Total.
+
 #### fecundity_18.csv (all the plants in this sheet were female)
-+ Herbicide: the herbicide regime applied to the corn and soybean phase of a particular cropping system *might remove*
-+ id: Plant identity within an eu
-+ Biomass: dried aboveground mass of an individual plant
-+ Seed: number of seed of an individual plant
-+ bt: a dummy variable created by combining the block and treatment (CropID x Corn_weed_management) to accommodate the `gls`'s compound symmetry.  
++ Herbicide: The herbicide regime applied to the corn and soybean phase of a particular cropping system *might remove*
++ id: Plant Identity within an eu
++ Biomass: Dried aboveground mass of an individual plant
++ Seed: Number of seed of an individual plant
++ bt: A dummy variable created by combining the block and treatment (CropID x Corn_weed_management) to accommodate the `gls`'s compound symmetry.  
 
 #### sexed18.csv  
 + Total: Number of plants sexed in an eu.
