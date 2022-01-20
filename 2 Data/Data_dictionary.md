@@ -11,7 +11,7 @@ Variable explaination in each data sheet is provided below:
 + Corn_weed_management: `conv` or `low` - the weed management applied to the corn phase.
 + Year: The year that the data was collected, 2018 or 2019.  
 
-#### AMATA_18.csv and AMATA_19.csv (AMATA is the Bayer code for *Amaranthus tuberculatus*), these two sheets contains the totals by experimental unit for plant density, plant biomass, number of female and male, and female proportion)
+#### AMATA_18_clean.csv and AMATA_19_clean.csv (AMATA is the Bayer code for *Amaranthus tuberculatus*), these two sheets contains the totals by experimental unit for plant density, plant biomass, number of female and male, and female proportion)
 + AMATA_number: Total number of waterhemp plants found in eight quadrats within an experimental unit (eu).
 + AMATA_gram: Total aboveground mass of AMATA_number in eight quadrats within each eu.
 + sample_area_m_sq: Total sampled area per eu in meter squared.
@@ -23,7 +23,9 @@ Variable explaination in each data sheet is provided below:
 + Male: Number of male waterhemp plants in the whole eu.  
 + F_prop; Female/Total.
 
-*Note: Sex ratio evaluation procedure was different in 2018 and 2019.*
+*Note:* 
++ *Sex ratio evaluation procedure was different in 2018 and 2019.*
++ *In 2019, the quadrat locations in each eu used to evaluate population density and biomass were different from the quadrats used to evaluate sex ratio*
 
 #### fecundity_18.csv (all the plants in this sheet were female), this sheet contains individual dried aboveground mass and number of seeds
 + Herbicide: The herbicide regime applied to the corn and soybean phase of a particular cropping system *might remove*

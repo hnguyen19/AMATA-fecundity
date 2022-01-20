@@ -40,12 +40,12 @@ csl: apa-no-ampersand.csl
 
 # Results {-}
 
-Using `ggResidpanel` version 0.3.0 for model diagnosis [@goodeGgResidpanelPanelsInteractive2019], no predictable pattern in the plots of residuals versus predicted values suggests that the analysis models fit the data well (Details are provided in the Data Repository).  
+Using `ggResidpanel` version 0.3.0 for model diagnosis [@goodeGgResidpanelPanelsInteractive2019], no predictable pattern in the plots of residuals versus predicted values suggests that the analysis models fit the data well (Details are provided in @nguyenDataImpactCropping2022).  
 In all rotations, all the crop yields were comparable to those of Iowa and Boone County (where the experiment is situated) [@nguyenWeedCommunityCompositioninpreparation].  
 
 
 ```{r, child = "../5 Analysis/Individual-fecundity-model.Rmd" }
-# might knit the text separately because some packages conflict
+# knitting this chunk and the next produced raw Latex code because of some package conflicts - not resolved yet
 ```
 
 
