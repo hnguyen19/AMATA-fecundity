@@ -1,0 +1,22 @@
+,,2018,,2019,
+Measurement,Crop,Collection date,sampled area (m^2),Collection date,Sampled area (m^2)
+Population above-ground mass,corn,"Sep. 11, 12, 13",148.3,"Sep. 17, 18, 19",148.3
+,soybean,"Sep. 17, 19, 21",148.3,Sep. 30,148.3
+,oat,"Sep. 27; Oct. 4, 15, 16, 18, 19",16,"Sep 23, 25, 26; Oct. 3, 4, 7",17.9
+,alfalfa,"Sep. 26, 27; Oct 16, 19",16,"Sep 24, 25; Oct. 3, 7",17.9
+Population density,corn,"Sep. 11, 12, 13",148.3,"Sep. 17, 18, 19",148.3
+,soybean,"Sep. 17, 19, 21",148.3,Sep. 30,148.3
+,oat,"Sep. 27; Oct. 4, 15, 16, 18, 19",16,"Sep 23, 25, 26; Oct. 3, 4, 7",17.9
+,alfalfa,"Sep. 26, 27; Oct 16, 19",16,"Sep 24, 25; Oct. 3, 7",17.9
+Population sex ratio,corn,"Sep. 10, 11, and 12",729,"Sep. 17, 18, and 19",148.3
+,soybean,Sep. 17 and 30,729,Sep. 30,148.3
+,oat,"Oct. 4, 15, and 18",729,"Sep. 24, 25, 26, 30, Oct. 1 and 2",17.9
+,alfalfa,Nov. 1,729,Oct. 3 and 4,17.9
+Individual female above-ground mass,corn,"Oct. 18, 19, 22,  24, and 25",729,"Sep. 17, 18, and 19",148.3
+,soybean,"Oct. 4, 15, and 18",729,Sep. 30,148.3
+,oat,"Oct. 29, 30, 31, Nov. 1",729,"Sep. 24, 25, 26, 30, Oct. 1 and 2",17.9
+,alfalfa,Nov. 1,729,Oct. 3 and 4,17.9
+Individual female fecundity,corn,Oct. 24 and 25,729,none,none
+,soybean,"Oct. 4, 15, and 18",729,none,none
+,oat,"Oct. 29, 30, 31, Nov. 1",729,none,none
+,alfalfa,Nov. 1,729,none,none
