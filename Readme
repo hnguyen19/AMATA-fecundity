@@ -1,18 +1,22 @@
 I sincerely thank the R user community, `bookdown` authors, Overleaf, Zotero, Stackoverflow, and ISU Lunchinators for inspiration, coaching, and troubleshooting. 
 This current structure works best for me, though mysterious package conflicts sometimes generate raw LaTeX codes in the middle of a neat .pdf. Sometimes I can solve this, sometimes I cannot. I would appreciate any suggestions you may have if you come across my work.
 
-Background: relevant .pdf of the literature   
-Data: raw and clean data sheets  
-Doc: data management plan 
-Data wrangling: `.R` files with codes to clean the raw data  
-Analysis: `.Rmd` executable files to analyze the data and render reports. Each `.Rmd` file is devoted to address one set of hypothesis. `functions.R`, that contains customized functions from existing functions, is also stored here.
-Draft: to put everything together. `.bib` (the Zotero generated bibliography) `Introduction.Rmd`, `Material_and_Method.Rmd`, and `Discussion.Rmd` live there.   
-Extra: diagnosis scripts in `.Rmd` format and rendered outputs that are not included in the manuscrtipt. 
+The folder directory is detailed below: 
+
++ 1 Background: relevant .pdf files of the literature   
++ 2 Data: raw and clean data sheets  
++ 3 Picture: relevant diagrams
++ 4 Data wrangling: `.R` files with codes to clean the raw data  
++ 5 Analysis: `.Rmd` executable files to analyze the data and render reports. Each `.Rmd` file is devoted to address one set of hypothesis. `functions.R`, that contains customized functions from existing functions, is also stored here.
++ 6 Draft: to put everything together. `fecund.bib` (the Zotero generated bibliography) `Introduction.Rmd`, `Proposal.Rmd` for materials and methods, and `Discussion.Rmd` live there.   
++ 7 Extra: diagnosis scripts in `.Rmd` format and rendered outputs that are not included in the manuscrtipt. 
 
 General workflow:  
-1 - Each `.Rmd` file is devoted to address one set of hypothesis. 
+1 - Each `.Rmd` file in the `5 Analysis` folder is devoted to address one set of hypothesis. 
 2 - All the pieces are put together under `Draft.Rmd`. The execution of `Draft.Rmd` will generate: 
   i) a latex-figure folder contains all the figures from the `.Rmd` files. This folder is automatically generated from knitting a `.pdf` file from `.Rmd`
   ii) a `.tex` file and a `.pdf` file.  
-3 - The `.tex` file is uploaded to Overleaf for final polishing that are very inconvenient or impossible to do in R. 
+3 - The `Whole manuscript.tex` file is uploaded to Overleaf for final polishing that are very inconvenient or impossible to do in R. 
+
+4 - `Waterhemp_fecundity_Jan14.pdf` is the currently submitted format.  
 
