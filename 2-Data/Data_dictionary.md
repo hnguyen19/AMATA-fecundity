@@ -21,7 +21,7 @@ Variable explaination in each data sheet is provided below:
 + Total: Number of sexed waterhemp plants in the whole eu (Total > AMATA_number because the whole eu was scouted until 100 plants were sexed or as many as possible while AMATA_number was tallied from eight quadrats only).
 + Female: Number of female waterhemp plants in the whole eu.  
 + Male: Number of male waterhemp plants in the whole eu.  
-+ F_prop; Female/Total.
+
 
 *Note:* 
 + *Sex ratio evaluation procedure was different in 2018 and 2019.*
