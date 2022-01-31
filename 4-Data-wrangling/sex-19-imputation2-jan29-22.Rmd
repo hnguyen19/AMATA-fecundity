@@ -2,7 +2,7 @@
 output:
   #bookdown::word_document2
   bookdown::pdf_document2: 
-#    keep_tex: true
+    keep_tex: true
     toc: false
     latex_engine: lualatex
     citation_package: natbib
@@ -13,8 +13,8 @@ csl: apa-no-ampersand.csl
 ```{r, include=FALSE}
 #knitr::opts_chunk$set(echo = TRUE, fig.pos ="h")
 knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE, 
-                      fig.width = 16, fig.height = 16,
-                      full.fig.width = T, out.width="100%" ,
+                      fig.width = 16, fig.height = 16, dev=c("png"),
+                      full.fig.width = TRUE, out.width="100%" ,
                      fig.pos = "H", table.placement = "H")
 library(emmeans)
 library(here)
@@ -24,11 +24,13 @@ library(mice)
 library(tidyverse)
 library(tidyr)
 library(miceadds)
+library(purrr)
+library(magrittr)
 library(data.table)
 library(grid); library(gridExtra)
 library(kableExtra)
-#source(here("5 Analysis/functions.R"))
-#set.seed(500) doesn't work at this writing https://github.com/amices/mice/issues/393
+source(here("8_Analysis_scripts/functions.R"))
+#set.seed(500) is commented out and replaced with cluster.seed in each parlmice call for reproducibility 
 #View(sexed19_mis)
 # some pooling stuff here https://bookdown.org/mwheymans/bookmi/rubins-rules.html
 RNGkind(sample.kind = "Rounding")
@@ -46,17 +48,17 @@ options(scipen=999)
 
 ### Data set and imputation procedure overview {-}  
 
-The experiment design was RCBD with four blocks, nine levels of main plot (Crop ID) and two levels of split-plot (Corn weed management) effects. There were 72 experiment units (eu), 8 observational units (quadrats) per eu. Within each quadrats, six cohorts of plants were sexed. By the time that the plants were sexed, a few plants' sexes were not observable and thus, they are marked as Unknown in the data set. This caused Total > Male + Female in some eu's. 
+The experiment design was randomized complete block design with four blocks, nine levels of main plot (Crop ID) and two levels of split-plot (Corn weed management) effects. There were 72 experimental units (eu), 8 observational units (quadrats) per eu. Within each quadrat, six cohorts of plants were sexed. By the time that the plants were sexed, a few plants' sexes were not observable, and thus, they were marked as Unknown in the data set. This caused Total > Male + Female in some eu's.  
 
-Complete case analysis, in which missing observations are removed from the data set, is acceptable when less than 5% of the data is missing at random because removing the incomplete cases does not significantly change the outcome [@azurMultipleImputationChained2011]. The 2019 sex ratio is imputed because 22% of the data (755 `NA`s out of 3448 entries) was missing at random (MAR). We considered our data MAR even though the number of missing values were higher in soybean plots than in the other three crops because 1) the quadrats were placed randomly in the field before weed emergence, 2) waterhemp and other weed seedlings were present in the quadrats at the beginning of the season, and 3) waterhemp and other weed species were found in soybean plots by the time we sexed the waterhemp plants, but not in the eight fixed quadrats.  
+Complete case analysis, in which missing observations are removed from the data set, is acceptable when less than 5% of the data is missing at random because removing the incomplete cases does not significantly change the outcome [@azurMultipleImputationChained2011]. The 2019 sex ratio is imputed because 22% of the data (755 `NA`s out of 3456 entries (6 cohorts/quadrat x 8 quadrats/eu x 72 eu)) was missing at random (MAR). We considered our data MAR even though the number of missing values were higher in soybean plots than in the other three crops because 1) the quadrats were placed randomly in the field before weed emergence, 2) waterhemp and other weed seedlings were present in the quadrats at the beginning of the season, and 3) waterhemp and other weed species were found in soybean plots by the time we sexed the waterhemp plants, but not in the eight fixed quadrats.  
 
-The MICE imputation method assumes that after controlling for all the observation in the original data set, all the missingness occurs at random [@vanbuurenMiceMultivariateImputation2011]. A good imputation model is numerically recognized by low fraction of information missing due to nonresponse (`fmi`), small proportion of total variance that is attributable to the missing data ($\lambda$) values; and visually recognized by the similarity in kernel density estimates and data points distribution between the observed and imputed data sets [@vanbuurenMiceMultivariateImputation2011]. The number of imputations (m) should be chosen such that the loss of efficiency, $le = \frac{fmi}{m} \leq 0.05$ [@whiteMultipleImputationUsing2011]. To give the imputation model more information, the data was imputed using 3448 data points. The analysis model on the imputed data sets was run using 72 data points.  
+The MICE imputation method assumes that after controlling for all the observations in the original data set, all the missingness occurs at random [@vanbuurenMiceMultivariateImputation2011]. A good imputation model is numerically recognized by low fraction of information missing due to nonresponse (`fmi`), small proportion of total variance that is attributable to the missing data ($\lambda$) values; and visually recognized by the similarity in kernel density estimates and data points distribution between the observed and imputed data sets [@vanbuurenMiceMultivariateImputation2011]. The number of imputations (m) should be chosen such that the loss of efficiency, $le = \frac{fmi}{m} \leq 0.05$ [@whiteMultipleImputationUsing2011]. To give the imputation model more information, the data was imputed using 3456 data points. The analysis model on the imputed data sets was run using 72 data points.  
 
 The recommended specifications of the imputation model for this data set are: 1) uses at least 24 imputations (24 was selected because it is divisible by 4 cores in the computer processor), 2) includes all the covariates (Number of emerged seedlings, Male, Female, and Total) and predictors in the analysis model, and 3) uses an overdispersed Poisson regression model [@azurMultipleImputationChained2011; @whiteMultipleImputationUsing2011; and @nguyenModelCheckingMultiple2017]. While the first two specifications were met, overdispersed Poisson regression model could not be specified. The extensions for count data mentioned in Chapter 7 [@vanbuurenFlexibleImputationMissing2018] do not fit this data set well. Both `micemd`'s `mice.impute.2l.glm.pois` and `mice.impute.2l.2stage.pois` functions impute the numbers of Male, Female, and Total separately [@audigierMicemdMultipleImputation2019]. The predictive mean matching (`pmm`) method in the `mice` package can handle counts [@vanbuurenMiceMultivariateImputation2011] and is the optimal solution for this data set at this writing (Figure \@ref(fig:kernel-xy-imp1-all-diag)). 
 
 
 ```{r, echo=FALSE}
-sexed19_mis <- read_csv(here("2 Data/Clean data/sexed19_mis.csv"), 
+sexed19_mis <- read_csv(here("2_Data/Clean/sexed19_mis.csv"), 
     col_types = cols(Plot = col_factor(), 
         Quadrat = col_factor(), 
         Cohort = col_factor(), 
@@ -79,16 +81,17 @@ sexed19_mis <- read_csv(here("2 Data/Clean data/sexed19_mis.csv"),
 
  
 
-```{r, echo=FALSE, warning=FALSE, message=FALSE}
-# na.rm= T to remove NA observations from the summary. R will return sums as NA if NA are included in the vector  
+```{r, echo=FALSE, warning=F, message=F}
+# Summarize all numbers from 8 quadrats within an experimental unit (eu) into one entry per eu.  
+# na.rm= TRUE to remove NA observations from the summary. R will return sums as NA if NA are included in the vector  
 sexed19_mis_eu <- sexed19_mis %>% 
   group_by (Plot, Side, Corn_weed_management, Crop_ID, Rotation, Crop, Block, Year) %>%
-  summarize(Number_begin = sum(Number_begin, na.rm = T), 
-            Total = sum(Total, na.rm = T),
-            Female = sum(Female, na.rm = T),
-            Male = sum(Male, na.rm = T),
-            Total_sexed = sum(Total_sexed, na.rm = T),
-            Unknown = sum(Unknown, na.rm = T))
+  summarize(Number_begin = sum(Number_begin, na.rm = TRUE), 
+            Total = sum(Total, na.rm = TRUE),
+            Female = sum(Female, na.rm = TRUE),
+            Male = sum(Male, na.rm = TRUE),
+            Total_sexed = sum(Total_sexed, na.rm = TRUE),
+            Unknown = sum(Unknown, na.rm = TRUE))
 #summary(sexed19_mis_eu)
 
 #str(sexed19_mis_eu)
@@ -123,7 +126,8 @@ sexed19_imp1_long <- sexed19_imp1_wide %>%
 
 sexed19_imp1 <- sexed19_imp1_long %>% #separate this to save energy 
   group_by(.imp) %>%
-  do(model = glm(formula = cbind(Female, Male) ~ Block + Crop_ID + Corn_weed_management +
+  do(model = glm(formula = cbind(Female, Male) ~ Block + 
+                   Crop_ID + Corn_weed_management +
                    Crop_ID:Corn_weed_management,
   data=., family=binomial)) %>%
   as.list() %>%
@@ -135,12 +139,11 @@ sexed19_imp1 <- sexed19_imp1_long %>% #separate this to save energy
 
 ### Diagnosis of the imputation model with m = 24 {-}
 
-The imputation code with predicted mean matching (`pmm`) method is provided in the Supplementary Material section. Each round of imputation is distinguished by the number of imputation (m). The loss of efficiency (le) are all below the recommended value of 0.05 [@whiteMultipleImputationUsing2011] for the analysis model terms using the imputed data sets, under three m values and the imputation performance improved as m increased (Table \@ref(tab:pool-diag)). m was capped at 2400 imputations for this manuscript because of limited computational power.   
-The diagnosis of data imputation is demonstrated here with m = 24 for ease of view. The distribution of the imputed data sets match that of the observation (Figure \@ref(fig:kernel-xy-imp1-all-diag)) so the outputs (imputed data sets) were used for further regression analyses that involved sex ratio. 
+The imputation code with predicted mean matching (`pmm`) method is provided in [@nguyenDataImpactCropping2022]. Each round of imputation is distinguished by the number of imputations (m). The loss of efficiency (le) are all below the recommended value of 0.05 [@whiteMultipleImputationUsing2011] for the analysis model terms using the imputed data sets, under three m values and the imputation performance improved as m increased  (Table \@ref(tab:pool-diag)). m was capped at 2400 imputations for this manuscript because of limited computational power. The diagnosis of data imputation is demonstrated here with m = 24 for ease of view. The distribution of the imputed data sets match that of the observation (Figure \@ref(fig:kernel-xy-imp1-all-diag)) so the outputs (imputed data sets) were used for further regression analyses that involved sex ratio.
 
 ### Diagnosis of the analysis model with m = 24 {-}
 
-The similarity in the magnitude of reduction of deviance and dispersion values suggests comparable, small impacts of population aboveground mass and population stand density covariates on the improvement of the goodness of fit for comparing sex ratio using 2019 imputed data (Data Repository). In addition, using either of them as a covariate in the analysis models resulted in nonestimable corn weed management effects on sex ratios in some treatments, so 2019 sex ratios were averaged over corn weed management regimes and compared without any covariates for simplicity. 
+The similarity in the magnitude of reduction of deviance and dispersion values suggests comparable, small impacts of population aboveground mass and population stand density covariates on the improvement of the goodness of fit for comparing sex ratio using 2019 imputed data [@nguyenDataImpactCropping2022]. In addition, using either of them as a covariate in the analysis models resulted in nonestimable corn weed management effects on sex ratios in some treatments, so 2019 sex ratios were averaged over corn weed management regimes and compared without any covariates for simplicity.
 
 
 ```{r imp1-trace, fig.cap= "Convergence diagnosis with m = 24. Each color represents one imputation. The y-axis values are the means and standard deviations of female, male and total plants in each quadrat.", include=FALSE}
@@ -156,9 +159,14 @@ dens_all <- densityplot(sexed19_imp1_wide,
                    scales=list(tck=c(1,0), x=list(cex=2), y=list(cex=2)))
 
 #every factors in the imputation model go in the glm model 
-fit1 <- with(sexed19_imp1_wide, glm(ici(sexed19_imp1_wide) ~ Male + Female + Total + Number_begin + Crop_ID + Corn_weed_management + Crop_ID:Corn_weed_management + 
+fit1 <- with(sexed19_imp1_wide, glm(ici(sexed19_imp1_wide) ~ Male 
+                                    + Female + Total + 
+                                      Number_begin + Crop_ID +
+                                      Corn_weed_management +
+                                      Crop_ID:Corn_weed_management + 
                                       Block,
                      family = binomial))
+
 ps1 <- rep(rowMeans(sapply(fit1$analyses, fitted.values)),
           sexed19_imp1_wide$m + 1)
 
@@ -186,7 +194,7 @@ grid.arrange( xy_female, xy_male) #patchwork doesn't accommodate lattice
 ```
 
 
-```{r jt1-pool, echo=FALSE, message=FALSE, warning=FALSE}
+```{r jt1-pool, echo=FALSE, message= FALSE, warning=FALSE}
 
 sexed19_imp1_eu <- sexed19_imp1_long%>%
   group_by(.imp, Block, Crop_ID, Corn_weed_management) %>%
@@ -194,7 +202,7 @@ summarize(Female = sum(Female),
             Male = sum(Male),
             Total = sum(Total)) # 24 data sets, with 72 e.u each. 
 
-#write.csv(sexed19_imp1_eu, here("2 Data/Clean data/sexed19_m24.csv"),row.names = F)
+#write.csv(sexed19_imp1_eu, here("2_Data/Clean/sexed19_m24_Jan29_22.csv"),row.names = FALSE)
 
 sexed19_imp1_jt <- sexed19_imp1_eu %>% split(.$.imp) %>% map(mod_jt) 
 
@@ -203,23 +211,23 @@ sexed19_imp1_jt_df <- enframe(sexed19_imp1_jt) %>% #have imp kept
 rename(.,imp = name) # rename "name" with "imp" for consistency
 
 sexed19_imp1_full <- sexed19_imp1_jt_df %>% 
-  filter(is.na(note)) 
+  filter(is.na(note)) # sets 1, 4, 14, 21, 22, and 24, among the 24 imputed sets are full - that allow estimable effects of crop ID, corn weed management, and the interaction of these two factors
 
 sexed19_imp1_notfull <-  sexed19_imp1_jt_df %>% 
-  filter(!is.na(note))
+  filter(!is.na(note)) # the other 18 sets that are not fully imputed, resulting nonestimable effects of corn weed management.
 
 n_imp1_notfull <- sexed19_imp1_notfull %>%  
-distinct(imp)%>% tally() #give the number of df 
+distinct(imp) %>% tally() #give the number of dataframes 
 
 n1 <- nrow(sexed19_imp1_full)/4
 
 ```
 
 ```{r, include=FALSE}
-#for demo purpose
-#imp1_full <- sexed19_imp1_eu %>% filter(.imp == 6)
+#Save one imputed data set for demonstration purposes: 
+#imp1_full <- sexed19_imp1_eu %>% filter(.imp == 4)
 
-#write.csv(imp1_full, here("2 Data/Clean data/sexed19.csv"),row.names = F)
+#write.csv(imp1_full, here("2_Data/Clean/sexed19-jan29-22.csv"),row.names = FALSE)
 
 ```
 
@@ -260,11 +268,11 @@ sexed19_imp2_jt_df <- enframe(sexed19_imp2_jt) %>% #have imp kept
   unnest(cols = c(value)) %>% # everything lines up in order (by imp == name)
 rename(.,imp = name) # rename "name" with "imp" for consistency
 
-#on a Mac, m = 240 gives 1 full set, numbered 9
+#on a Mac, m = 240 gives 7 full sets 
 sexed19_imp2_full <- sexed19_imp2_jt_df %>% 
-  filter(is.na(note)) 
+  filter(is.na(note))  # nrow = 28
 
-n2 <- nrow(sexed19_imp2_full)/4 #28
+n2 <- nrow(sexed19_imp2_full)/4 #7
 ```
 
 ```{r m2400, echo=FALSE, message=FALSE, warning=FALSE}
@@ -292,7 +300,7 @@ sexed19_imp3 <- sexed19_imp3_long %>% #separate this to save energy
 sexed19_imp3_eu <- sexed19_imp3_long%>%
   mutate(Year = "2019",
     Rotation = ifelse(Crop_ID %in% c("S2", "C2"), "2-year",
-                           ifelse(Crop_ID %in% c("S3", "C3", "O3"), "3-year", "4-year")))%>%
+                           ifelse(Crop_ID %in% c("S3", "C3", "O3"), "3-year", "4-year"))) %>%
   group_by(.imp, Block, Crop_ID, Corn_weed_management, Rotation, Year) %>%
 summarize(Female = sum(Female),
             Male = sum(Male),
@@ -304,16 +312,16 @@ sexed19_imp3_jt_df <- enframe(sexed19_imp3_jt) %>% #have imp kept
   unnest(cols = c(value)) %>% # everything lines up in order (by imp == name)
 rename(.,imp = name) # rename "name" with "imp" for consistency
 
-#on a Mac, m = 240 gives 1 full set, numbered 9
+#on a Mac, m = 2400 gives 74 full sets, 
 sexed19_imp3_full <- sexed19_imp3_jt_df %>% 
   filter(is.na(note)) 
 
 sexed19_imp3_not_full <- sexed19_imp3_jt_df %>% 
-  filter(!is.na(note)) # nrow = 6168, n sets = 6168/3 = 2056
+  filter(!is.na(note)) # nrow = 6312, n sets = 6312/3 = 2104
 
-n3 <- nrow(sexed19_imp3_full)/4 #344; 344 + 2056 = 2400
+n3 <- nrow(sexed19_imp3_full)/4 #296; 296/4 = 74 full + 6312/3 = 2104 not full = 2400
 
-
+## Current Mac/Windows operation system would crash for m = 24000
 ```
 
 ```{r pool-diag, echo=FALSE}
@@ -346,76 +354,68 @@ all_imp_n_ordered_wide$term <- gsub("cide", "cide: ", all_imp_n_ordered_wide$ter
 all_imp_n_ordered_wide$term <- gsub("Block", "Block: ", all_imp_n_ordered_wide$term)
 all_imp_n_ordered_wide$term <- gsub("(Intercept)", "Intercept", all_imp_n_ordered_wide$term)
 
-kbl(all_imp_n_ordered_wide, booktabs = T, linesep = "",
+kbl(all_imp_n_ordered_wide, 
+    digits = 4,
+    booktabs = TRUE, 
+    linesep = "",
     caption = "Imputation model indices with different values of m. NAs resulted from nonestimable number of male and female in a treatment.") %>%
   add_header_above(c(" " = 1, 
                      "n/m" = 3, 
                      "riv" = 3,
                      "fmi" = 3,
                      "lambda" = 3,
-                     "le" = 3), border_left = F, border_right = F) %>%
-  column_spec(c(4,7,10,13,16), border_left = F, border_right = F) %>%
+                     "le" = 3), border_left = FALSE, border_right = FALSE) %>%
+  column_spec(c(4,7,10,13,16), border_left = FALSE, border_right = FALSE) %>%
   kable_styling(latex_options = c( "scale_down")) %>%
-  landscape()
+  landscape() %>%
+  footnote(general = "Some zeros are due to rounding. C2: corn in the 2-year rotation, C3: corn in the 3-year rotation, C4: corn in the 4-year rotation, S2: soybean in the 2-year rotation, S3: soybean in the 3-year rotation; S4: soybean in the 4-year rotation, O3: oat in the 3-year rotation, and A4: alfalfa in the 4-year rotation", threeparttable = TRUE, footnote_as_chunk = TRUE)
   
-
-#all_imp_long <- pivot_longer(all_imp_n, !c(term, m), names_to = "index")
-
-#View(all_imp_long)
-#fig.cap= "Visualization of  The model terms are listed (left to right) from intercept to interactions."
-#ggplot(all_imp_long, aes(x = term, y = value)) + 
-#  geom_jitter(aes(col = as.factor(m), size = 2)) + 
-#  facet_wrap(~index, ncol = 2, scales = "free_y") +
-#  theme_bw() + 
-#  theme( #axis.text.x = element_blank(),
-#        legend.position = c(0.7, 0.12)) +
-#  theme(text=element_text(size=25))  +
-#  theme(legend.title = element_blank()) +
-#  xlab("Analysis model term") + 
-#  ylab("Parameter value") + 
-#  scale_color_brewer(palette = "Set1") +
-#  scale_size(guide=FALSE)
 ```
    
 
 ```{r, include=FALSE, warning=FALSE, message=FALSE}
-library(purrr)
-library(magrittr)
-sexed18 <- read_csv("../2 Data/Clean data/sexed18.csv", 
+# Read AMATA_18_clean.csv in, but save as a different name from the density and biomass analyses 
+amata18 <- read_csv("../2_Data/Clean/AMATA_18_clean.csv", 
                     col_types = cols(Male = col_integer(), 
                                      Female = col_integer()))
 
-sexed18 <- sexed18  %<>%
+amata18 <- amata18 %<>%
   mutate_at(c("Block","Crop_ID","Rotation","Corn_weed_management", "Plot", "Side", "Year"),funs(factor(.)))
 
-#sexed18[is.na(sexed18)] <- 0 #NA replaced with 0
+amata18[is.na(amata18 )] <- 0 #NAs are replaced with 0
 
 
-sexed18$Crop_ID <- factor(sexed18$Crop_ID, levels = c("C2", "S2",
-                                                                "C3", "S3", "O3",
-                                                                "C4", "S4", "O4", "A4"))
+amata18$Crop_ID <- factor(amata18$Crop_ID,
+                          levels = c("C2", "S2",
+                                     "C3", "S3", "O3",
+                                     "C4", "S4", "O4", "A4"))
 
-sexed18.glm <- glm(cbind(Female, Male) ~ Block + Crop_ID + Corn_weed_management + Crop_ID:Corn_weed_management,
-  data=sexed18, family=quasibinomial(link = "logit"))
+sexed18.glm <- glm(cbind(Female, Male) ~ Block + 
+                     Crop_ID + Corn_weed_management +
+                     Crop_ID:Corn_weed_management,
+                   data=amata18, 
+                   family=quasibinomial(link = "logit"))
 
 ```
 
 ```{r, include=FALSE}
 sexed18.emm <- emmeans(sexed18.glm, c("Crop_ID", "Corn_weed_management"), type = "response")
 
-plot(sexed18.emm, by = "Corn_weed_management", comparisons = T) + coord_flip() + theme_bw()
+plot(sexed18.emm, by = "Corn_weed_management", comparisons = TRUE) + coord_flip() + theme_bw()
 ```
 
 
 
 ```{r, include=FALSE}
-sexed19_m24 <- sexed19_imp1_eu
+# Save the eu-tallied dataframe as sexed19_m24 for further analysis and graphing  
+sexed19_m24 <- sexed19_imp1_eu 
 
 sexed19_m24 <- sexed19_m24  %<>%
   mutate_at(c("Block","Crop_ID","Corn_weed_management", ".imp"),funs(factor(.)))
-sexed19_m24$Crop_ID <- factor(sexed19_m24$Crop_ID, levels = c("C2", "S2",
-                                                                "C3", "S3", "O3",
-                                                                "C4", "S4", "O4", "A4")) 
+sexed19_m24$Crop_ID <- factor(sexed19_m24$Crop_ID, 
+                              levels = c("C2", "S2",
+                                         "C3", "S3", "O3",
+                                         "C4", "S4", "O4", "A4")) 
 
 sexed19_m24 <- sexed19_m24 %>%
   mutate(Rotation = ifelse(Crop_ID %in% c("S2", "C2"), "2-year",
@@ -424,7 +424,9 @@ sexed19_m24 <- sexed19_m24 %>%
 
 
 ```{r, include=FALSE}  
-sexed19_imp1_summ <- sexed19_m24 %>% split(.$.imp) %>% map(mod_sum) 
+sexed19_imp1_summ <- sexed19_m24 %>% 
+  split(.$.imp) %>% 
+  map(mod_sum) 
 
 sexed19_imp1_summ_df <- enframe(sexed19_imp1_summ) %>% 
   unnest(cols = c(value)) %>%
@@ -435,7 +437,9 @@ sexed19_imp1_summ_df <- enframe(sexed19_imp1_summ) %>%
 ```
 
 ```{r sexr19-covar-summ, echo=FALSE}
-amata19 <- read_csv("../2 Data/Clean data/AMATA_19.csv",
+#error from here
+## Read in 2019 raw data
+amata19_raw <- read_csv("../2_Data/Raw/AMATA_19_raw.csv",
                     col_types = cols(Plot = col_factor(), 
                                      Block = col_factor(), 
                                      Crop = col_factor(),
@@ -443,12 +447,21 @@ amata19 <- read_csv("../2 Data/Clean data/AMATA_19.csv",
                                      Corn_weed_management = col_factor(),
                                      Year = col_character()))
 
-amata19$Crop_ID <- factor(amata19$Crop_ID, levels = c("C2", "S2",
-                                                                "C3", "S3", "O3",
-                                                                "C4", "S4", "O4", "A4"))
-prop_biom19 <- amata19 %>% left_join(sexed19_m24)
 
-sexr19_biom_imp1_summ <- prop_biom19 %>% split(.$.imp) %>% map(sexr19_biom_sum) 
+amata19_raw$Crop_ID <- factor(amata19_raw$Crop_ID, 
+                          levels = c("C2", "S2",
+                                     "C3", "S3", "O3",
+                                     "C4", "S4", "O4", "A4"))
+
+## merge the imputed data to the left to keep all the imputed sets
+prop_biom19 <- amata19_raw %>% 
+  left_join(sexed19_m24)
+
+## How does an ANCOVA model of sex ratio in response to crop identity, corn weed management, and population aboveground mass perform on the 24 imputed data sets?
+sexr19_biom_imp1_summ <- prop_biom19 %>% 
+  split(.$.imp) %>%  
+  map(sexr19_biom_sum) 
+
 
 sexr19_biom_imp1_summ_df <- enframe(sexr19_biom_imp1_summ) %>% 
   unnest(cols = c(value)) %>%
@@ -458,7 +471,10 @@ sexr19_biom_imp1_summ_df <- enframe(sexr19_biom_imp1_summ) %>%
    #numerical diagnosis with population biomass covar
 
 
-sexr19_dens_imp1_summ <- prop_biom19 %>% split(.$.imp) %>% map(sexr19_dens_sum) 
+## How does an ANCOVA model of sex ratio in response to crop identity, corn weed management, and population density mass perform on the 24 imputed data sets?
+sexr19_dens_imp1_summ <- prop_biom19 %>% 
+  split(.$.imp) %>% 
+  map(sexr19_dens_sum)
 
 sexr19_dens_imp1_summ_df <- enframe(sexr19_dens_imp1_summ) %>% 
   unnest(cols = c(value)) %>%
@@ -471,108 +487,15 @@ imp_orginal <- rbind(t(sexr19_biom_imp1_summ_df),
       t(sexed19_imp1_summ_df)) 
 
 
-kbl(imp_orginal, booktabs = T, 
+kbl(imp_orginal, booktabs = TRUE, 
     caption = "Numerical diagnosis of model's goodness of fit with and without covariates on 2019 imputed data sets.") %>%
+  column_spec(c(2,5,15,22,23,25), bold = TRUE) %>% # sets 1, 4, 14, 21, 22, and 24, 
   pack_rows("(A) Population aboveground mass covariate", 1,3) %>% 
   pack_rows("(B) Population stand density covariate", 4,6) %>%
   pack_rows("(C) No covariate", 7,9)  %>% 
   kable_styling(latex_options =  c("scale_down")) %>%
-  landscape()
+  landscape() %>%
+  footnote(general = "Bold columns are imputations that produced full sets of data (six among 24 imputed sets) that allow estimation of the effects of crop idenity, corn weed management, and their interaction.")
 ```
 
-```{r, include=FALSE}
-fecundity18 <- read_csv(here("2 Data/Clean data/fecundity_18.csv"), 
-    col_types = cols(Biomass = col_number(), 
-        Seed = col_number()), na = "empty")
-
-fecundity18$Crop_ID <- factor(fecundity18$Crop_ID, levels = c("C2", "S2",
-                                                                "C3", "S3", "O3",
-                                                                "C4", "S4", "O4", "A4"))
-
-fecundity18$label <- paste(as.character(fecundity18$Rotation), "year", sep="-")
-
-fecundity18  <- fecundity18   %<>%
-  mutate_at(c("Block","Crop_ID","Rotation","Corn_weed_management", "Plot", "Side", "bt"),funs(factor(.)))
-
-fecundity18_b <- fecundity18[complete.cases(fecundity18$Biomass), ]
-min(fecundity18_b$Biomass[fecundity18_b$Biomass > 0])
-```
-
-```{r, include=FALSE}
-sexed18 <- read_csv("../2 Data/Clean data/sexed18.csv", 
-                    col_types = cols(Male = col_integer(), 
-                                     Female = col_integer()))
-
-sexed18 <- sexed18  %<>%
-  mutate_at(c("Block","Crop_ID","Rotation","Corn_weed_management", "Plot", "Side", "Year"),funs(factor(.)))
-
-sexed18[is.na(sexed18)] <- 0 #NA replaced with 0
-
-
-sexed18$Crop_ID <- factor(sexed18$Crop_ID, levels = c("C2", "S2",
-                                                                "C3", "S3", "O3",
-                                                                "C4", "S4", "O4", "A4"))
-
-
-sexed18.glm <- glm(cbind(Female, Male) ~ Block + Crop_ID + Corn_weed_management  + Crop_ID:Corn_weed_management ,
-  data=sexed18, family=quasibinomial(link = "logit"))
-
-# every models before arriving at this models are at 'sexr ANCOVA trials.Rmd'
-#min(prop_biom18$g_m_sq[prop_biom18$g_m_sq > 0])
-prop_biom18 <- read_csv("../2 Data/Clean data/f_prop_biom18.csv",
-                    col_types = cols(Plot = col_factor(), 
-                                     Block = col_factor(), 
-                                     Crop = col_factor(),
-                                     Crop_ID = col_factor(),
-                                     Corn_weed_management = col_factor(),
-                                     Year = col_character()))
-
-sexr18_biom_glm3 <- glm(cbind(Female, Male) ~ Block +  Crop_ID + Corn_weed_management + 
-                          log(g_m_sq + 0.00025) +
-                        Crop_ID:Corn_weed_management + 
-                        log(g_m_sq + 0.00025):Crop_ID +
-                        log(g_m_sq + 0.00025):Corn_weed_management +
-                        log(g_m_sq + 0.00025):Crop_ID:Corn_weed_management ,
-  data=prop_biom18, family=quasibinomial(link = "logit"))
-
-
-sexr18_dens_glm3 <- glm(cbind(Female, Male) ~ Block  + Crop_ID + Corn_weed_management +
-                          + log(plant_m_sq + 0.025)  +
-                        Crop_ID:Corn_weed_management + 
-                        log(plant_m_sq + 0.025):Crop_ID +
-                        log(plant_m_sq + 0.025):Corn_weed_management +
-                        log(plant_m_sq + 0.025):Crop_ID:Corn_weed_management ,
-  data=prop_biom18, family=quasibinomial(link = "logit"))
-
-#<http://web.pdx.edu/~newsomj/cdaclass/ho_glm.pdf>
-```
-
-```{r sexr18-covar-diag, include = F}
-num_diag_sexed18 <- data.frame(imp = "None",
-                          Deviance = summary(sexed18.glm)$deviance,
-                          Dispersion = summary(sexed18.glm)$dispersion)%>% 
-  mutate(across(where(is.numeric), ~ round(., 2)))
-
-num_diag_sexr18_biom <- data.frame(imp = "None",
-                          Deviance = summary(sexr18_biom_glm3)$deviance,
-                          Dispersion = summary(sexr18_biom_glm3)$dispersion) %>% 
-  mutate(across(where(is.numeric), ~ round(., 2)))
-
-num_diag_sexr18_dens <- data.frame(imp = "None",
-                          Deviance = summary(sexr18_dens_glm3)$deviance,
-                          Dispersion = summary(sexr18_dens_glm3)$dispersion) %>% 
-  mutate(across(where(is.numeric), ~ round(., 2)))
-
-sexr18_covar_diag <- t(rbind(num_diag_sexr18_biom, num_diag_sexr18_dens, num_diag_sexed18)) 
-
-sexr18_covar_diag %>%
-  kbl(longtable = F, booktabs = T, linesep = "",
-    caption = "Numerical diagnosis of model's goodness of fit with versus without covariates on 2018 data set") %>%
-   add_header_above(c(" " = 1,
-                      "Population aboveground mass added" = 1, 
-                      "Population stand density added" = 1,
-                      "No covariate" = 1)) %>%
-  kable_styling(latex_options = c("scale_down")) %>%
-  landscape()
-```
 
