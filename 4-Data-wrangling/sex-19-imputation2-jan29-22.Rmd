@@ -196,7 +196,7 @@ grid.arrange( xy_female, xy_male) #patchwork doesn't accommodate lattice
 
 ```{r jt1-pool, echo=FALSE, message= FALSE, warning=FALSE}
 
-sexed19_imp1_eu <- sexed19_imp1_long%>%
+sexed19_imp1_eu <- sexed19_imp1_long %>%
   group_by(.imp, Block, Crop_ID, Corn_weed_management) %>%
 summarize(Female = sum(Female),
             Male = sum(Male),
