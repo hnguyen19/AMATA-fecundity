@@ -211,10 +211,10 @@ sexed19_imp1_jt_df <- enframe(sexed19_imp1_jt) %>% #have imp kept
 rename(.,imp = name) # rename "name" with "imp" for consistency
 
 sexed19_imp1_full <- sexed19_imp1_jt_df %>% 
-  filter(is.na(note)) # sets 1, 4, 14, 21, 22, and 24, among the 24 imputed sets are full - that allow estimable effects of crop ID, corn weed management, and the interaction of these two factors
+  filter(is.na(note)) # sets 5, 7, 11, 13, and 15, among the 24 imputed sets are full - that allow estimable effects of crop ID, corn weed management, and the interaction of these two factors
 
 sexed19_imp1_notfull <-  sexed19_imp1_jt_df %>% 
-  filter(!is.na(note)) # the other 18 sets that are not fully imputed, resulting nonestimable effects of corn weed management.
+  filter(!is.na(note)) # the other 19 sets that are not fully imputed, resulting nonestimable effects of corn weed management.
 
 n_imp1_notfull <- sexed19_imp1_notfull %>%  
 distinct(imp) %>% tally() #give the number of dataframes 
@@ -278,7 +278,7 @@ n2 <- nrow(sexed19_imp2_full)/4 #7
 ```{r m2400, echo=FALSE, message=FALSE, warning=FALSE}
 #trial 2, see if lambda and fmi are smaller, m = 2400 = 4 cores x 600 imputations/core
 
-sexed19_imp3_wide <- parlmice(sexed19_resp1 , cluster.seed = 500, print = FALSE, n.core = 4, n.imp.core = 600) # to use for visual later, change meth?
+sexed19_imp3_wide <- parlmice(sexed19_resp1 , cluster.seed = 500, print = FALSE, n.core = 4, n.imp.core = 600) 
 
 sexed19_imp3_long <- sexed19_imp3_wide %>%
   mice::complete("long") 
@@ -316,9 +316,9 @@ sexed19_imp3_full <- sexed19_imp3_jt_df %>%
   filter(is.na(note)) 
 
 sexed19_imp3_not_full <- sexed19_imp3_jt_df %>% 
-  filter(!is.na(note)) # nrow = 6312, n sets = 6312/3 = 2104
+  filter(!is.na(note)) # nrow = 6168, n sets = 6168/3 = 2056
 
-n3 <- nrow(sexed19_imp3_full)/4 #296; 296/4 = 74 full + 6312/3 = 2104 not full = 2400
+n3 <- nrow(sexed19_imp3_full)/4 #296; 296/4 = 74 full + 2056 not full  = 2400
 
 ## Current Mac/Windows operation system would crash for m = 24000
 ```
@@ -437,7 +437,8 @@ sexed19_imp1_summ_df <- enframe(sexed19_imp1_summ) %>%
 
 ```{r sexr19-covar-summ, echo=FALSE}
 #error from here
-## Read in 2019 raw data
+## Read in 2019 raw data. The clean data set with all the columns will create conflicts because of duplicated names in the original data and imputed data (Male, Female, Total). A version of this .Rmd is saved for reference, as sex-19-imputation-jan29-22-clean.Rmd.
+
 amata19_raw <- read_csv("../2-Data/Raw/AMATA_19_raw.csv",
                     col_types = cols(Plot = col_factor(), 
                                      Block = col_factor(), 
@@ -488,13 +489,13 @@ imp_orginal <- rbind(t(sexr19_biom_imp1_summ_df),
 
 kbl(imp_orginal, booktabs = TRUE, 
     caption = "Numerical diagnosis of model's goodness of fit with and without covariates on 2019 imputed data sets.") %>%
-  column_spec(c(2,5,15,22,23,25), bold = TRUE) %>% # sets 1, 4, 14, 21, 22, and 24, 
+  column_spec(c(6, 8, 12, 14, 16), bold = TRUE) %>% # sets 5, 7, 11, 13, and 15,
   pack_rows("(A) Population aboveground mass covariate", 1,3) %>% 
   pack_rows("(B) Population stand density covariate", 4,6) %>%
   pack_rows("(C) No covariate", 7,9)  %>% 
   kable_styling(latex_options =  c("scale_down")) %>%
   landscape() %>%
-  footnote(general = "Bold columns are imputations that produced full sets of data (six among 24 imputed sets) that allow estimation of the effects of crop idenity, corn weed management, and their interaction.")
+  footnote(general = "Bold columns are imputations that produced full sets of data (five among 24 imputed sets) that allow estimation of the effects of crop idenity, corn weed management, and their interaction.")
 ```
 
 

@@ -27,6 +27,7 @@ source("functions.R")
 library(fabricatr)  #for function split_quantile
 options(digits = 6) #to accommodate very small values
 set.seed(505) #to make sure the prediction equation R2 come out the same when others run this file 
+# R^2 in Table 9 are identical across runs but R^2 in Figure 5 are different by the second decimal across runs.
 ```
 
 ```{r, include=FALSE}
@@ -428,7 +429,7 @@ kbl(models_ci_rsq , booktabs = TRUE, longtable = FALSE,
     caption = "Means and SEs for estimated linear regression of waterhemp fecundity (ln(seeds + 1)) versus biomass (ln(gram + 0.005)) indices intercepts and slopes, accompanied by the R$^2$ values of each equations.") %>%
   add_header_above(c("Effect" = 2 , "Intercept" = 2, "Slope" = 2, "R$^2$" = 1)) %>% 
   kable_styling(latex_options = c("scale_down")) %>%
-  footnote(general = "C2: corn in the 2-year rotation, C3: corn in the 3-year rotation, C4: corn in the 4-year rotation, S2: soybean in the 2-year rotation, S3: soybean in the 3-year rotation; S4: soybean in the 4-year rotation, O3: oat in the 3-year rotation, O4: oat in the 4-year rotation, and A4: alfalfa in the 4-year rotation", threeparttable = T, footnote_as_chunk = TRUE)
+  footnote(general = "C2: corn in the 2-year rotation, C3: corn in the 3-year rotation, C4: corn in the 4-year rotation, S2: soybean in the 2-year rotation, S3: soybean in the 3-year rotation, S4: soybean in the 4-year rotation, O3: oat in the 3-year rotation, O4: oat in the 4-year rotation, and A4: alfalfa in the 4-year rotation", threeparttable = TRUE, footnote_as_chunk = TRUE)
 
 ```
 

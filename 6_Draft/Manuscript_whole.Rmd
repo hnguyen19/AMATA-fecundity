@@ -46,13 +46,13 @@ In all rotations, all the crop yields were comparable to those of Iowa and Boone
 
  
 
-
-```{r, child = "../5-Analysis/Individual-fecundity-model.Rmd" }
-# knitting this chunk and the next produced raw Latex code because of some package conflicts - not resolved yet
+```{r, child = "../5-Analysis/Population-sex-biom-dens.Rmd"}
 ```
 
 
-```{r, child = "../5-Analysis/Population-sex-biom-dens.Rmd"}
+
+```{r, child = "../5-Analysis/Individual-fecundity-model.Rmd" }
+# knitting this chunk and the next produced raw Latex code because of some package conflicts - not resolved yet
 ```
 
 

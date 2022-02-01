@@ -219,7 +219,7 @@ sexed19_imp1_notfull <-  sexed19_imp1_jt_df %>%
 n_imp1_notfull <- sexed19_imp1_notfull %>%  
 distinct(imp) %>% tally() #give the number of dataframes 
 
-n1 <- nrow(sexed19_imp1_full)/4
+n1 <- nrow(sexed19_imp1_full)/4 
 
 ```
 
@@ -438,7 +438,7 @@ sexed19_imp1_summ_df <- enframe(sexed19_imp1_summ) %>%
 ```{r sexr19-covar-summ, echo=FALSE}
 #error from here
 ## Read in 2019 raw data
-amata19<- read_csv("../2-Data/Raw/AMATA_19.csv",
+amata19<- read_csv("../2-Data/Clean/AMATA_19_clean.csv",
                     col_types = cols(Plot = col_factor(), 
                                      Block = col_factor(), 
                                      Crop = col_factor(),
@@ -454,7 +454,7 @@ amata19$Crop_ID <- factor(amata19$Crop_ID,
 
 ## merge the imputed data to the left to keep all the imputed sets
 prop_biom19 <- amata19 %>% 
-  left_join(sexed19_m24)
+  left_join(sexed19_m24, by = c("Block", "Crop_ID", "Corn_weed_management"))
 
 ## How does an ANCOVA model of sex ratio in response to crop identity, corn weed management, and population aboveground mass perform on the 24 imputed data sets?
 sexr19_biom_imp1_summ <- prop_biom19 %>% 

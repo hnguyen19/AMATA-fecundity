@@ -1,7 +1,7 @@
-This is LuaTeX, Version 1.0.4 (TeX Live 2017)  (format=lualatex 2017.5.23)  1 FEB 2022 15:54
+This is LuaTeX, Version 1.0.4 (TeX Live 2017)  (format=lualatex 2017.5.23)  1 FEB 2022 14:48
  restricted system commands enabled.
-**Manuscript_whole.tex
-(./Manuscript_whole.tex
+**sex-19-imputation-jan29-22.tex
+(./sex-19-imputation-jan29-22.tex
 LaTeX2e <2017-04-15>
 Lua module: luaotfload-main 2017/01/29 2.80001 OpenType layout system.
 Lua module: lualibs 2017-02-01 2.5 ConTeXt Lua standard libraries.
@@ -35,7 +35,7 @@ Inserting `luaotfload.aux.set_capheight' at position 3 in `luaotfload.patch_font
 '.
 Inserting `luaotfload.rewrite_fontname' at position 4 in `luaotfload.patch_font'
 .
-luaotfload | main : initialization completed in 0.110 seconds
+luaotfload | main : initialization completed in 1.722 seconds
 Babel <3.10> and hyphenation patterns for 1 language(s) loaded.
 (/usr/local/texlive/2017/texmf-dist/tex/latex/base/article.cls
 Document Class: article 2014/09/29 v1.4h Standard LaTeX document class
@@ -899,46 +899,29 @@ Package graphics Info: Driver file: luatex.def on input line 99.
 )
 \Gin@req@height=\dimen178
 \Gin@req@width=\dimen179
-) (/usr/local/texlive/2017/texmf-dist/tex/latex/lineno/lineno.sty
-Package: lineno 2005/11/02 line numbers on paragraphs v4.41
-\linenopenalty=\count181
-\output=\toks25
-\linenoprevgraf=\count182
-\linenumbersep=\dimen180
-\linenumberwidth=\dimen181
-\c@linenumber=\count183
-\c@pagewiselinenumber=\count184
-\c@LN@truepage=\count185
-\c@internallinenumber=\count186
-\c@internallinenumbers=\count187
-\quotelinenumbersep=\dimen182
-\bframerule=\dimen183
-\bframesep=\dimen184
-\bframebox=\box49
-LaTeX Info: Redefining \\ on input line 3056.
+) (/usr/local/texlive/2017/texmf-dist/tex/latex/multirow/multirow.sty
+Package: multirow 2016/11/25 v2.2 Span multiple rows of a table
+\multirow@colwidth=\skip63
+\multirow@cntb=\count181
+\multirow@dima=\skip64
+\bigstrutjot=\dimen180
+) (/usr/local/texlive/2017/texmf-dist/tex/latex/wrapfig/wrapfig.sty
+\wrapoverhang=\dimen181
+\WF@size=\dimen182
+\c@WF@wrappedlines=\count182
+\WF@box=\box49
+\WF@everypar=\toks25
+Package: wrapfig 2003/01/31  v 3.6
 ) (/usr/local/texlive/2017/texmf-dist/tex/latex/float/float.sty
 Package: float 2001/11/08 v1.3d Float enhancements (AL)
-\c@float@type=\count188
+\c@float@type=\count183
 \float@exts=\toks26
 \float@box=\box50
 \@float@everytoks=\toks27
 \@floatcapt=\box51
-) (/usr/local/texlive/2017/texmf-dist/tex/latex/multirow/multirow.sty
-Package: multirow 2016/11/25 v2.2 Span multiple rows of a table
-\multirow@colwidth=\skip63
-\multirow@cntb=\count189
-\multirow@dima=\skip64
-\bigstrutjot=\dimen185
-) (/usr/local/texlive/2017/texmf-dist/tex/latex/wrapfig/wrapfig.sty
-\wrapoverhang=\dimen186
-\WF@size=\dimen187
-\c@WF@wrappedlines=\count190
-\WF@box=\box52
-\WF@everypar=\toks28
-Package: wrapfig 2003/01/31  v 3.6
 ) (/usr/local/texlive/2017/texmf-dist/tex/latex/colortbl/colortbl.sty
 Package: colortbl 2012/02/13 v1.0a Color table columns (DPC)
-\everycr=\toks29
+\everycr=\toks28
 \minrowclearance=\skip65
 ) (/usr/local/texlive/2017/texmf-dist/tex/latex/oberdiek/pdflscape.sty
 Package: pdflscape 2016/05/14 v0.11 Display of landscape pages in PDF (HO)
@@ -950,37 +933,37 @@ Package pdflscape Info: Auto-detected driver: pdftex on input line 81.
 Package: tabu 2011/02/26 v2.8 - flexible LaTeX tabulars (FC)
 (/usr/local/texlive/2017/texmf-dist/tex/latex/varwidth/varwidth.sty
 Package: varwidth 2009/03/30 ver 0.92;  Variable-width minipages
-\@vwid@box=\box53
-\sift@deathcycles=\count191
-\@vwid@loff=\dimen188
-\@vwid@roff=\dimen189
+\@vwid@box=\box52
+\sift@deathcycles=\count184
+\@vwid@loff=\dimen183
+\@vwid@roff=\dimen184
 )
-\c@taburow=\count192
-\tabu@nbcols=\count193
-\tabu@cnt=\count194
-\tabu@Xcol=\count195
-\tabu@alloc=\count196
-\tabu@nested=\count197
-\tabu@target=\dimen190
-\tabu@spreadtarget=\dimen191
-\tabu@naturalX=\dimen192
-\tabucolX=\dimen193
-\tabu@Xsum=\dimen194
-\extrarowdepth=\dimen195
-\abovetabulinesep=\dimen196
-\belowtabulinesep=\dimen197
-\tabustrutrule=\dimen198
-\tabu@thebody=\toks30
-\tabu@footnotes=\toks31
-\tabu@box=\box54
-\tabu@arstrutbox=\box55
-\tabu@hleads=\box56
-\tabu@vleads=\box57
+\c@taburow=\count185
+\tabu@nbcols=\count186
+\tabu@cnt=\count187
+\tabu@Xcol=\count188
+\tabu@alloc=\count189
+\tabu@nested=\count190
+\tabu@target=\dimen185
+\tabu@spreadtarget=\dimen186
+\tabu@naturalX=\dimen187
+\tabucolX=\dimen188
+\tabu@Xsum=\dimen189
+\extrarowdepth=\dimen190
+\abovetabulinesep=\dimen191
+\belowtabulinesep=\dimen192
+\tabustrutrule=\dimen193
+\tabu@thebody=\toks29
+\tabu@footnotes=\toks30
+\tabu@box=\box53
+\tabu@arstrutbox=\box54
+\tabu@hleads=\box55
+\tabu@vleads=\box56
 \tabu@cellskip=\skip66
 )
 (/usr/local/texlive/2017/texmf-dist/tex/latex/threeparttable/threeparttable.sty
 Package: threeparttable 2003/06/13  v 3.0
-\@tempboxb=\box58
+\@tempboxb=\box57
 )
 (/usr/local/texlive/2017/texmf-dist/tex/latex/threeparttablex/threeparttablex.s
 ty
@@ -992,21 +975,21 @@ Package: trimspaces 2009/09/17 v1.1 Trim spaces around a token list
 ))
 \TPTL@width=\skip67
 ) (/usr/local/texlive/2017/texmf-dist/tex/generic/ulem/ulem.sty
-\UL@box=\box59
-\UL@hyphenbox=\box60
+\UL@box=\box58
+\UL@hyphenbox=\box59
 \UL@skip=\skip68
-\UL@hook=\toks32
-\UL@height=\dimen199
-\UL@pe=\count198
-\UL@pixel=\dimen256
-\ULC@box=\box61
+\UL@hook=\toks31
+\UL@height=\dimen194
+\UL@pe=\count191
+\UL@pixel=\dimen195
+\ULC@box=\box60
 Package: ulem 2012/05/18
-\ULdepth=\dimen257
+\ULdepth=\dimen196
 ) (/usr/local/texlive/2017/texmf-dist/tex/latex/makecell/makecell.sty
 Package: makecell 2009/08/03 V0.1e Managing of Tab Column Heads and Cells
-\rotheadsize=\dimen258
-\c@nlinenum=\count199
-\TeXr@lab=\toks33
+\rotheadsize=\dimen197
+\c@nlinenum=\count192
+\TeXr@lab=\toks32
 ) (/usr/local/texlive/2017/texmf-dist/tex/lualatex/selnolig/selnolig.sty
 === Package selnolig, Version 0.302, Date 2015/10/26 ===
 Package: selnolig 2015/10/26
@@ -1016,30 +999,31 @@ Package: natbib 2010/09/13 8.31b (PWD, AO)
 \bibhang=\skip69
 \bibsep=\skip70
 LaTeX Info: Redefining \cite on input line 694.
-\c@NAT@ctr=\count266
-) (./Manuscript_whole.aux)
-\openout1 = Manuscript_whole.aux
+\c@NAT@ctr=\count193
+)
+No file sex-19-imputation-jan29-22.aux.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 97.
-LaTeX Font Info:    ... okay on input line 97.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 97.
-LaTeX Font Info:    ... okay on input line 97.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 97.
-LaTeX Font Info:    ... okay on input line 97.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 97.
-LaTeX Font Info:    ... okay on input line 97.
-LaTeX Font Info:    Checking defaults for TU/lmr/m/n on input line 97.
-LaTeX Font Info:    ... okay on input line 97.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 97.
-LaTeX Font Info:    ... okay on input line 97.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 97.
-LaTeX Font Info:    ... okay on input line 97.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 97.
-LaTeX Font Info:    ... okay on input line 97.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 97.
-LaTeX Font Info:    ... okay on input line 97.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 97.
-LaTeX Font Info:    ... okay on input line 97.
+\openout1 = sex-19-imputation-jan29-22.aux
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 93.
+LaTeX Font Info:    ... okay on input line 93.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 93.
+LaTeX Font Info:    ... okay on input line 93.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 93.
+LaTeX Font Info:    ... okay on input line 93.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 93.
+LaTeX Font Info:    ... okay on input line 93.
+LaTeX Font Info:    Checking defaults for TU/lmr/m/n on input line 93.
+LaTeX Font Info:    ... okay on input line 93.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 93.
+LaTeX Font Info:    ... okay on input line 93.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 93.
+LaTeX Font Info:    ... okay on input line 93.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 93.
+LaTeX Font Info:    ... okay on input line 93.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 93.
+LaTeX Font Info:    ... okay on input line 93.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 93.
+LaTeX Font Info:    ... okay on input line 93.
 (load luc: /Users/huongnguyen/Library/texlive/2017/texmf-var/luatex-cache/generi
 c/fonts/otl/latinmodern-math.luc)
 .................................................
@@ -1047,7 +1031,7 @@ c/fonts/otl/latinmodern-math.luc)
 . 
 . latinmodern-math scale = 1.
 .................................................
-\g__fontspec_family_latinmodern-math.otf_int=\count267
+\g__fontspec_family_latinmodern-math.otf_int=\count194
 .................................................
 . fontspec info: "set-scale"
 . 
@@ -1096,22 +1080,22 @@ dern-math.otf}].
 . - 'bold small caps'  (bx/sc) with NFSS spec.: 
 .................................................
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(0)/m/n' will be
-(Font)              scaled to size 10.0pt on input line 97.
+(Font)              scaled to size 10.0pt on input line 93.
 .................................................
 . fontspec info: "set-scale"
 . 
 . latinmodern-math scale = 1.
 .................................................
 LaTeX Font Info:    Encoding `OT1' has changed to `TU' for symbol font
-(Font)              `operators' in the math version `normal' on input line 97.
+(Font)              `operators' in the math version `normal' on input line 93.
 LaTeX Font Info:    Overwriting symbol font `operators' in version `normal'
 (Font)                  OT1/lmr/m/n --> TU/latinmodern-math.otf(0)/m/n on input 
-line 97.
+line 93.
 LaTeX Font Info:    Encoding `OT1' has changed to `TU' for symbol font
-(Font)              `operators' in the math version `bold' on input line 97.
+(Font)              `operators' in the math version `bold' on input line 93.
 LaTeX Font Info:    Overwriting symbol font `operators' in version `bold'
 (Font)                  OT1/lmr/bx/n --> TU/latinmodern-math.otf(0)/bx/n on inpu
-t line 97.
+t line 93.
 .................................................
 . fontspec info: "set-scale"
 . 
@@ -1192,15 +1176,15 @@ y=0;"<-7>s*[1.00001]"[latinmodern-math.otf]:mode=base;script=math;language=DFLT;
 . 22\font =163840sp\relax 
 .................................................
 LaTeX Font Info:    Encoding `OMS' has changed to `TU' for symbol font
-(Font)              `symbols' in the math version `normal' on input line 97.
+(Font)              `symbols' in the math version `normal' on input line 93.
 LaTeX Font Info:    Overwriting symbol font `symbols' in version `normal'
 (Font)                  OMS/lmsy/m/n --> TU/latinmodern-math.otf(1)/m/n on input
- line 97.
+ line 93.
 LaTeX Font Info:    Encoding `OMS' has changed to `TU' for symbol font
-(Font)              `symbols' in the math version `bold' on input line 97.
+(Font)              `symbols' in the math version `bold' on input line 93.
 LaTeX Font Info:    Overwriting symbol font `symbols' in version `bold'
 (Font)                  OMS/lmsy/b/n --> TU/latinmodern-math.otf(1)/bx/n on inpu
-t line 97.
+t line 93.
 .................................................
 . fontspec info: "set-scale"
 . 
@@ -1266,17 +1250,17 @@ y=0;"<-7>s*[0.99999]"[latinmodern-math.otf]:mode=base;script=math;language=DFLT;
 . \fontdimen 12\font =393216sp\relax \fontdimen 13\font =0pt\relax 
 .................................................
 LaTeX Font Info:    Encoding `OMX' has changed to `TU' for symbol font
-(Font)              `largesymbols' in the math version `normal' on input line 97
+(Font)              `largesymbols' in the math version `normal' on input line 93
 .
 LaTeX Font Info:    Overwriting symbol font `largesymbols' in version `normal'
 (Font)                  OMX/lmex/m/n --> TU/latinmodern-math.otf(2)/m/n on input
- line 97.
+ line 93.
 LaTeX Font Info:    Encoding `OMX' has changed to `TU' for symbol font
-(Font)              `largesymbols' in the math version `bold' on input line 97.
+(Font)              `largesymbols' in the math version `bold' on input line 93.
 LaTeX Font Info:    Overwriting symbol font `largesymbols' in version `bold'
 (Font)                  OMX/lmex/m/n --> TU/latinmodern-math.otf(2)/bx/n on inpu
-t line 97.
-LaTeX Info: Redefining \microtypecontext on input line 97.
+t line 93.
+LaTeX Info: Redefining \microtypecontext on input line 93.
 Package microtype Info: Generating PDF output.
 Package microtype Info: Character protrusion enabled (level 2).
 Package microtype Info: Using protrusion set `basicmath'.
@@ -1292,17 +1276,17 @@ File: mt-LatinModernRoman.cfg 2013/03/13 v1.0 microtype config. file: Latin Mode
 rn Roman (RS)
 ) (/usr/local/texlive/2017/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count268
-\scratchdimen=\dimen259
-\scratchbox=\box62
-\nofMPsegments=\count269
-\nofMParguments=\count270
-\everyMPshowfont=\toks34
-\MPscratchCnt=\count271
-\MPscratchDim=\dimen260
-\MPnumerator=\count272
-\makeMPintoPDFobject=\count273
-\everyMPtoPDFconversion=\toks35
+\scratchcounter=\count195
+\scratchdimen=\dimen198
+\scratchbox=\box61
+\nofMPsegments=\count196
+\nofMParguments=\count197
+\everyMPshowfont=\toks33
+\MPscratchCnt=\count198
+\MPscratchDim=\dimen199
+\MPnumerator=\count199
+\makeMPintoPDFobject=\count266
+\everyMPtoPDFconversion=\toks34
 ) (/usr/local/texlive/2017/texmf-dist/tex/latex/oberdiek/epstopdf-base.sty
 Package: epstopdf-base 2016/05/15 v2.6 Base part for package epstopdf
 (/usr/local/texlive/2017/texmf-dist/tex/latex/oberdiek/grfext.sty
@@ -1318,18 +1302,18 @@ Package grfext Info: Graphics extension search list:
 File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Live
 
 ))
-\AtBeginShipoutBox=\box63
-Package hyperref Info: Link coloring OFF on input line 97.
+\AtBeginShipoutBox=\box62
+Package hyperref Info: Link coloring OFF on input line 93.
 (/usr/local/texlive/2017/texmf-dist/tex/latex/hyperref/nameref.sty
 Package: nameref 2016/05/21 v2.44 Cross-referencing by name of section
 (/usr/local/texlive/2017/texmf-dist/tex/generic/oberdiek/gettitlestring.sty
 Package: gettitlestring 2016/05/16 v1.5 Cleanup title references (HO)
 )
-\c@section@level=\count274
+\c@section@level=\count267
 )
-LaTeX Info: Redefining \ref on input line 97.
-LaTeX Info: Redefining \pageref on input line 97.
-LaTeX Info: Redefining \nameref on input line 97.
+LaTeX Info: Redefining \ref on input line 93.
+LaTeX Info: Redefining \pageref on input line 93.
+LaTeX Info: Redefining \nameref on input line 93.
 *geometry* driver: auto-detecting
 *geometry* detected driver: pdftex
 *geometry* verbose mode - [ preamble ] result:
@@ -1365,295 +1349,165 @@ LaTeX Info: Redefining \nameref on input line 97.
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
 (load luc: /Users/huongnguyen/Library/texlive/2017/texmf-var/luatex-cache/generi
-c/fonts/otl/lmroman17-regular.luc)(load luc: /Users/huongnguyen/Library/texlive/
-2017/texmf-var/luatex-cache/generic/fonts/otl/lmroman12-italic.luc)(load luc: /U
-sers/huongnguyen/Library/texlive/2017/texmf-var/luatex-cache/generic/fonts/otl/l
-mroman5-regular.luc)(load luc: /Users/huongnguyen/Library/texlive/2017/texmf-var
-/luatex-cache/generic/fonts/otl/lmsans8-regular.luc)(load luc: /Users/huongnguye
-n/Library/texlive/2017/texmf-var/luatex-cache/generic/fonts/otl/lmroman12-regula
-r.luc)
+c/fonts/otl/lmroman12-regular.luc)(load luc: /Users/huongnguyen/Library/texlive/
+2017/texmf-var/luatex-cache/generic/fonts/otl/lmroman12-bold.luc)
+
+Package natbib Warning: Citation `azurMultipleImputationChained2011' on page 1 u
+ndefined on input line 105.
+
+(load luc: /Users/huongnguyen/Library/texlive/2017/texmf-var/luatex-cache/generi
+c/fonts/otl/lmmono10-regular.luc)
+
+Package natbib Warning: Citation `vanbuurenMiceMultivariateImputation2011' on pa
+ge 1 undefined on input line 107.
+
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(0)/m/n' will be
-(Font)              scaled to size 12.0pt on input line 99.
+(Font)              scaled to size 7.0pt on input line 107.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(0)/m/n' will be
-(Font)              scaled to size 8.0pt on input line 99.
-LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(0)/m/n' will be
-(Font)              scaled to size 6.0pt on input line 99.
-LaTeX Font Info:    Try loading font information for OML+lmm on input line 99.
+(Font)              scaled to size 5.0pt on input line 107.
+LaTeX Font Info:    Try loading font information for OML+lmm on input line 107.
 (/usr/local/texlive/2017/texmf-dist/tex/latex/lm/omllmm.fd
 File: omllmm.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(1)/m/n' will be
-(Font)              scaled to size 12.00018pt on input line 99.
+(Font)              scaled to size 10.00015pt on input line 107.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(1)/m/n' will be
-(Font)              scaled to size 8.00012pt on input line 99.
+(Font)              scaled to size 7.0001pt on input line 107.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(1)/m/n' will be
-(Font)              scaled to size 6.00009pt on input line 99.
+(Font)              scaled to size 5.00008pt on input line 107.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n' will be
-(Font)              scaled to size 11.99982pt on input line 99.
+(Font)              scaled to size 9.99985pt on input line 107.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n' will be
-(Font)              scaled to size 7.99988pt on input line 99.
+(Font)              scaled to size 6.9999pt on input line 107.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n' will be
-(Font)              scaled to size 5.99991pt on input line 99.
-LaTeX Font Info:    Try loading font information for U+msa on input line 99.
+(Font)              scaled to size 4.99992pt on input line 107.
+LaTeX Font Info:    Try loading font information for U+msa on input line 107.
 (/usr/local/texlive/2017/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 ) (/usr/local/texlive/2017/texmf-dist/tex/latex/microtype/mt-msa.cfg
 File: mt-msa.cfg 2006/02/04 v1.1 microtype config. file: AMS symbols (a) (RS)
 )
-LaTeX Font Info:    Try loading font information for U+msb on input line 99.
+LaTeX Font Info:    Try loading font information for U+msb on input line 107.
 (/usr/local/texlive/2017/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 ) (/usr/local/texlive/2017/texmf-dist/tex/latex/microtype/mt-msb.cfg
 File: mt-msb.cfg 2005/06/01 v1.0 microtype config. file: AMS symbols (b) (RS)
-)(load luc: /Users/huongnguyen/Library/texlive/2017/texmf-var/luatex-cache/gener
-ic/fonts/otl/lmroman12-bold.luc) [1
+)
 
-{/usr/local/texlive/2017/texmf-var/fonts/map/pdftex/updmap/pdftex.map}] [2]
-LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(0)/m/n' will be
-(Font)              scaled to size 7.0pt on input line 142.
-LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(0)/m/n' will be
-(Font)              scaled to size 5.0pt on input line 142.
-LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(1)/m/n' will be
-(Font)              scaled to size 10.00015pt on input line 142.
-LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(1)/m/n' will be
-(Font)              scaled to size 7.0001pt on input line 142.
-LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(1)/m/n' will be
-(Font)              scaled to size 5.00008pt on input line 142.
-LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n' will be
-(Font)              scaled to size 9.99985pt on input line 142.
-LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n' will be
-(Font)              scaled to size 6.9999pt on input line 142.
-LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n' will be
-(Font)              scaled to size 4.99992pt on input line 142.
-
-Package hyperref Warning: Suppressing empty link on input line 146.
-
-[3](load luc: /Users/huongnguyen/Library/texlive/2017/texmf-var/luatex-cache/gen
-eric/fonts/otl/lmroman8-regular.luc)(load luc: /Users/huongnguyen/Library/texliv
-e/2017/texmf-var/luatex-cache/generic/fonts/otl/lmroman8-bold.luc)
-Overfull \hbox (13.48448pt too wide) in paragraph at lines 161--161
-[]|\TU/lmr/m/n/8 seedsm$^{-2}$|  
- []
+Package natbib Warning: Citation `vanbuurenMiceMultivariateImputation2011' on pa
+ge 1 undefined on input line 107.
 
 
-Overfull \hbox (3.44928pt too wide) in paragraph at lines 164--164
-[]|\TU/lmr/m/n/8 kgm$^{-2}$|  
- []
+Package natbib Warning: Citation `whiteMultipleImputationUsing2011' on page 1 un
+defined on input line 107.
 
 
-Overfull \hbox (13.48448pt too wide) in paragraph at lines 170--170
-[]|\TU/lmr/m/n/8 seedsm$^{-2}$|  
- []
+Package natbib Warning: Citation `azurMultipleImputationChained2011' on page 1 u
+ndefined on input line 109.
 
 
-Overfull \hbox (3.44928pt too wide) in paragraph at lines 173--173
-[]|\TU/lmr/m/n/8 kgm$^{-2}$|  
- []
+Package natbib Warning: Citation `whiteMultipleImputationUsing2011' on page 1 un
+defined on input line 109.
 
 
-Overfull \hbox (1.68999pt too wide) in paragraph at lines 155--179
- [][] 
- []
-
-[4
-warning  (pdf backend): ignoring duplicate destination with the name 'table.1'
-]
-Overfull \hbox (53.67491pt too wide) in paragraph at lines 186--194
- [][] 
- []
-
-<concept-year.png, id=148, 963.6pt x 542.025pt>
-File: concept-year.png Graphic file (type png)
-<use concept-year.png>
-Package luatex.def Info: concept-year.png used on input line 197.
-(luatex.def)             Requested size: 469.75679pt x 264.23819pt.
-
-Overfull \hbox (75.86299pt too wide) in paragraph at lines 196--199
-[]\TU/lmr/m/n/10 \be-gin{fig-ure}[H] []
- []
-
-[5
-warning  (pdf backend): ignoring duplicate destination with the name 'table.2'
+Package natbib Warning: Citation `nguyenModelCheckingMultiple2017' on page 1 und
+efined on input line 109.
 
 
-<./concept-year.png>] [6
-warning  (pdf backend): ignoring duplicate destination with the name 'table.3'
-](load luc: /Users/huongnguyen/Library/texlive/2017/texmf-var/luatex-cache/gener
-ic/fonts/otl/lmmono10-regular.luc) [7
+Package natbib Warning: Citation `vanbuurenFlexibleImputationMissing2018' on pag
+e 1 undefined on input line 109.
 
-
-] [8] [9]
-
-Package natbib Warning: Citation `nguyenWeedCommunityCompositioninpreparation' o
-n page 10 undefined on input line 374.
-
-
-Package hyperref Warning: Suppressing empty link on input line 386.
-
-
-Package hyperref Warning: Suppressing empty link on input line 386.
-
-
-Package hyperref Warning: Suppressing empty link on input line 386.
-
-
-Package hyperref Warning: Suppressing empty link on input line 386.
-
-[10] [11
-warning  (pdf backend): ignoring duplicate destination with the name 'table.4'
-]
-<Manuscript_whole_files/figure-latex/pop-biom-dens-all-1.png, id=266, 568.1225p
-t x 568.1225pt>
-File: Manuscript_whole_files/figure-latex/pop-biom-dens-all-1.png Graphic file (
-type png)
-<use Manuscript_whole_files/figure-latex/pop-biom-dens-all-1.png>
-Package luatex.def Info: Manuscript_whole_files/figure-latex/pop-biom-dens-all-1
-.png used on input line 409.
-(luatex.def)             Requested size: 469.7731pt x 469.7731pt.
-
-Overfull \hbox (75.8793pt too wide) in paragraph at lines 408--411
-[]\TU/lmr/m/n/10 \be-gin{fig-ure}[H] []
- []
-
-(load luc: /Users/huongnguyen/Library/texlive/2017/texmf-var/luatex-cache/generi
-c/fonts/otl/lmroman7-regular.luc)
-
-Package hyperref Warning: Suppressing empty link on input line 455.
-
-
-Package hyperref Warning: Suppressing empty link on input line 455.
-
-
-Package hyperref Warning: Suppressing empty link on input line 455.
-
-[12
-
-
-<./Manuscript_whole_files/figure-latex/pop-biom-dens-all-1.png>] [13
-warning  (pdf backend): ignoring duplicate destination with the name 'table.5'
-] [14] [15
-warning  (pdf backend): ignoring duplicate destination with the name 'table.6'
-]
-<Manuscript_whole_files/figure-latex/sexr18-dens-arrow-1.png, id=298, 568.1225p
-t x 712.6625pt>
-File: Manuscript_whole_files/figure-latex/sexr18-dens-arrow-1.png Graphic file (
-type png)
-<use Manuscript_whole_files/figure-latex/sexr18-dens-arrow-1.png>
-Package luatex.def Info: Manuscript_whole_files/figure-latex/sexr18-dens-arrow-1
-.png used on input line 497.
-(luatex.def)             Requested size: 469.7731pt x 589.29137pt.
-
-Overfull \hbox (75.8793pt too wide) in paragraph at lines 496--499
-[]\TU/lmr/m/n/10 \be-gin{fig-ure}[H] []
- []
-
-[16
-
-
-<./Manuscript_whole_files/figure-latex/sexr18-dens-arrow-1.png>]
-<Manuscript_whole_files/figure-latex/sexr19-arrow-1.png, id=304, 562.1pt x 701.
-62125pt>
-File: Manuscript_whole_files/figure-latex/sexr19-arrow-1.png Graphic file (type 
-png)
-<use Manuscript_whole_files/figure-latex/sexr19-arrow-1.png>
-Package luatex.def Info: Manuscript_whole_files/figure-latex/sexr19-arrow-1.png 
-used on input line 501.
-(luatex.def)             Requested size: 469.75067pt x 586.34947pt.
-
-Underfull \hbox (badness 10000) in paragraph at lines 501--501
-[][]
- []
-
-[17]
-Overfull \vbox (19.85947pt too high) has occurred while \output is active []
-
-[18
-warning  (pdf backend): ignoring duplicate destination with the name 'figure.1'
-<./Manuscript_whole_files/figure-latex/sexr19-arrow-1.png>] [19] [20
-warning  (pdf backend): ignoring duplicate destination with the name 'table.7'
-]
-<Manuscript_whole_files/figure-latex/full-p-1.png, id=333, 568.1225pt x 710.655
-pt>
-File: Manuscript_whole_files/figure-latex/full-p-1.png Graphic file (type png)
-<use Manuscript_whole_files/figure-latex/full-p-1.png>
-Package luatex.def Info: Manuscript_whole_files/figure-latex/full-p-1.png used o
-n input line 639.
-(luatex.def)             Requested size: 469.7731pt x 587.63138pt.
-[21
-
-
-] [22
-warning  (pdf backend): ignoring duplicate destination with the name 'table.8'
-] [23
-warning  (pdf backend): ignoring duplicate destination with the name 'table.9'
-] [24
-warning  (pdf backend): ignoring duplicate destination with the name 'figure.2'
-<./Manuscript_whole_files/figure-latex/full-p-1.png>] [25] [26] [27]
 
 Package natbib Warning: Citation `audigierMicemdMultipleImputation2019' on page 
-28 undefined on input line 717.
+1 undefined on input line 109.
 
 
-<Manuscript_whole_files/figure-latex/kernel-xy-imp1-all-diag-1.png, id=478, 112
-6.2075pt x 1137.24875pt>
-File: Manuscript_whole_files/figure-latex/kernel-xy-imp1-all-diag-1.png Graphic 
-file (type png)
-<use Manuscript_whole_files/figure-latex/kernel-xy-imp1-all-diag-1.png>
-Package luatex.def Info: Manuscript_whole_files/figure-latex/kernel-xy-imp1-all-
-diag-1.png used on input line 732.
+Package natbib Warning: Citation `vanbuurenMiceMultivariateImputation2011' on pa
+ge 1 undefined on input line 109.
+
+
+LaTeX Warning: Reference `fig:kernel-xy-imp1-all-diag' on page 1 undefined on in
+put line 109.
+
+
+Package natbib Warning: Citation `nguyenDataImpactCropping2022' on page 1 undefi
+ned on input line 115.
+
+
+Package natbib Warning: Citation `whiteMultipleImputationUsing2011' on page 1 un
+defined on input line 115.
+
+
+LaTeX Warning: Reference `tab:pool-diag' on page 1 undefined on input line 115.
+
+
+LaTeX Warning: Reference `fig:kernel-xy-imp1-all-diag' on page 1 undefined on in
+put line 115.
+
+
+Package natbib Warning: Citation `nguyenDataImpactCropping2022' on page 1 undefi
+ned on input line 121.
+
+[1
+
+{/usr/local/texlive/2017/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]
+<sex-19-imputation-jan29-22_files/figure-latex/kernel-xy-imp1-all-diag-1.png, i
+d=23, 1126.2075pt x 1137.24875pt>
+File: sex-19-imputation-jan29-22_files/figure-latex/kernel-xy-imp1-all-diag-1.pn
+g Graphic file (type png)
+
+<use sex-19-imputation-jan29-22_files/figure-latex/kernel-xy-imp1-all-diag-1.pn
+g>
+Package luatex.def Info: sex-19-imputation-jan29-22_files/figure-latex/kernel-xy
+-imp1-all-diag-1.png used on input line 124.
 (luatex.def)             Requested size: 469.75606pt x 474.36151pt.
-[28] [29
-warning  (pdf backend): ignoring duplicate destination with the name 'figure.3'
-<./Manuscript_whole_files/figure-latex/kernel-xy-imp1-all-diag-1.png>] [30
-warning  (pdf backend): ignoring duplicate destination with the name 'table.10'
-] [31
-warning  (pdf backend): ignoring duplicate destination with the name 'table.11'
-] (./Manuscript_whole.bbl [32
-
-
-
-
-] [33] [34])
+[2
+warning  (pdf backend): ignoring duplicate destination with the name 'figure.1'
+<./sex-19-imputation-jan29-22_files/figure-latex/kernel-xy-imp1-all-diag-1.png>](load luc: /Users/huongnguyen/Library/texlive/2017/texmf-var/luatex-cache/generic/fonts/otl/lmroman7-regular.luc) [3
+warning  (pdf backend): ignoring duplicate destination with the name 'table.1'
+] [4
+warning  (pdf backend): ignoring duplicate destination with the name 'table.2'
+]
+No file sex-19-imputation-jan29-22.bbl.
 
 Package natbib Warning: There were undefined citations.
 
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 816.
-[35]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 816.
-(./Manuscript_whole.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 816.
-Package atveryend Info: Empty hook `AtEndAfterFileList' on input line 816.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 201.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 201.
+(./sex-19-imputation-jan29-22.aux)
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 201.
+Package atveryend Info: Empty hook `AtEndAfterFileList' on input line 201.
+
+LaTeX Warning: There were undefined references.
+
+
+LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
+
 )
 
 Here is how much of LuaTeX's memory you used:
- 28328 strings out of 494481
+ 27562 strings out of 494481
  125171,794899 words of node,token memory allocated
- 587 words of node memory still in use:
-   7 hlist, 2 vlist, 2 rule, 2 glue, 1 kern, 13 attribute, 66 glue_spec, 13 attr
-ibute_list, 1 write, 1 user_defined, 3 pdf_action nodes
-   avail lists: 1:1,2:1752,3:287,4:176,5:817,6:5938,7:3531,8:791,9:937,10:29,11:
-536,12:1
- 31344 multiletter control sequences out of 65536+600000
- 67 fonts using 18339179 bytes
- 59i,19n,120p,1856b,567s stack positions out of 5000i,500n,10000p,200000b,100000s
-</usr/local/texlive/2017/texmf-dist/fonts/opentype/public/lm-math/latinmodern-ma
-th.otf></usr/local/texlive/2017/texmf-dist/fonts/opentype/public/lm-math/latinmo
-dern-math.otf></usr/local/texlive/2017/texmf-dist/fonts/opentype/public/lm/lmmon
-o10-regular.otf></usr/local/texlive/2017/texmf-dist/fonts/opentype/public/lm/lmr
-oman10-bold.otf></usr/local/texlive/2017/texmf-dist/fonts/opentype/public/lm/lmr
-oman8-bold.otf></usr/local/texlive/2017/texmf-dist/fonts/opentype/public/lm/lmro
-man8-regular.otf></usr/local/texlive/2017/texmf-dist/fonts/opentype/public/lm-ma
-th/latinmodern-math.otf></usr/local/texlive/2017/texmf-dist/fonts/opentype/publi
-c/lm/lmroman10-regular.otf></usr/local/texlive/2017/texmf-dist/fonts/opentype/pu
-blic/lm/lmroman12-bold.otf></usr/local/texlive/2017/texmf-dist/fonts/opentype/pu
-blic/lm/lmroman10-italic.otf></usr/local/texlive/2017/texmf-dist/fonts/opentype/
-public/lm/lmroman12-italic.otf></usr/local/texlive/2017/texmf-dist/fonts/opentyp
-e/public/lm/lmsans8-regular.otf></usr/local/texlive/2017/texmf-dist/fonts/openty
-pe/public/lm/lmroman17-regular.otf>
-Output written on Manuscript_whole.pdf (35 pages, 909016 bytes).
+ 559 words of node memory still in use:
+   6 hlist, 2 vlist, 2 rule, 2 glue, 1 kern, 11 attribute, 65 glue_spec, 11 attr
+ibute_list, 5 write, 1 user_defined nodes
+   avail lists: 1:2,2:1740,3:54,4:39,5:816,6:5014,7:3531,8:791,9:937,10:13,11:36
+2,12:1
+ 30827 multiletter control sequences out of 65536+600000
+ 41 fonts using 9807783 bytes
+ 54i,12n,120p,1266b,413s stack positions out of 5000i,500n,10000p,200000b,100000s
+</usr/local/texlive/2017/texmf-dist/fonts/opentype/public/lm/lmroman10-italic.ot
+f></usr/local/texlive/2017/texmf-dist/fonts/opentype/public/lm-math/latinmodern-
+math.otf></usr/local/texlive/2017/texmf-dist/fonts/opentype/public/lm-math/latin
+modern-math.otf></usr/local/texlive/2017/texmf-dist/fonts/opentype/public/lm/lmm
+ono10-regular.otf></usr/local/texlive/2017/texmf-dist/fonts/opentype/public/lm/l
+mroman10-regular.otf></usr/local/texlive/2017/texmf-dist/fonts/opentype/public/l
+m/lmroman10-bold.otf></usr/local/texlive/2017/texmf-dist/fonts/opentype/public/l
+m/lmroman12-bold.otf>
+Output written on sex-19-imputation-jan29-22.pdf (4 pages, 451859 bytes).
 
-PDF statistics: 695 PDF objects out of 1000 (max. 8388607)
- 601 compressed objects within 7 object streams
- 172 named destinations out of 1000 (max. 131072)
- 201 words of extra memory for PDF output out of 10000 (max. 100000000)
+PDF statistics: 100 PDF objects out of 1000 (max. 8388607)
+ 70 compressed objects within 1 object stream
+ 16 named destinations out of 1000 (max. 131072)
+ 33 words of extra memory for PDF output out of 10000 (max. 100000000)
 
