@@ -30,7 +30,7 @@ library(tinytex)
 
 ```{r, include=FALSE}
 #### 2018 aboveground mass and density data #### 
-amata18 <- read_csv("../2 Data/Clean data/AMATA_18_clean.csv",
+amata18 <- read_csv("../2-Data/Clean/AMATA_18_clean.csv",
                     col_types = cols(Plot = col_factor(), 
                                      Block = col_factor(), 
                                      Crop = col_factor(),
@@ -47,11 +47,12 @@ amata18$Crop_ID <- factor(amata18$Crop_ID, levels = c("C2", "S2",
                                                                 "C4", "S4", "O4", "A4"))
 
 amata18 <- amata18 %<>%
-  mutate_at(c("Block","Crop_ID","Rotation","Corn_weed_management", "Plot", "Side", "Year"),funs(factor(.)))
+  mutate_at(c("Block","Crop_ID","Rotation","Corn_weed_management"),
+            funs(factor(.)))
 
 #### 2019 aboveground mass and density data #### 
 
-amata19 <- read_csv("../2 Data/Clean data/AMATA_19_clean.csv",
+amata19 <- read_csv("../2-Data/Clean/AMATA_19_clean.csv",
                     col_types = cols(Plot = col_factor(), 
                                      Block = col_factor(), 
                                      Crop = col_factor(),
@@ -61,12 +62,14 @@ amata19 <- read_csv("../2 Data/Clean data/AMATA_19_clean.csv",
                                      Male = col_integer(), 
                                      Female = col_integer()))
 
-amata19$Crop_ID <- factor(amata19$Crop_ID, levels = c("C2", "S2",
-                                                                "C3", "S3", "O3",
-                                                                "C4", "S4", "O4", "A4"))
+amata19$Crop_ID <- factor(amata19$Crop_ID,
+                          levels = c("C2", "S2",
+                                     "C3", "S3", "O3",
+                                     "C4", "S4", "O4", "A4"))
 
 amata19 <- amata19 %<>%
-  mutate_at(c("Block","Crop_ID","Rotation","Corn_weed_management", "Plot", "Side", "Year"),funs(factor(.)))
+  mutate_at(c("Block","Crop_ID","Corn_weed_management"),
+            funs(factor(.)))
 
 ```
 
@@ -75,42 +78,38 @@ amata19 <- amata19 %<>%
 ```{r pop-biom-18, echo=TRUE, fig.cap="Diagnosis plot for a model of the effects of crop identity and corn weed management on 2018 population aboveground mass."}
 #### Did crop identity and corn weed management affect AMATA aboveground mass in 2018? ####
 
-pop_biom18_2 <- lm(log(g_m_sq + 0.00025) ~ Block + Crop_ID +
-                     Corn_weed_management + Crop_ID:Corn_weed_management, 
+pop_biom18 <- lm(log(g_m_sq + 0.00025) ~ Block + Crop_ID*Corn_weed_management, 
                    data = amata18)
-resid_panel(pop_biom18_2) 
+resid_panel(pop_biom18) 
 ```
 
 
 ```{r pop-biom-19, echo=TRUE, fig.cap="Diagnosis plot for a model of the effects of crop identity and corn weed management on 2019 population aboveground mass."}
 #### Did crop identity and corn weed management affect AMATA aboveground mass in 2018? ####
 
-pop_biom19_2 <- lm(log(g_m_sq + 0.002) ~ Block + Crop_ID + 
-                     Corn_weed_management + Crop_ID:Corn_weed_management,
+pop_biom19<- lm(log(g_m_sq + 0.002) ~ Block + Crop_ID*Corn_weed_management,
                    data = amata19)
 
-resid_panel(pop_biom19_2) 
+resid_panel(pop_biom19) 
 ```
 
 
 ```{r pop-dens-18, echo=TRUE,  fig.cap="Diagnosis plot for a model of the effects of crop identity and corn weed management on 2018 population density."}
 #### Did crop identity and corn weed management affect AMATA density in 2018? ####
 
-pop_dens18_3 <- lm(log(plant_m_sq + 0.025) ~ Block + Crop_ID +
-                     Corn_weed_management + Crop_ID:Corn_weed_management, 
+pop_dens18 <- lm(log(plant_m_sq + 0.025) ~ Block + Crop_ID*Corn_weed_management, 
                    data = amata18)
 
-resid_panel(pop_dens18_3) 
+resid_panel(pop_dens18) 
 ```
 
 ```{r pop-dens-19, echo=TRUE,  fig.cap="Diagnosis plot for a model of the effects of crop identity and corn weed management on 2019 population density."}
 
 #### Did crop identity and corn weed management affect AMATA density in 2019? ####
-pop_dens19_3 <- lm(log(plant_m_sq + 0.025) ~ Block + Crop_ID +
-                     Corn_weed_management + Crop_ID:Corn_weed_management,
+pop_dens19 <- lm(log(plant_m_sq + 0.025) ~ Block + Crop_ID*Corn_weed_management,
                    data = amata19)
 
-resid_panel(pop_dens19_3) 
+resid_panel(pop_dens19) 
 
 ```
 
@@ -123,8 +122,7 @@ resid_panel(pop_dens19_3)
 ```{r sexr18, echo=TRUE, fig.cap="Diagnosis plot for a model of the effects of crop identity, corn weed management, and population aboveground mass on 2018 population sex ratio. Deviance = 165.91."}
 
 #### Did crop identity and corn weed management had any effect on 2018 population sex ratio? ####
-sexed18.glm <- glm(cbind(Female, Male) ~ Block + Crop_ID + 
-                     Corn_weed_management + Crop_ID:Corn_weed_management,
+sexed18.glm <- glm(cbind(Female, Male) ~ Block + Crop_ID*Corn_weed_management,
   data=amata18, family=quasibinomial(link = "logit"))
 
 glm.diag.plots(sexed18.glm) #in boot package
@@ -137,7 +135,7 @@ glm.diag.plots(sexed18.glm) #in boot package
 ```{r sexr18-biom, echo=TRUE, fig.cap="Diagnosis plot for a model of the effects of crop identity, corn weed management, and population aboveground mass on 2018 population sex ratio. Deviance = 104.26."}
 #### Did population aboveground mass, crop identity and corn weed management had any effect on 2018 population sex ratio? ####
 
-sexr18_biom_glm3 <- glm(cbind(Female, Male) ~ Block +  Crop_ID + Corn_weed_management + 
+sexr18_biom_glm <- glm(cbind(Female, Male) ~ Block +  Crop_ID + Corn_weed_management + 
                           log(g_m_sq + 0.00025) +
                         Crop_ID:Corn_weed_management + 
                         log(g_m_sq + 0.00025):Crop_ID +
@@ -145,9 +143,7 @@ sexr18_biom_glm3 <- glm(cbind(Female, Male) ~ Block +  Crop_ID + Corn_weed_manag
                         log(g_m_sq + 0.00025):Crop_ID:Corn_weed_management ,
   data=amata18, family=quasibinomial(link = "logit"))
 
-## Did population density, Crop_ID and Corn weed management had any effect on 2018 population sex ratio?
-
-glm.diag.plots(sexr18_biom_glm3 )
+glm.diag.plots(sexr18_biom_glm)
 
 #deviance(sexr18_biom_glm3) # 104.256
 ```
@@ -179,8 +175,6 @@ glm.diag.plots(sexr18_dens_glm3)
 ```{r, include=FALSE}
 ## Read in the individual dried aboveground mass and fecundity 
 
-#fecundity18 <- read_csv(here("2 Data/Clean data/fecundity_18.csv"))
-
 fecundity18 <- read_csv(here("2 Data/Clean data/fecundity_18.csv"), 
     col_types = cols(Biomass = col_number(), 
         Seed = col_number()), na = "empty")
@@ -192,7 +186,7 @@ fecundity18$Crop_ID <- factor(fecundity18$Crop_ID, levels = c("C2", "S2",
 fecundity18$label <- paste(as.character(fecundity18$Rotation), "year", sep="-")
 
 fecundity18  <- fecundity18   %<>%
-  mutate_at(c("Block","Crop_ID","Rotation","Corn_weed_management", "Plot", "Side", "bt"),funs(factor(.)))
+  mutate_at(c("Block","Crop_ID", "Corn_weed_management", "bt"),funs(factor(.)))
 ```
 
 
@@ -239,7 +233,7 @@ diag_seed(seeds.gls , tag= "")
 
 
 ```{r indiv-biom-seed-18, echo = TRUE, fig.cap="Diagnosis plot for a model of crop identity and corn weed management effect on individual fecundity."}
-### 18-mean full compound symmetry mod
+### 18-mean full compound symmetry model
 #### Did crop identity, corn weed management, and individual aboveground mass affect AMATA aboveground mass in 2018? #### 
 fecundity18_sb <- fecundity18[complete.cases(fecundity18$Seed, fecundity18$Biomass), ]
 

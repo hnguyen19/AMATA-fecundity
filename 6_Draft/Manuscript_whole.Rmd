@@ -40,16 +40,19 @@ csl: apa-no-ampersand.csl
 
 # Results {-}
 
-Using `ggResidpanel` version 0.3.0 for model diagnosis [@goodeGgResidpanelPanelsInteractive2019], no predictable pattern in the plots of residuals versus predicted values suggests that the analysis models fit the data well (Details are provided in @nguyenDataImpactCropping2022).  
+
+Using `ggResidpanel` version 0.3.0 for model diagnosis [@goodeGgResidpanelPanelsInteractive2019], no predictable pattern in the plots of residuals versus predicted values suggests that the analysis models fit the data well (Details are provided in the Data Repository).  
 In all rotations, all the crop yields were comparable to those of Iowa and Boone County (where the experiment is situated) [@nguyenWeedCommunityCompositioninpreparation].  
 
+ 
 
-```{r, child = "../5 Analysis/Individual-fecundity-model.Rmd" }
+
+```{r, child = "../5-Analysis/Individual-fecundity-model.Rmd" }
 # knitting this chunk and the next produced raw Latex code because of some package conflicts - not resolved yet
 ```
 
 
-```{r, child = "../5 Analysis/Population-sex-biom-dens.Rmd"}
+```{r, child = "../5-Analysis/Population-sex-biom-dens.Rmd"}
 ```
 
 
@@ -65,11 +68,12 @@ In all rotations, all the crop yields were comparable to those of Iowa and Boone
 ```
 
 
-```{r, child = "../4 Data wrangling/sex-19-imputation.Rmd"}
+```{r, child = "../4-Data-wrangling/sex-19-imputation-jan29-22.Rmd"}
 # This is Appendix B
 ```
 
 # Acknowledgements {-}
-The authors thank Matt Woods, Mike Fiscus, and the Iowa State University’s Agronomy Research Farm crew for field management; Jessica Juarez-Morales, Elizabeth Oys, Ana Poznanski, Andrew Riehl, Angela Soto-Saenz, and Wyatt Westfall for field and laboratory assistance; Alan Gaul and Iowa State University’s Seed Laboratory student assistants and interns for seed cleaning laboratory space, guidance, and technical assistance; Philip Dixon and Dean Adams for data analysis assistance; Russ Lenth and other Stackoverflow community members for answering HN's coding questions; and Lisa Schulte-Moore, Micheal Owen, and Mark Gleason for reviewing the manuscript.  
+
+The authors thank Matt Woods, Mike Fiscus, and the Iowa State University's Agronomy Research Farm crew for field management; Jessica Juarez-Morales, Elizabeth Oys, Ana Poznanski, Andrew Riehl, Angela Soto-Saenz, and Wyatt Westfall for field and laboratory assistance; Alan Gaul and Iowa State University's Seed Laboratory student assistants and interns for seed cleaning laboratory space, guidance, and technical assistance; Philip Dixon and Dean Adams for data analysis assistance; Russ Lenth and other Stackoverflow community members for answering HTXN's coding questions; Lisa Schulte-Moore, Micheal Owen, and Mark Gleason for reviewing the manuscript; Overleaf staff for latex assistance in compiling the manuscript; two anonymous reviewers and the subject editor for their valuable comments.
 
 # References {-}

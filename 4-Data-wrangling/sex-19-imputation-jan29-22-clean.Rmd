@@ -29,7 +29,7 @@ library(magrittr)
 library(data.table)
 library(grid); library(gridExtra)
 library(kableExtra)
-source(here("8_Analysis_scripts/functions.R"))
+source(here("5-Analysis/functions.R"))
 #set.seed(500) is commented out and replaced with cluster.seed in each parlmice call for reproducibility 
 #View(sexed19_mis)
 # some pooling stuff here https://bookdown.org/mwheymans/bookmi/rubins-rules.html
@@ -58,7 +58,7 @@ The recommended specifications of the imputation model for this data set are: 1)
 
 
 ```{r, echo=FALSE}
-sexed19_mis <- read_csv(here("2_Data/Clean/sexed19_mis.csv"), 
+sexed19_mis <- read_csv(here("2-Data/Clean/sexed19_mis.csv"), 
     col_types = cols(Plot = col_factor(), 
         Quadrat = col_factor(), 
         Cohort = col_factor(), 
@@ -285,8 +285,7 @@ sexed19_imp3_long <- sexed19_imp3_wide %>%
 
 sexed19_imp3 <- sexed19_imp3_long %>% #separate this to save energy 
   group_by(.imp) %>%
-  do(model = glm(formula = cbind(Female, Male) ~ Block + Crop_ID + Corn_weed_management +
-                   Crop_ID:Corn_weed_management,
+  do(model = glm(formula = cbind(Female, Male) ~ Block + Crop_ID*Corn_weed_management,
   data=., family=binomial)) %>%
   as.list() %>%
   .[[-1]] %>%
@@ -368,19 +367,19 @@ kbl(all_imp_n_ordered_wide,
   column_spec(c(4,7,10,13,16), border_left = FALSE, border_right = FALSE) %>%
   kable_styling(latex_options = c( "scale_down")) %>%
   landscape() %>%
-  footnote(general = "Some zeros are due to rounding. C2: corn in the 2-year rotation, C3: corn in the 3-year rotation, C4: corn in the 4-year rotation, S2: soybean in the 2-year rotation, S3: soybean in the 3-year rotation; S4: soybean in the 4-year rotation, O3: oat in the 3-year rotation, and A4: alfalfa in the 4-year rotation", threeparttable = TRUE, footnote_as_chunk = TRUE)
+  footnote(general = "Some zeros are due to rounding. C2: corn in the 2-year rotation, C3: corn in the 3-year rotation, C4: corn in the 4-year rotation, S2: soybean in the 2-year rotation, S3: soybean in the 3-year rotation, S4: soybean in the 4-year rotation, O3: oat in the 3-year rotation, and A4: oat in the 4-year rotation", threeparttable = TRUE, footnote_as_chunk = TRUE)
   
 ```
    
 
 ```{r, include=FALSE, warning=FALSE, message=FALSE}
 # Read AMATA_18_clean.csv in, but save as a different name from the density and biomass analyses 
-amata18 <- read_csv("../2_Data/Clean/AMATA_18_clean.csv", 
+amata18 <- read_csv("../2-Data/Clean/AMATA_18_clean.csv", 
                     col_types = cols(Male = col_integer(), 
                                      Female = col_integer()))
 
 amata18 <- amata18 %<>%
-  mutate_at(c("Block","Crop_ID","Rotation","Corn_weed_management", "Plot", "Side", "Year"),funs(factor(.)))
+  mutate_at(c("Block","Crop_ID","Corn_weed_management",  "Year"),funs(factor(.)))
 
 amata18[is.na(amata18 )] <- 0 #NAs are replaced with 0
 
@@ -439,7 +438,7 @@ sexed19_imp1_summ_df <- enframe(sexed19_imp1_summ) %>%
 ```{r sexr19-covar-summ, echo=FALSE}
 #error from here
 ## Read in 2019 raw data
-amata19_raw <- read_csv("../2_Data/Raw/AMATA_19_raw.csv",
+amata19<- read_csv("../2-Data/Raw/AMATA_19.csv",
                     col_types = cols(Plot = col_factor(), 
                                      Block = col_factor(), 
                                      Crop = col_factor(),
@@ -448,13 +447,13 @@ amata19_raw <- read_csv("../2_Data/Raw/AMATA_19_raw.csv",
                                      Year = col_character()))
 
 
-amata19_raw$Crop_ID <- factor(amata19_raw$Crop_ID, 
+amata19$Crop_ID <- factor(amata19$Crop_ID, 
                           levels = c("C2", "S2",
                                      "C3", "S3", "O3",
                                      "C4", "S4", "O4", "A4"))
 
 ## merge the imputed data to the left to keep all the imputed sets
-prop_biom19 <- amata19_raw %>% 
+prop_biom19 <- amata19 %>% 
   left_join(sexed19_m24)
 
 ## How does an ANCOVA model of sex ratio in response to crop identity, corn weed management, and population aboveground mass perform on the 24 imputed data sets?

@@ -32,20 +32,18 @@ set.seed(505) #to make sure the prediction equation R2 come out the same when ot
 ```{r, include=FALSE}
 ## Read in the individual dried aboveground mass and fecundity 
 
-#fecundity18 <- read_csv(here("2_Data/Clean/fecundity_18.csv"))
-
-fecundity18 <- read_csv(here("2_Data/Clean/fecundity_18.csv"), 
+fecundity18 <- read_csv(here("2-Data/Clean/fecundity_18.csv"), 
     col_types = cols(Biomass = col_number(), 
         Seed = col_number()), na = "empty")
 
-fecundity18$Crop_ID <- factor(fecundity18$Crop_ID, levels = c("C2", "S2",
-                                                                "C3", "S3", "O3",
-                                                                "C4", "S4", "O4", "A4"))
+fecundity18$Crop_ID <- factor(fecundity18$Crop_ID, 
+                              levels = c("C2", "S2",
+                                         "C3", "S3", "O3",
+                                         "C4", "S4", "O4", "A4"))
 
-fecundity18$label <- paste(as.character(fecundity18$Rotation), "year", sep="-")
-
+# Make sure that Block, Crop ID, Corn_weed_management, and bt are factors
 fecundity18  <- fecundity18   %<>%
-  mutate_at(c("Block","Crop_ID","Rotation","Corn_weed_management", "Plot", "Side", "bt"),funs(factor(.)))
+  mutate_at(c("Block","Crop_ID","Corn_weed_management", "bt"),funs(factor(.)))
 
 # Look at the geometric means of number of seeds 
 fecundity18_avg <- fecundity18%>%
@@ -60,9 +58,10 @@ fecundity18_avg <- fecundity18%>%
 ```{r, include=FALSE}
 ## Keep complete cases only (390/391 entries)
 fecundity18_b <- fecundity18[complete.cases(fecundity18$Biomass), ]
-min(fecundity18_b$Biomass[fecundity18_b$Biomass > 0])
+# min(fecundity18_b$Biomass[fecundity18_b$Biomass > 0])
 
-biomass.gls <- gls(log(Biomass + 0.005) ~ Block + Crop_ID + Corn_weed_management + Crop_ID:Corn_weed_management,
+biomass.gls <- gls(log(Biomass + 0.005) ~ Block + 
+                     Crop_ID*Corn_weed_management,
   correlation=corCompSymm(form= ~1 | bt), #identifies each treatment within block
   data=fecundity18_b)
 
@@ -71,8 +70,7 @@ fecundity18_s <- fecundity18[complete.cases(fecundity18$Seed), ]
 min(fecundity18_s$Seed[fecundity18_s$Seed > 0])
 
 seeds.gls <- gls(log(Seed + 1) ~ Block + 
-                   Crop_ID + Corn_weed_management +
-                   Crop_ID:Corn_weed_management,
+                   Crop_ID*Corn_weed_management,
   correlation=corCompSymm(form= ~1 | bt), #identifies each treatment within block
   data=fecundity18_s)
 
@@ -94,174 +92,221 @@ biom_seed_gls <- cbind(biomass.gls_df$summary,seeds.gls_df$summary)
 rownames(biom_seed_gls) <- NULL
 ```
 
-
 ```{r, include=FALSE}
-#contrast(regrid(biom_emm_18))
-f_biom_grid <- ref_grid(biomass.gls)
-Rotation <- factor(c(rep("2-year", 2), rep("3-year", 3), rep("4-year", 4)),
-                     levels = c("2-year", "3-year", "4-year"))
-
-#f_biom_grid_rot_emm <- emmeans(f_biom_grid_rot , ~ Rotation | Corn_weed_management, type = "response")
-
-#f_biom_rot_ct <- contrast(regrid(f_biom_grid_rot_emm),"pairwise", type = "response", infer = c(TRUE,TRUE))
-#across rotation
-#f_biom_rot_ct <- contrast(f_biom_grid_rot_emm,"pairwise", type = "response", infer = c(TRUE,TRUE)) %>% print(export = TRUE)
-
-Crop <- factor(c("corn", "soybean", "corn", "soybean", "oat", "corn", "soybean", "oat", "alfalfa"),
+## Add Crop as a new factoring item to use in the next 2 chunks 
+Crop <- factor(c("corn", "soybean",
+                 "corn", "soybean", "oat", 
+                 "corn", "soybean", "oat", "alfalfa"),
                      levels = c("soybean", "corn",  "oat", "alfalfa"))
+
 ```
 
 
+
 ```{r, include=FALSE}
-f_biom_grid_crop <- add_grouping(f_biom_grid , "Crop", "Crop_ID", Crop)
-# crop crontrast, averaged over rotations
-f_biom_crop <- emmeans(f_biom_grid_crop , ~ Crop | Corn_weed_management, infer = c(FALSE,TRUE),  type = "response") 
-f_biom_crop_ct <- contrast(f_biom_crop , "pairwise", type = "response", infer = c(FALSE,TRUE)) %>% print(export = TRUE)
+## Rotation effect on individual biomass, assessed within the same crop species
+indiv_biom_corn <-  emmeans(biomass.gls,
+                            ~ Crop_ID | Corn_weed_management, 
+                            infer = c(FALSE,TRUE), 
+                            type = "response", 
+                            at = list(Crop_ID = c("C2", "C3", "C4")))
 
-## within rotation means  #herb effect was NS
-f_biom_corn <-  emmeans(biomass.gls, ~ Crop_ID | Corn_weed_management, infer = c(FALSE,TRUE),  type = "response", at = list(Crop_ID = c("C2", "C3", "C4")))
-f_biom_corn_ct <- contrast(f_biom_corn, "pairwise", type = "response", infer = c(FALSE,TRUE)) %>% print(export = TRUE)
+indiv_biom_corn_ct <- contrast(indiv_biom_corn, 
+                               "pairwise", 
+                               type = "response",
+                               infer = c(FALSE,TRUE)) %>% 
+  print(export = TRUE)
 
-f_biom_soy <- emmeans(biomass.gls, c("Crop_ID", "Corn_weed_management"), infer = c(FALSE,TRUE),  type = "response", at = list(Crop_ID = c("S2", "S3", "S4"))) 
+indiv_biom_soy <- emmeans(biomass.gls,
+                          c("Crop_ID", "Corn_weed_management"),
+                          infer = c(FALSE,TRUE), 
+                          type = "response",
+                          at = list(Crop_ID = c("S2", "S3", "S4"))) 
 
-f_biom_soy_ct <- contrast(f_biom_soy, by = "Corn_weed_management" ,"pairwise", type = "response", infer = c(FALSE,TRUE)) %>% print(export = TRUE)
+indiv_biom_soy_ct <- contrast(indiv_biom_soy,
+                              by = "Corn_weed_management" ,"pairwise",
+                              type = "response",
+                              infer = c(FALSE,TRUE)) %>%
+  print(export = TRUE)
 
-f_biom_oat <- emmeans(biomass.gls, ~ Crop_ID| Corn_weed_management, infer = c(FALSE,TRUE),  type = "response", at = list(Crop_ID = c("O3", "O4")))
+indiv_biom_oat <- emmeans(biomass.gls,
+                          ~ Crop_ID| Corn_weed_management,
+                          infer = c(FALSE,TRUE), 
+                          type = "response",
+                          at = list(Crop_ID = c("O3", "O4")))
 
-f_biom_oat_ct <- contrast(f_biom_oat, "pairwise", type = "response", infer = c(FALSE,TRUE)) %>% print(export = TRUE)
+indiv_biom_oat_ct <- contrast(indiv_biom_oat,
+                              "pairwise",
+                              type = "response",
+                              infer = c(FALSE,TRUE)) %>% 
+  print(export = TRUE)
+
+indiv_biom_grid <- ref_grid(biomass.gls)
+
+indiv_biom_grid_crop <- add_grouping(indiv_biom_grid , "Crop", "Crop_ID", Crop)
+
+## Crop species effect on individual biomass
+# crop contrast, averaged over rotations
+indiv_biom_crop <- emmeans(indiv_biom_grid_crop , 
+                           ~ Crop | Corn_weed_management,
+                         infer = c(FALSE,TRUE),  type = "response") 
+
+indiv_biom_crop_ct <- contrast(indiv_biom_crop , 
+                             "pairwise", 
+                             type = "response",
+                             infer = c(FALSE,TRUE)) %>%
+  print(export = TRUE)
 
 
-f_biom_ct_conv <- rbind(f_biom_corn_ct$summary$`Corn_weed_management = conv`,
-                        f_biom_soy_ct$summary$`Corn_weed_management = conv`,
-                        f_biom_oat_ct$summary$`Corn_weed_management = conv`,
-                   f_biom_crop_ct$summary$`Corn_weed_management = conv`)
+indiv_biom_ct_conv <- rbind(indiv_biom_corn_ct$summary$`Corn_weed_management = conv`,
+                        indiv_biom_soy_ct$summary$`Corn_weed_management = conv`,
+                        indiv_biom_oat_ct$summary$`Corn_weed_management = conv`,
+                   indiv_biom_crop_ct$summary$`Corn_weed_management = conv`)
 
-f_biom_ct_conv_df <- as.data.frame(f_biom_ct_conv)
+indiv_biom_ct_conv_df <- as.data.frame(indiv_biom_ct_conv)
 
-f_biom_ct_conv_df[,c(2:6)] <- sapply(f_biom_ct_conv_df[,c(2:6)],as.numeric)
+indiv_biom_ct_conv_df[,c(2:6)] <- sapply(indiv_biom_ct_conv_df[,c(2:6)],as.numeric)
 
-f_biom_ct_conv_rounded <- f_biom_ct_conv_df %>%
+indiv_biom_ct_conv_rounded <- indiv_biom_ct_conv_df %>%
   mutate(across(where(is.numeric), ~ as.numeric(sprintf('%.2f', .)))) %>%
 #  mutate(across(where(is.numeric), as.character)) %>% #remove trailing zeros
   as_tibble # prevent adding trailing zeros later
 
 
 
-f_biom_ct_low <- rbind(f_biom_corn_ct$summary$`Corn_weed_management = low`,
-                        f_biom_soy_ct$summary$`Corn_weed_management = low`,
-                        f_biom_oat_ct$summary$`Corn_weed_management = low`,
-                   f_biom_crop_ct$summary$`Corn_weed_management = low`)
+indiv_biom_ct_low <- rbind(indiv_biom_corn_ct$summary$`Corn_weed_management = low`,
+                        indiv_biom_soy_ct$summary$`Corn_weed_management = low`,
+                        indiv_biom_oat_ct$summary$`Corn_weed_management = low`,
+                   indiv_biom_crop_ct$summary$`Corn_weed_management = low`)
 
-f_biom_ct_low_df <- as.data.frame(f_biom_ct_low)
+indiv_biom_ct_low_df <- as.data.frame(indiv_biom_ct_low)
 
-f_biom_ct_low_df[,c(2:6)] <- sapply(f_biom_ct_low_df[,c(2:6)],as.numeric)
+indiv_biom_ct_low_df[,c(2:6)] <- sapply(indiv_biom_ct_low_df[,c(2:6)],as.numeric)
 
-f_biom_ct_low_rounded <- f_biom_ct_low_df %>%
+indiv_biom_ct_low_rounded <- indiv_biom_ct_low_df %>%
   mutate(across(where(is.numeric), ~ as.numeric(sprintf('%.2f', .)))) %>%
 #  mutate(across(where(is.numeric), as.character)) %>% #remove trailing zeros
   as_tibble # prevent trailing zeros later
 
 
 ## Merge conventional (left) with low corn weed management (right) for individual biomass 
-f_biom_ct <- cbind(f_biom_ct_conv_rounded[,-c(3:6)], f_biom_ct_low_rounded[,-c(3:6)])
+indiv_biom_ct <- cbind(indiv_biom_ct_conv_rounded[,-c(3:6)], indiv_biom_ct_low_rounded[,-c(3:6)])
          
-row.names(f_biom_ct) <- NULL
+row.names(indiv_biom_ct) <- NULL
 
 ```
 
 
 ```{r, include=FALSE}
-f_seeds_grid <- ref_grid(seeds.gls)
+## Rotation effect on individual fecundity, assessed within the same crop species
+indiv_seeds_corn <-  emmeans(seeds.gls,
+                             ~ Crop_ID | Corn_weed_management,
+                             infer = c(FALSE,TRUE),
+                             type = "response",
+                             at = list(Crop_ID = c( "C2", "C3", "C4")))
 
-Rotation <- factor(c(rep("2-year", 2), rep("3-year", 3), rep("4-year", 4)),
-                     levels = c("2-year", "3-year", "4-year"))
-f_seeds_grid_rot <- add_grouping(f_seeds_grid , "Rotation", "Crop_ID", Rotation)
-f_seeds_grid_rot_emm <- emmeans(f_seeds_grid_rot , ~ Rotation | Corn_weed_management, type = "response")
-f_seeds_rot_ct <- contrast(regrid(f_seeds_grid_rot_emm),"pairwise", type = "response", infer = c(FALSE,TRUE))
+indiv_seeds_corn_ct <- contrast(indiv_seeds_corn,
+                                "pairwise",
+                                type = "response",
+                                infer = c(FALSE,TRUE)) %>%
+  print(export = TRUE)
 
-#across rotation
-f_seeds_rot_ct <- contrast(f_seeds_grid_rot_emm,"pairwise", type = "response", infer = c(FALSE,TRUE)) %>% print(export = TRUE)
-Crop <- factor(c("corn", "soybean", "corn", "soybean", "oat", "corn", "soybean", "oat", "alfalfa"),
-                     levels = c( "soybean", "corn",  "oat", "alfalfa"))
-f_seeds_grid_crop <- add_grouping(f_seeds_grid , "Crop", "Crop_ID", Crop)
-```
+indiv_seeds_soy <- emmeans(seeds.gls,
+                           c("Crop_ID", "Corn_weed_management"), 
+                           infer = c(FALSE,TRUE),
+                           type = "response", 
+                           at = list(Crop_ID = c("S2", "S3", "S4"))) 
 
+indiv_seeds_soy_ct <- contrast(indiv_seeds_soy,
+                               by = "Corn_weed_management" ,"pairwise",
+                               type = "response", infer = c(FALSE,TRUE)) %>% print(export = TRUE)
 
-```{r, include=FALSE}
-## same crop across rotation means 
-f_seeds_corn <-  emmeans(seeds.gls, ~ Crop_ID | Corn_weed_management, infer = c(FALSE,TRUE),  type = "response", at = list(Crop_ID = c( "C2", "C3", "C4")))
-f_seeds_corn_ct <- contrast(f_seeds_corn, "pairwise", type = "response", infer = c(FALSE,TRUE)) %>% print(export = TRUE)
+indiv_seeds_oat <- emmeans(seeds.gls,
+                           ~ Crop_ID| Corn_weed_management,
+                           infer = c(FALSE,TRUE), 
+                           type = "response",
+                           at = list(Crop_ID = c("O3", "O4")))
 
-f_seeds_soy <- emmeans(seeds.gls, c("Crop_ID", "Corn_weed_management"), infer = c(FALSE,TRUE),  type = "response", at = list(Crop_ID = c("S2", "S3", "S4"))) 
-
-f_seeds_soy_ct <- contrast(f_seeds_soy, by = "Corn_weed_management" ,"pairwise", type = "response", infer = c(FALSE,TRUE)) %>% print(export = TRUE)
-
-f_seeds_oat <- emmeans(seeds.gls, ~ Crop_ID| Corn_weed_management, infer = c(FALSE,TRUE),  type = "response", at = list(Crop_ID = c("O3", "O4")))
-
-f_seeds_oat_ct <- contrast(f_seeds_oat , "pairwise", type = "response", infer = c(FALSE,TRUE)) %>% print(export = TRUE)
-
-
-# crop crontrast, averaged over rotations
-f_seeds_crop <- emmeans(f_seeds_grid_crop , ~ Crop | Corn_weed_management, infer = c(FALSE,TRUE),  type = "response") 
-f_seeds_crop_ct <- contrast(f_seeds_crop , "pairwise", type = "response", infer = c(FALSE,TRUE)) %>% print(export = TRUE)
+indiv_seeds_oat_ct <- contrast(indiv_seeds_oat ,
+                               "pairwise",
+                               type = "response",
+                               infer = c(FALSE,TRUE)) %>%
+  print(export = TRUE)
 
 
-# customized means, Corn_weed_management NS  with f_seeds_emm
+## Crop species effect on individual fecundity 
+# crop contrast, averaged over rotations
+indiv_seeds_grid <- ref_grid(seeds.gls)
+indiv_seeds_grid_crop <- add_grouping(indiv_seeds_grid , "Crop", "Crop_ID", Crop)
+indiv_seeds_crop <- emmeans(indiv_seeds_grid_crop ,
+                            ~ Crop | Corn_weed_management,
+                            infer = c(FALSE,TRUE), 
+                            type = "response") 
+indiv_seeds_crop_ct <- contrast(indiv_seeds_crop ,
+                                "pairwise", 
+                                type = "response",
+                                infer = c(FALSE,TRUE)) %>% 
+  print(export = TRUE)
 
-f_seeds_ct_conv <- rbind(f_seeds_corn_ct$summary$`Corn_weed_management = conv`,
-                         f_seeds_soy_ct$summary$`Corn_weed_management = conv`,
-                         f_seeds_oat_ct$summary$`Corn_weed_management = conv`,
-                   f_seeds_crop_ct$summary$`Corn_weed_management = conv`)
 
-f_seeds_ct_conv_df <- as.data.frame(f_seeds_ct_conv)
+#### customized contrasts, Corn_weed_management NS  with indiv_seeds_emm ###
 
-f_seeds_ct_conv_df[,c(2:6)] <- sapply(f_seeds_ct_conv_df[,c(2:6)],as.numeric)
+##Impact of crop species and rotation on individual fecundity: conventional corn weed management
+indiv_seeds_ct_conv <- rbind(indiv_seeds_corn_ct$summary$`Corn_weed_management = conv`,
+                         indiv_seeds_soy_ct$summary$`Corn_weed_management = conv`,
+                         indiv_seeds_oat_ct$summary$`Corn_weed_management = conv`,
+                   indiv_seeds_crop_ct$summary$`Corn_weed_management = conv`)
 
-f_seeds_ct_conv_rounded <- f_seeds_ct_conv_df %>%
+indiv_seeds_ct_conv_df <- as.data.frame(indiv_seeds_ct_conv)
+
+indiv_seeds_ct_conv_df[,c(2:6)] <- sapply(indiv_seeds_ct_conv_df[,c(2:6)],as.numeric)
+
+indiv_seeds_ct_conv_rounded <- indiv_seeds_ct_conv_df %>%
   mutate(across(where(is.numeric), ~ as.numeric(sprintf('%.2f', .)))) %>%
 #  mutate(across(where(is.numeric), as.character)) %>% #remove trailing zeros
   as_tibble # prevent adding trailing zeros later
 
-f_seeds_ct_low <- rbind(f_seeds_corn_ct$summary$`Corn_weed_management = low`,
-                         f_seeds_soy_ct$summary$`Corn_weed_management = low`,
-                         f_seeds_oat_ct$summary$`Corn_weed_management = low`,
-                   f_seeds_crop_ct$summary$`Corn_weed_management = low`)
+##Impact of crop species and rotation on individual fecundity: low herbicide corn weed management
+indiv_seeds_ct_low <- rbind(indiv_seeds_corn_ct$summary$`Corn_weed_management = low`,
+                         indiv_seeds_soy_ct$summary$`Corn_weed_management = low`,
+                         indiv_seeds_oat_ct$summary$`Corn_weed_management = low`,
+                   indiv_seeds_crop_ct$summary$`Corn_weed_management = low`)
 
-f_seeds_ct_low_df <- as.data.frame(f_seeds_ct_low)
+indiv_seeds_ct_low_df <- as.data.frame(indiv_seeds_ct_low)
 
-f_seeds_ct_low_df[,c(2:6)] <- sapply(f_seeds_ct_low_df[,c(2:6)],as.numeric)
+indiv_seeds_ct_low_df[,c(2:6)] <- sapply(indiv_seeds_ct_low_df[,c(2:6)],as.numeric)
 
-f_seeds_ct_low_rounded <- f_seeds_ct_low_df %>%
+indiv_seeds_ct_low_rounded <- indiv_seeds_ct_low_df %>%
   mutate(across(where(is.numeric), ~ as.numeric(sprintf('%.2f', .)))) %>%
 #  mutate(across(where(is.numeric), as.character)) %>% #remove trailing zeros
   as_tibble # prevent adding trailing zeros later
 
 ### Merge conventional (left) with low corn weed management (right) for individual fecundity 
 
-f_seeds_ct <- cbind(f_seeds_ct_conv_rounded[,-c(3:6)], f_seeds_ct_low_rounded[,-c(3:6)])
+indiv_seeds_ct <- cbind(indiv_seeds_ct_conv_rounded[,-c(3:6)], indiv_seeds_ct_low_rounded[,-c(3:6)])
          
-row.names(f_seeds_ct) <- NULL
+row.names(indiv_seeds_ct) <- NULL
 ```
 
-Individual female aboveground mass and fecundity were affected by rotation, crop species, and corn weed management (Table \@ref(tab:f-biom-fecund-ct)). Crop identity was more influential on female aboveground mass and fecundity than corn weed management regime, but the effect of crop identity differed between corn weed management regimes (Table \@ref(tab:ancova-jt)A and \@ref(tab:ancova-jt)B). Differences in relative female size and fecundity across rotation by herbicide treatments were attributed to the relative size and fecundity differences when the waterhemp populations grew in different crops' presence.  
+Individual female aboveground mass and fecundity were affected by rotation, crop species, and corn weed management (Table \@ref(tab:indiv-biom-fecund-ct)). Crop identity was more influential on female aboveground mass and fecundity than corn weed management regime, but the effect of crop identity differed between corn weed management regimes (Table \@ref(tab:ancova-jt)A and \@ref(tab:ancova-jt)B). Differences in relative female size and fecundity across rotation by herbicide treatments were attributed to the relative size and fecundity differences when the waterhemp populations grew in different crops' presence.  
 
 Individual female aboveground mass was comparable in most pairwise comparison of the same crop species in different rotations, except S2 versus S3 (p-value = 0.0076) and S3 versus S4 (p-value = 0.0268) that followed corn under conventional weed management and C2 versus C3 (p-value = 0.0064) under low weed management. Averaged over rotations, individual female aboveground mass was 3.5- to 133.6-fold different across each pair of comparison (p-values < 0.05), except for corn under low weed management versus the succeeding oat (p-value = 0.9616).  
 
 Individual fecundity was comparable in most pairwise comparison of the same crop species in different rotations, except S2 versus S3 (p-value = 0.001) and S3 versus S4 (p-value = 0.0046) that followed corn under conventional weed management and C2 versus C3 under low weed management (p-value = 0.0032), and O3 versus O4 that followed corn under low weed management (p-value = 0.0321). Averaged over rotations, individual fecundity was comparable between corn under low herbicide and oat in the same system (p-value = 0.4904) but was 6.3- to 6857.1-fold different in other pairs of comparison (p-values $\leq$ 0.0001). 
 
-```{r f-biom-fecund-ct, echo=FALSE}
+```{r indiv-biom-fecund-ct, echo=FALSE}
 
 # Merge individual biomass (left) with individual fecundity (right), side by side
-f_biom_seeds_ct <- cbind(f_biom_ct[-4], f_seeds_ct[-c(1,4)]) #left_joint requires unique names 
+indiv_biom_seeds_ct <- cbind(indiv_biom_ct[-4], indiv_seeds_ct[-c(1,4)]) #left_joint requires unique names 
 
-rownames(f_biom_seeds_ct) <- NULL 
+rownames(indiv_biom_seeds_ct) <- NULL 
 
-colnames(f_biom_seeds_ct) <- c("Contrast",rep(c("ratio","p.value"),4))
+colnames(indiv_biom_seeds_ct) <- c("Contrast",rep(c("ratio","p.value"),4))
 
-f_biom_seeds_ct$Contrast <- gsub(" / ", " vs ", f_biom_seeds_ct$Contrast)
+indiv_biom_seeds_ct$Contrast <- gsub(" / ", " vs ", indiv_biom_seeds_ct$Contrast)
 
 
-kbl(f_biom_seeds_ct, 
+kbl(indiv_biom_seeds_ct, 
     longtable = FALSE, booktabs = TRUE, linesep = "", 
     caption = "Crop and rotation system effects on individual female aboveground mass and fecundity.") %>% 
     add_header_above(c(" " = 1, 
@@ -276,7 +321,7 @@ kbl(f_biom_seeds_ct,
    pack_rows("(A) - Crop phase effects", 1,7) %>%
     pack_rows("(B) - Crop species effects", 8,13) %>%
   landscape() %>%
-  footnote(general = "C2: corn in the 2-year rotation, C3: corn in the 3-year rotation, C4: corn in the 4-year rotation, S2: soybean in the 2-year rotation, S3: soybean in the 3-year rotation; S4: soybean in the 4-year rotation, O3: oat in the 3-year rotation, O4: oat in the 4-year rotation, and A4: alfalfa in the 4-year rotation", threeparttable = T, footnote_as_chunk = TRUE)
+  footnote(general = "C2: corn in the 2-year rotation, C3: corn in the 3-year rotation, C4: corn in the 4-year rotation, S2: soybean in the 2-year rotation, S3: soybean in the 3-year rotation; S4: soybean in the 4-year rotation, O3: oat in the 3-year rotation, O4: oat in the 4-year rotation, and A4: alfalfa in the 4-year rotation", threeparttable = TRUE, footnote_as_chunk = TRUE)
 ```
 
 ## Effects of weed management regimes and rotations on female aboveground mass and fecundity relationship {-}   
@@ -284,24 +329,26 @@ kbl(f_biom_seeds_ct,
 Since the treatment effects were statistically significant for both female aboveground mass and fecundity (Table \@ref(tab:ancova-jt)), we proceeded with finding the slopes and intercepts for each linear regression of fecundity against biomass. Different slopes were specified by including interaction terms between the covariate and treatment factors. A regression slope for each treatment was necessary. That the training and testing sets' data points were well mingled indicated that the established equations were robust (Figure \@ref(fig:full-p)). The equations in Table \@ref(tab:ci-full) could predict waterhemp fecundity parsimoniously from dried aboveground mass using the relevant context of crop and crop management. The presented means and SEs for the estimated intercepts and slopes were established from the whole data set.  
  
 
-```{r ancova-jt, echo = F}
-### 18 means full compound symmetry mod
+```{r ancova-jt, echo = FALSE}
+### 18 means full compound symmetry model: Effects of crop identity and corn weed management on individual fecundity, mediated by individual biomass
 
 ## Keep complete cases only (389/391 entries)
-
 fecundity18_sb <- fecundity18[complete.cases(fecundity18$Seed, fecundity18$Biomass), ]
 
-#log(fecundity18_sb$Biomass )
-
-allcrops.biom.seed.gls <- gls(log(Seed+1) ~ Block + log(Biomass + 0.005) + Crop_ID + Corn_weed_management +
+allcrops.biom.seed.gls <- gls(log(Seed+1) ~ Block + 
+                                log(Biomass + 0.005) + 
+                                Crop_ID + Corn_weed_management +
                       Crop_ID:Corn_weed_management +
-                      Crop_ID:log(Biomass + 0.005) + Corn_weed_management:log(Biomass + 0.005) +
+                      Crop_ID:log(Biomass + 0.005) +
+                        Corn_weed_management:log(Biomass + 0.005) +
                       Crop_ID:Corn_weed_management:log(Biomass + 0.005),
   correlation=corCompSymm(form= ~1 | bt), #identifies each treatment within block
   data=fecundity18_sb)
 
 
-allcrops.biom.seed.gls_jt <- joint_tests(emmeans(allcrops.biom.seed.gls , ~ Crop_ID * Corn_weed_management | Biomass, at = list(Biomass = c(-0.5, 1.3))))
+allcrops.biom.seed.gls_jt <- joint_tests(emmeans(allcrops.biom.seed.gls ,
+                                                 ~ Crop_ID * Corn_weed_management | Biomass,
+                                                 at = list(Biomass = c(-0.5, 1.3)))) #to show the effects of biomass on fecundity
 
 #diff intercept, diff slope for each CropID:Corn_weed_management combination, to remove intercept for ease of view
 allcrops.biom.seed.gls_d <- gls(log(Seed+1) ~ -1 +
@@ -350,20 +397,7 @@ kbl(biom_seed_jt_df ,  booktabs = TRUE, linesep = "",
 ```
 
 ```{r ci-full, echo=FALSE, fig.height= 24, fig.width= 16}
-#full data set
-fecundity18 <- read_csv(here("2_Data/Clean/fecundity_18.csv"), 
-    col_types = cols(Biomass = col_number(), 
-        Seed = col_number()), na = "empty")
-
-fecundity18$Crop_ID <- factor(fecundity18$Crop_ID, levels = c("C2", "S2",
-                                                                "C3", "S3", "O3",
-                                                                "C4", "S4", "O4", "A4"))
-fecundity18  <- fecundity18   %<>%
-  mutate_at(c("Block","Crop_ID","Rotation","Corn_weed_management", "Plot", "Side", "bt"),funs(factor(.)))
-
-
-fecundity18_sb <- fecundity18[complete.cases(fecundity18$Seed, fecundity18$Biomass), ]
-
+#full data set from the previous chunk
 allcrops_18 <- fecundity18_sb %>%
   mutate(Tercile = split_quantile(Biomass, 4)) %>% #
   group_by(Tercile, Crop_ID, Corn_weed_management) %>% 
@@ -371,11 +405,14 @@ allcrops_18 <- fecundity18_sb %>%
          log_Biomass = log(Biomass),
          log_Seed = log(Seed + 1))
 
-models_ci <- allcrops_18 %>% group_by(Crop_ID, Corn_weed_management) %>% 
-           do(data.frame(tidy(lm(log(Seed+1) ~ log(Biomass + 0.005), data = .), conf.int=T )))
+models_ci <- allcrops_18 %>% 
+  group_by(Crop_ID, Corn_weed_management) %>% 
+           do(data.frame(tidy(lm(log(Seed+1) ~ log(Biomass + 0.005), 
+                                 data = .), conf.int=TRUE )))
 
-models_rsq <- allcrops_18 %>% group_by(Crop_ID, Corn_weed_management) %>% 
-           do(data.frame(tidy(summary(lm(log(Seed+1) ~ log(Biomass + 0.005), data = .), conf.int=T )$r.squared)))
+models_rsq <- allcrops_18 %>% 
+  group_by(Crop_ID, Corn_weed_management) %>% 
+           do(data.frame(tidy(summary(lm(log(Seed+1) ~ log(Biomass + 0.005), data = .), conf.int=TRUE )$r.squared)))
           
 models_ci_df <- models_ci[,1:5] %>% 
   pivot_longer(cols=c(estimate, std.error)) %>% 
@@ -401,32 +438,11 @@ kbl(models_ci_rsq , booktabs = TRUE, longtable = FALSE,
 ```
 
 ```{r all means split, echo=FALSE, message=FALSE, warning=FALSE} 
-fecundity18 <- read_csv(here("2_Data/Clean/fecundity_18.csv"), 
-    col_types = cols(Biomass = col_number(), 
-        Seed = col_number()), na = "empty")
-
-fecundity18$Crop_ID <- factor(fecundity18$Crop_ID, levels = c("C2", "S2",
-                                                                "C3", "S3", "O3",
-                                                                "C4", "S4", "O4", "A4"))
-fecundity18  <- fecundity18   %<>%
-  mutate_at(c("Block","Crop_ID","Rotation","Corn_weed_management", "Plot", "Side", "bt"),funs(factor(.)))
-
-
-fecundity18_sb <- fecundity18[complete.cases(fecundity18$Seed, fecundity18$Biomass), ]
-
-allcrops_18 <- fecundity18_sb %>%
-  mutate(Tercile = split_quantile(Biomass, 4)) %>% #
-  group_by(Tercile, Crop_ID, Corn_weed_management) %>% 
-  mutate(m_Biomass = mean(Biomass),
-         log_Biomass = log(Biomass),
-         log_Seed = log(Seed + 1))
 
 allcrops_18_train <- allcrops_18 %>%
-  sample_frac(0.8)
+  sample_frac(0.8) #put 80% of the full data set into the training set
 
-allcrops_18_test <- anti_join(allcrops_18, allcrops_18_train)
-
-
+allcrops_18_test <- anti_join(allcrops_18, allcrops_18_train) #use the other 20% as a testing set
 
 ```
 
@@ -450,7 +466,6 @@ error.allcrops.biom.seed.gls = allcrops_18_test$log_Seed_pred - allcrops_18_test
 # https://stackoverflow.com/questions/3472980/how-to-change-facet-labels
 
 
-
 ggplot(data = allcrops_18_train, aes(x = log_Biomass, y = log_Seed)) +
    geom_smooth(method = "lm", se=TRUE, color="black", formula = y~x) +
    stat_poly_eq(formula = y~x, 
@@ -462,7 +477,8 @@ ggplot(data = allcrops_18_train, aes(x = log_Biomass, y = log_Seed)) +
                 label.x = 0.9) +         
   facet_grid(Crop_ID ~  Corn_weed_management, 
              labeller = labeller(
-        Corn_weed_management = c("conv" = "Corn weed management: conventional", "low" = "Corn weed management: low"))) +
+        Corn_weed_management = c("conv" = "Corn weed management: conventional",
+                                 "low" = "Corn weed management: low"))) +
     scale_y_continuous(limits = c(-3, 12),
                      expand = expansion(mult = c(0, 0.2))) +
   geom_point(size = 3) +
