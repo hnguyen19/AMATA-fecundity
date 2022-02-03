@@ -34,10 +34,13 @@ Variable explanation in each data sheet is provided below:
 + bt: A dummy variable created by combining the block and treatment (CropID x Corn_weed_management) to accommodate the `gls`'s compound symmetry.  
 
 
+<<<<<<< HEAD
 #### Raw/AMATA_18_raw.csv and Raw/AMATA_19_raw.csv
 + Female: Number of female plants in an eu. 
 + Male: Number of male plants in an eu. 
 
+=======
+>>>>>>> 40dcd7899d39f44bf484edaaac11c2949cb6e158
 #### Raw/sexed19_mis.csv
 + Quadrat: Identification of a quadrat (1,2,...8) within an eu.
 + Cohort: The cohort (1, 2, ..., 6) that a plant belonged. 
