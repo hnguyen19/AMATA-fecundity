@@ -17,7 +17,7 @@ library(ggpmisc)
 library(nlme)
 library(broom.mixed)
 library(ggResidpanel)
-source("functions.R")
+source(here("5-Analysis/functions.R"))
 library(ggResidpanel)
 library(boot) # for glm.diag.plots
 library(tinytex)
@@ -175,7 +175,7 @@ glm.diag.plots(sexr18_dens_glm3)
 ```{r, include=FALSE}
 ## Read in the individual dried aboveground mass and fecundity 
 
-fecundity18 <- read_csv(here("2 Data/Clean data/fecundity_18.csv"), 
+fecundity18 <- read_csv(here("2-Data/Clean/fecundity_18.csv"), 
     col_types = cols(Biomass = col_number(), 
         Seed = col_number()), na = "empty")
 
@@ -220,9 +220,8 @@ fecundity18_s <- fecundity18[complete.cases(fecundity18$Seed), ]
 
 # min(fecundity18_s$Seed[fecundity18_s$Seed > 0])
 
-seeds.gls <- gls(log(Seed + 1) ~ Block + Crop_ID + 
-                   Corn_weed_management +
-                   Crop_ID:Corn_weed_management,
+seeds.gls <- gls(log(Seed + 1) ~ Block + 
+                   Crop_ID*Corn_weed_management,
                  correlation=corCompSymm(form= ~1 | bt), #identifies each treatment within block
   data=fecundity18_s)
 
