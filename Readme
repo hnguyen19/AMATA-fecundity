@@ -1,15 +1,31 @@
-I sincerely thank the R user community, `bookdown` authors, Overleaf, Zotero, Stackoverflow, and ISU Lunchinators for inspiration, coaching, and troubleshooting. 
-This current structure works best for me, though mysterious package conflicts sometimes generate raw LaTeX codes in the middle of a neat .pdf. Sometimes I can solve this, sometimes I cannot. I would appreciate any suggestions you may have if you come across my work.
+Corn- and soybean-dominated cropping systems create and maintain a favorable environment for summer annual weeds whose emergence and growth phenology are similar to these annual summer crops. Cropping system diversification can be an effective approach for controlling noxious weeds without increasing reliance on chemical herbicides. Diversification may be especially important for managing waterhemp, a dioecious, summer annual weed that is becoming increasingly prevalent in the US Corn Belt due to its life history characteristics and herbicide resistance profile.
+
+Compared to corn and soybean, alfalfa and oat emerge and establish earlier and are thus more competitive with warm-season weeds like waterhemp. Knowledge of vegetative and reproductive characteristics in a range of crop environments can be valuable for planning weed management strategies. However, most of the relevant characteristics for a population dynamics model were available in corn and soybean monocultures. We examined the relationship between waterhemp's aboveground mass and fecundity under four crop species' presence within three crop rotation systems: a 2-year sequence of corn and soybean; a 3-year sequence of corn, soybean, and oat intercropped with red clover; and a 4-year sequence of corn, soybean, oat intercropped with alfalfa, and alfalfa. All the rotation systems were treated with conventional or reduced rates of herbicides. We established eighteen linear equations to predict waterhemp's fecundity from dried aboveground mass in each crop and associated crop management program since measuring the latter allows for quicker estimation of fecundity compared to counting seeds on each individual plant.
+
+Rotation system and crop phase within rotation system had significant effects on all the response variables but weed control regime on some. The sex ratios at maturity were slightly female-biased in oat and alfalfa. Mature waterhemp plants were larger in corn and soybean than in oat and alfalfa. Oat and alfalfa were planted earlier than corn and soybean and successfully competed for resources against waterhemp despite the absence of herbicide or interrow cultivation. Frequent hay cuts in alfalfa served as physical weed control and contributed to suppressing waterhemp and other weeds substantially.
 
 The following folders are populated as the manuscript submission progresses: 
 
-+ 1-Background: relevant .pdf files of the literature   
-+ 2-Data: raw and clean data sheets  
-+ 3-Picture: relevant diagrams
-+ 4-Data-wrangling: `.R` files with codes to clean the raw data  
-+ 5-Analysis: `.Rmd` executable files to analyze the data and render reports. Each `.Rmd` file is devoted to address one set of hypothesis. `functions.R`, that contains customized functions from existing functions, is also stored here.
-+ 6-Draft: to put everything together. `fecund.bib` (the Zotero generated bibliography) `Introduction.Rmd`, `Proposal.Rmd` for materials and methods, and `Discussion.Rmd` live there.   
-+ 7-Extra: diagnosis scripts in `.Rmd` format and rendered outputs that are not included in the manuscrtipt. 
+1-Background: relevant .pdf files of the literature   
+
+2-Data: raw and clean data sheets  
+
+3-Picture: relevant diagrams
+
+4-Data-wrangling: `.R` files with codes to clean the raw data  
+
+5-Analysis: `.Rmd` executable files to analyze the data and render reports. Each `.Rmd` file is devoted to address one set of questions.
++ `functions.R` - contains customized functions from existing functions.
++ `Population-sex-biom-dens.Rmd` - How did crop identity and corn weed management affect waterhemp population sex ratio, aboveground mass, and density?
++ `Individual-fecundity-model.Rmd` - How did crop identity and corn weed management affect waterhemp fecundity, mediated through waterhemp's aboveground mass.
+
+6_Draft: to put everything together.
+
++ `fecund.bib` (the Zotero generated bibliography)
++ `Introduction.Rmd`
++ `Proposal.Rmd` for materials and methods
++ `Discussion.Rmd`   
+7-Extra: diagnosis scripts in `.Rmd` format and rendered outputs that are not included in the manuscrtipt. 
 
 General workflow in the 6_Draft folder:  
 1 - Each `.Rmd` file in the `5-Analysis` folder is devoted to address one set of hypothesis. 
@@ -23,3 +39,7 @@ Any textual edit after the first round of manuscript submission will be done on 
 4 - `Waterhemp_fecundity_Jan14.pdf` is the currently submitted format.  
 
 5 - `Waterhemp_fecundity_Feb1.pdf` is the round 2 revision.
+
+I sincerely thank the R user community, `bookdown` authors, Overleaf, Zotero, Stackoverflow, and ISU Lunchinators for inspiration, coaching, and troubleshooting. 
+This current structure works best for me, though mysterious package conflicts sometimes generate raw LaTeX codes in the middle of a neat .pdf. Sometimes I can solve this, sometimes I cannot. I would appreciate any suggestions you may have if you come across my work.
+

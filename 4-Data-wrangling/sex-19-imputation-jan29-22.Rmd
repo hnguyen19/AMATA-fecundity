@@ -123,6 +123,7 @@ sexed19_imp1_wide <- parlmice(sexed19_resp1 , cluster.seed = 500, print = FALSE,
 
 sexed19_imp1_long <- sexed19_imp1_wide %>%
   mice::complete("long") 
+# Test run, if this works, use split(.imp) %>% map(customized_model): YES 
 
 sexed19_imp1 <- sexed19_imp1_long %>% #separate this to save energy 
   group_by(.imp) %>%
