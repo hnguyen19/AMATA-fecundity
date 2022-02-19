@@ -322,7 +322,7 @@ kbl(indiv_biom_seeds_ct,
    pack_rows("(A) - Crop phase effects", 1,7) %>%
     pack_rows("(B) - Crop species effects", 8,13) %>%
   landscape() %>%
-  footnote(general = "C2: corn in the 2-year rotation, C3: corn in the 3-year rotation, C4: corn in the 4-year rotation, S2: soybean in the 2-year rotation, S3: soybean in the 3-year rotation; S4: soybean in the 4-year rotation, O3: oat in the 3-year rotation, O4: oat in the 4-year rotation, and A4: alfalfa in the 4-year rotation", threeparttable = TRUE, footnote_as_chunk = TRUE)
+  footnote(general = "C2: corn in the 2-year rotation, C3: corn in the 3-year rotation, C4: corn in the 4-year rotation, S2: soybean in the 2-year rotation, S3: soybean in the 3-year rotation, S4: soybean in the 4-year rotation, O3: oat in the 3-year rotation, O4: oat in the 4-year rotation, and A4: alfalfa in the 4-year rotation", threeparttable = TRUE, footnote_as_chunk = TRUE)
 ```
 
 ## Effects of weed management regimes and rotations on female aboveground mass and fecundity relationship {-}   
@@ -383,7 +383,7 @@ kbl(biom_seed_jt_df ,  booktabs = TRUE, linesep = "",
   pack_rows("(B) - Individual fecundity. MSE = 3.43", 4,6) %>% 
   pack_rows("(C) - Individual fecundity with individual aboveground mass covariate. MSE = 1.01", 7,13) %>% 
   kable_styling(latex_options = c("scale_down")) %>%
-  footnote(general = "C2: corn in the 2-year rotation, C3: corn in the 3-year rotation, C4: corn in the 4-year rotation, S2: soybean in the 2-year rotation, S3: soybean in the 3-year rotation; S4: soybean in the 4-year rotation, O3: oat in the 3-year rotation, O4: oat in the 4-year rotation, and A4: alfalfa in the 4-year rotation", threeparttable = T, footnote_as_chunk = TRUE)
+  footnote(general = "C2: corn in the 2-year rotation, C3: corn in the 3-year rotation, C4: corn in the 4-year rotation, S2: soybean in the 2-year rotation, S3: soybean in the 3-year rotation; S4: soybean in the 4-year rotation, O3: oat in the 3-year rotation, O4: oat in the 4-year rotation, and A4: alfalfa in the 4-year rotation", threeparttable = TRUE, footnote_as_chunk = TRUE)
 
 # <https://tex.stackexchange.com/questions/594324/how-to-replace-all-with-or-x-in-an-anova-table>
 ```  

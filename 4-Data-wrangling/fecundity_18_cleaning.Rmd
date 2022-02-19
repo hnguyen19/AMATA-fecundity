@@ -1,0 +1,121 @@
+---
+title: "Individual fecundity data cleaning for 2018 evaluation"
+author: "Huong Nguyen"
+date: "10/28/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(emmeans)
+library(here)
+library(dplyr)
+library(readr)
+library(readxl)
+library(magrittr)
+```
+
+To clean and merge machine- and hand-counted seed data. The cleaned data set is saved as `fecundity_18.csv`
+
+```{r merge data, include=FALSE}
+
+Waterhemp_Ball <- read_csv(here("2-Data/Raw/Waterhemp_Ball.csv"), 
+     col_types = cols(
+         Plot = col_character(), id = col_number()))
+#Nseed = col_number(), 
+ball <- Waterhemp_Ball%>%
+  dplyr::select(Plot, Side, id, Nseed)
+ball <- ball[nchar(ball$id)<4,] # to remove test-run and other entries that are not my data. The Ball counter was used by several projects at the same time.  
+
+
+Waterhemp_hand <- read_csv(here("2-Data/Raw/Waterhemp_hand.csv"), 
+    col_types = cols(Plot = col_character(),
+        id = col_number()))
+#View(Waterhemp_hand)
+
+Waterhemp_hand <- Waterhemp_hand[complete.cases(Waterhemp_hand$id,Waterhemp_hand$Biomass),]
+
+hand <- Waterhemp_hand%>%
+  dplyr::select(Plot,Side,Crop,Rotation,Herbicide,Corn_weed_management,id,Nseed,Biomass)
+#hand$Crop <- substr(hand$Crop,0,1)
+#hand$Crop <- toupper(hand$Crop)
+hand$Rotation <- substr(hand$Rotation,0,1)
+#hand$Herbicide <- substr(hand$Herbicide,0,1)
+#hand$Corn_herbicide <- substr(hand$Corn_herbicide,0,1)
+hand1 <- hand[order(hand$Plot,hand$Side,hand$id),]
+
+
+findClosest <- function(v, n) {
+  # Sort and remove NA
+  v <- sort(v, na.last = NA)
+
+  # Compute L1 distances between closest points. We know each point is next to
+  # its closest neighbour since we sorted.
+  delta <- diff(v)
+
+  # Compute sum of L1 distances on a rolling window with n - 1 elements
+  # Why n-1 ? Because we are looking at deltas and 2 deltas ~ 3 elements.
+  withingroup_distances <- zoo::rollsum(delta^2, k = n - 1)
+
+  # Now it's simply finding the group with minimum within-group sum
+  # And working out the elements
+  group_index <- which.min(withingroup_distances)
+  element_indices <- group_index + 0:(n-1)
+
+  v[element_indices]
+}
+
+# find the three closest counts per one sample from the Ball counter
+ball1<-ball%>%
+  dplyr::group_by(Plot,Side,id)%>%
+  do(data.frame(Ns=findClosest(.$Nseed,3)))
+
+# take the mean of the 3 closest data points
+ball2 <- ball1%>%
+  dplyr::group_by(Plot,Side,id)%>%
+  summarize(Mseeds=mean(Ns))
+
+#ball2$id <- as.numeric(ball2$id)
+
+ball3 <- ball2[order(ball2$Plot,ball2$Side,ball2$id),]
+
+  
+# combine machine- and hand-counted data
+comb <- left_join(hand1, ball3, by = c("Plot","Side","id")) 
+
+comb2 <- comb %>% 
+  mutate(Seed = ifelse(is.na(Mseeds), Nseed, Mseeds))
+
+# add block to the data sheet
+comb3 <-comb2%>%mutate(Block=ifelse(Plot%in%c(11:19),"1",
+                      ifelse(Plot%in%c(21:29),"2",
+                             ifelse(Plot%in%c(31:39),"3","4"))))
+
+
+comb3 <- comb3[complete.cases(comb3$Seed), ]
+
+
+comb3 <-comb3 %<>%
+  mutate_at(c("Block","Crop","Rotation","Herbicide","Corn_weed_management","id"),funs(factor(.)))
+
+#Crop_a is abbreviated crop name.
+comb3$Crop_a <- substr(comb3$Crop,0,1)
+comb3$Crop_a <- toupper(comb3$Crop_a)
+
+#create Crop_ID = Crop phase in each rotation.  
+comb3$Crop_ID <- factor(paste(comb3$Crop_a, comb3$Rotation, sep = ""))
+
+
+#bt is the block by treatment identification, a dummy variable to accommodate gls's compound symmetry    
+comb3$bt <- factor(paste(comb3$Block,comb3$Crop_ID,comb3$Corn_weed_management, sep = "/"))
+
+write.csv(comb3[,-c(8,10)],"../2-Data/Clean/fecundity_18.csv", row.names = FALSE)
+```
+
+
+
+
+```{r, include=FALSE}
+# <https://stackoverflow.com/questions/55655136/how-to-fix-singular-fit-with-glmer-lme4-in-r>
+```
+
