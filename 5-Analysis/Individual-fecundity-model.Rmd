@@ -491,3 +491,5 @@ ggplot(data = allcrops_18_train, aes(x = log_Biomass, y = log_Seed)) +
     ylab("Fecundity index") +
   geom_point(data=allcrops_18_test, color = "red", size = 3)
 ```
+
+
